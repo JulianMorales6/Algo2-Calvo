@@ -1,6 +1,5 @@
 #include "Celula.h"
 
-
 Celula::Celula() {
     
     this->Estado = Muerta;
