@@ -10,6 +10,7 @@ Celula::Celula() {
     };
 };
 
+
 Celula::Celula(int genes[]){
 
     this->Estado = Muerta;
