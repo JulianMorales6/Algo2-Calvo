@@ -3,9 +3,7 @@
 Celula::Celula() {
     
     this->Estado = Muerta;
-    this->Comportamiento = Normal;
-    CantidadGenes = CANTIDAD_GENES;
-    for(int i = 0; i<CantidadGenes; i++) {
+    for(int i = 0; i<CANTIDAD_GENES; i++) {
         this->Gen[i] = 0;
     };
 };
@@ -14,40 +12,41 @@ Celula::Celula() {
 Celula::Celula(int genes[]){
 
     this->Estado = Muerta;
-    this->Comportamiento = Normal;
-    for(int i = 0; i<CantidadGenes; i++) {
+    for(int i = 0; i<CANTIDAD_GENES; i++) {
         this->Gen[i] = genes[i];
     };
 };
 
-void Celula::inicializarCelula(Celula *celula, ComportamientoDeCelula comportamiento){
-
+void Celula::inicializarCelula() {
+    this->Estado = Muerta;
+    for(int i = 0; i<CANTIDAD_GENES; i++) {
+        this->Gen[i] = 0;
+    }
 };
 
-void Celula::matarCelula(Celula *celula){
-    
-    celula->Estado = Muerta;
+void Celula::matarCelula(){
+    this->Estado = Muerta;
 };
 
-void Celula::revivirCelula(Celula *celula, int genes[]){
+void Celula::revivirCelula(int genes[]){
     
-    celula->Estado = Viva;
-    for(int i = 0; i<CantidadGenes; i++) {
+    this->Estado = Viva;
+    for(int i = 0; i<CANTIDAD_GENES; i++) {
         this->Gen[i] = genes[i];
     };
 };
 
-EstadoDeCelula Celula::obtenerEstado(Celula *celula){
-    return celula->Estado;
+EstadoDeCelula Celula::obtenerEstado(){
+    return this->Estado;
 };
 
-void Celula::cambiarGen(Celula *celula, int numeroDeGen, int cambio) {
+void Celula::cambiarGen(int numeroDeGen, int cambio) {
     if(cambio > 255 || cambio < 0) {
         cambio = 0;
     };
-    celula->Gen[numeroDeGen] = cambio;
+    this->Gen[numeroDeGen] = cambio;
 };
 
-int Celula::ObtenerGen(Celula *celula, int numeroDeGen){
-    return celula->Gen[numeroDeGen];
+int Celula::ObtenerGen(int numeroDeGen){
+    return this->Gen[numeroDeGen];
 };
