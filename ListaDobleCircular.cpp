@@ -37,7 +37,7 @@ class Lista {
     //inerta el elemento pasado en una posicion especifica
 	void add(T elemento, int posicion);
     //saca el primero elemento que sea igual al pasado?
-    void remove();
+    void remove(T elemento);
     //devuelve el largo de la lista
     int getLargo();
     //borra al elemento en la posicion pasada
