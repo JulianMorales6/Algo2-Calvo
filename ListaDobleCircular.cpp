@@ -30,6 +30,7 @@ template <class T> class Lista {
     Nodo<T> *primero;
     Nodo<T> *cursor;
     int largo;
+    int cur;
     public:
     //constructor
     Lista();
@@ -55,9 +56,8 @@ template <class T> class Lista {
     void retrocederCursor();
     //devuelve el elemento almacenado en el nodo
     T getCursor();
-
-    T &operator[](int);
-
+    //operador indexacion, devuelve el elemento que esta en la posicion i
+    T operator[] (int j);
     void reiniciarCursor();
 };
 
@@ -181,25 +181,53 @@ template <class T> int Lista<T>::getLargo() {
 }
 
 
-template <class T> T &Lista<T>::operator[](int posicion){
-    if(posicion < 0 || posicion >= largo) {//validar la posicion ingresda
-        throw invalid_argument("posicion fuera de rango");
-    }  
-    if(estaVacia()){
-        throw invalid_argument("lista vacia");
+template <class T>
+T  Lista<T>::operator[] (int j) {
+    while(j> largo-1) {
+        j = j-largo;
+    };
+    while(j< 0) {
+        j = j+largo;
+    }; 
+    if(primero) {
+        int dif;
+        Nodo<T> * nodoAux;
+        T dato;
+        if(j>this->cur) {
+            dif = j-this->cur;
+            if(dif<=this->largo-j) {
+                nodoAux = this->cursor;
+                for(int i = 0; i <= j-this->cur; i++) {
+                    nodoAux = nodoAux->_siguiente;
+                    avanzarCursor();
+                }
+            } else {
+                nodoAux = this->primero;
+                for(int i = 0; i <= this->largo-j; i++) {
+                    nodoAux = nodoAux->_anterior;
+                    retrocederCursor();
+                }
+            }
+        } else {
+            dif = this->cur-j;
+            if(dif<j) {
+                nodoAux = this->cursor;
+                for(int i = 0; i <= this->cur-j; i++) {
+                    nodoAux = nodoAux->_anterior;
+                    retrocederCursor();
+                }
+            } else {
+                nodoAux = this->primero;
+                for(int i = 0; i <= j; i++) {
+                    nodoAux = nodoAux->_siguiente;
+                    avanzarCursor();
+                }
+            }
+        }
+        dato = nodoAux->_dato;
+        return dato;
     }
-
-
-
-
-    inicializarCursor();
-    int cont = 0;
-    while(cont < posicion){
-        avanzarCursor();
-        cont++;
-    }
-    return cursor->_dato;
-}
+};
 
 
 
@@ -233,6 +261,18 @@ int main() {
         col1.avanzarCursor();
     }
     cout<<"]"<<endl;
+
+
+    lis1.add(4);
+    lis1.add(5);
+    lis1.add(6);
+    lis1.add(7);
+    lis1.add(8);
+    lis1.add(9);
+    lis1.add(10);
+
+    cout<<"H"<<endl;
+    cout<<lis1[2]<<endl;
 
     lis1.borrar();
     col1.borrar();
