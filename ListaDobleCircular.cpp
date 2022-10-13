@@ -183,6 +183,7 @@ template <class T> int Lista<T>::getLargo() {
 
 template <class T>
 T  Lista<T>::operator[] (int j) {
+    j--;
     while(j> largo-1) {
         j = j-largo;
     };
@@ -272,7 +273,7 @@ int main() {
     lis1.add(10);
 
     cout<<"H"<<endl;
-    cout<<lis1[2]<<endl;
+    cout<<lis1[378]<<endl;
 
     lis1.borrar();
     col1.borrar();
