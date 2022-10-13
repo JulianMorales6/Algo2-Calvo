@@ -2,6 +2,7 @@
 using namespace std;
 
 
+
 template <class T> class Lista; //para usar el friend
 
 
@@ -33,7 +34,7 @@ template <class T> class Lista {
     //constructor
     Lista();
     //destructor
-    ~Lista();
+    void borrar();
     //agrega el elemento pasado al final
     void add(T elemento);
     //inserta el elemento pasado en una posicion especifica
@@ -54,6 +55,10 @@ template <class T> class Lista {
     void retrocederCursor();
     //devuelve el elemento almacenado en el nodo
     T getCursor();
+
+    T &operator[](int);
+
+    void reiniciarCursor();
 };
 
 
@@ -64,7 +69,7 @@ template <class T> Lista <T>::Lista() {
 }
 
 
-template <class T> Lista<T>::~Lista() {
+template <class T> void Lista<T>::borrar() {
     if(primero) {
         if (primero->_siguiente == primero) {
             delete primero;
@@ -79,6 +84,7 @@ template <class T> Lista<T>::~Lista() {
                 delete nodoAux;
             }
         }
+        cout<<"borra"<<endl;  
     }
 }
 
@@ -93,10 +99,12 @@ template <class T> void Lista<T>::add(T elemento, int posicion) {
         throw invalid_argument("posicion fuera de rango");
     }  
     Nodo<T> *nuevoNodo=new Nodo<T>(elemento);
+    
     if(estaVacia()) {
         nuevoNodo->_siguiente=nuevoNodo;
         nuevoNodo->_anterior=nuevoNodo;
         primero = nuevoNodo;
+        
     }
     else {
         Nodo<T> *nodoActual;
@@ -141,7 +149,7 @@ template <class T> void Lista<T>::retrocederCursor() {
 
 template <class T> T Lista<T>::getCursor() {
     if(cursor==NULL) {
-        throw invalid_argument("cursor invalido para una lista vacia");
+        throw invalid_argument("no hay cursor para una lista vacia");
     }  
     return cursor->_dato;
 }
@@ -159,7 +167,7 @@ template <class T> void Lista<T>::emitir() {
             aux=aux->_siguiente;
         } while(aux!=primero);
     }
-    cout<<"]"<<endl;
+    cout<<"]";
 }
 
 
@@ -173,26 +181,68 @@ template <class T> int Lista<T>::getLargo() {
 }
 
 
+template <class T> T &Lista<T>::operator[](int posicion){
+    if(posicion < 0 || posicion >= largo) {//validar la posicion ingresda
+        throw invalid_argument("posicion fuera de rango");
+    }  
+    if(estaVacia()){
+        throw invalid_argument("lista vacia");
+    }
+
+
+
+
+    inicializarCursor();
+    int cont = 0;
+    while(cont < posicion){
+        avanzarCursor();
+        cont++;
+    }
+    return cursor->_dato;
+}
+
+
+
+
+
 int main() {
+    typedef Lista<Lista<int>> listaDeListas;
+   
+    Lista<int> lis1, lis2, lis3;
 
-    Lista <char> c1;
-
-    c1.add('a');
-    c1.add('b');
-    c1.add('u', 0);
-    c1.add('c');
-    c1.emitir();
+    for (int i=1; i<=3; i++) {
+        lis1.add(i);
+    }
+    for (int i=4; i<=6; i++) {
+        lis2.add(i);
+    }
+     for (int i=7; i<=9; i++) {
+        lis3.add(i);
+    }   
     
+	listaDeListas col1;
+	col1.add(lis1);
+    col1.add(lis2);
+    col1.add(lis3);
 
-    for (int i=1; i<=2; i++) {
-        c1.avanzarCursor();
+ 
+    
+    cout<<"[";
+    for(int i=1; i<=col1.getLargo(); i++){
+        col1.getCursor().emitir();
+        col1.avanzarCursor();
     }
-    for (int i=1; i<=0; i++) {
-        c1.retrocederCursor();
-    }
+    cout<<"]"<<endl;
 
-    cout<<(c1.getCursor())<<endl;
+    lis1.borrar();
+    col1.borrar();
 
+    
     return 0;
 }
+
+/*error con el destructor: en add despues de crear el nuevo nodo que tiene como elemento otra lista, 
+como ya no se va a usar esa lista en ningun otro lugar se ejecuta el destructor y 
+esto porvoca que mute la guardada en el nodo nuevo*/
+
 
