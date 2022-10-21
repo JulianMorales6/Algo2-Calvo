@@ -1,29 +1,7 @@
 #include <iostream>
 using namespace std;
 
-
-
-template <class T> class Lista; //para usar el friend
-
-
-template <class T> class Nodo {
-    friend class Lista<T>;
-    private:
-    T _dato;
-    Nodo<T> *_siguiente;
-    Nodo<T> *_anterior;
-    public:
-    Nodo(T &dato);
-};
-
-template <class T> Nodo<T>::Nodo(T &dato) {
-    _dato = dato;
-    _siguiente = NULL;
-    _anterior = NULL;
-
-}
-
-
+#include "Nodo.h"
 
 template <class T> class Lista {
     private:
@@ -35,7 +13,7 @@ template <class T> class Lista {
     /*POST: Crea una instancia de lista*/
     Lista();
     /*POST: Borra los nodos creados con new*/
-    void borrar();
+    ~Lista();
     /*POST: Agrega el elemento pasado al final de la lista*/
     void add(T elemento);
     /*PRE: La posicion pasada esta entre 0 y el largo de la lista
@@ -45,7 +23,7 @@ template <class T> class Lista {
     int getLargo();
     /*POST: Verifica si la lista esta vacia*/
     bool estaVacia();
-    /*PRE: La lista no puede estar vacia y dimension debe estar entre 1 y 3
+    /*PRE: La lista no puede estar vacia y solo emite lista de una dimension
       POST: Muestra por consola la lista*/
     void emitir();
     /*PRE: La lista no puede estar vacia
@@ -62,9 +40,9 @@ template <class T> class Lista {
     T getCursor();
     /*PRE: La posicion pasada debe estar entre -1 y largo
       POST: Devuelve una referencia al elemento de la posicion pasada*/
-    //T &operator[](int posicion);
+    T operator[](int posicion);
 
-    T operator[] (int j);
+    //T operator[] (int j);
  
 };
 
@@ -77,7 +55,7 @@ template <class T> Lista <T>::Lista() {
 }
 
 
-template <class T> void Lista<T>::borrar() {
+template <class T> Lista<T>::~Lista() {
     if(this->primero) {
         if (this->primero->_siguiente == this->primero) {
             delete this->primero;
@@ -129,9 +107,8 @@ template <class T> void Lista<T>::add(T elemento, int posicion) {
             this->primero = nuevoNodo;
         }
     }
+    this->cursor = nuevoNodo;
     this->largo++;
-    this->inicializarCursor();
-    
 }
 
 
@@ -177,17 +154,18 @@ template <class T> T Lista<T>::getCursor() {
 
 
 template <class T> void Lista<T>::emitir() {  
-
-    Nodo<T> *aux = this->primero;
+ 
+    this->inicializarCursor();
+   
     cout<<"[";
     if(!this->estaVacia()) {
         do {
-            cout<<aux->_dato;
-            if (aux != this->primero->_anterior) {
+            cout<<*this->getCursor();
+            if(this->cursor != this->primero->_anterior) {
                 cout<<',';
             }   
-            aux=aux->_siguiente;
-        } while(aux != this->primero);
+            this->avanzarCursor();
+        } while(this->cursor != this->primero);
     }
     cout<<"]";
 }
@@ -205,8 +183,8 @@ template <class T> int Lista<T>::getLargo() {
 }
 
 
-/* Otra alternativa al operador []
-template <class T> T &Lista<T>::operator[](int posicion){
+
+template <class T> T Lista<T>::operator[](int posicion){
     if(posicion < -1 || posicion > this->largo) {//validar la posicion ingresda
         throw invalid_argument("posicion fuera de rango");
     }  
@@ -246,9 +224,9 @@ template <class T> T &Lista<T>::operator[](int posicion){
     }
     return this->cursor->_dato;
 }
-*/
 
 
+/*
 template <class T> T Lista<T>::operator[] (int j) {
     j--;
     while(j> this->largo-1) {
@@ -296,50 +274,11 @@ template <class T> T Lista<T>::operator[] (int j) {
     return dato;
 };
 
+*/
 
 
 
 
 
-int main() {
-    typedef Lista<Lista<int>> listaDeListas;
-   
-    Lista<int> lis1;
 
-    for (int i=1; i<=3; i++) {
-        lis1.add(i);
-    }
-
-    
-	listaDeListas col1;
-	col1.add(lis1);
-
-
- 
-    
-    cout<<"[";
-    for(int i=1; i<=col1.getLargo(); i++){
-        col1.getCursor().emitir();
-        col1.avanzarCursor();
-    }
-    cout<<"]"<<endl;
-
-
-    lis1.add(4);
-    lis1.add(5);
-    lis1.add(6);
-    lis1.add(7);
-    lis1.add(8);
-    lis1.add(9);
-    lis1.add(10);
-
-    cout<<"H"<<endl;
-    cout<<lis1[378]<<endl;
-
-    lis1.borrar();
-    col1.borrar();
-
-    
-    return 0;
-}
 
