@@ -38,7 +38,8 @@ template <class T> class Lista {
     /*PRE: La lista no puede estar vacia
       POST: Devuelve el dato al que apunta el cursor*/
     T getCursor();
-    /*PRE: La posicion pasada debe estar entre -1 y largo
+    /*PRE: La posicion pasada debe estar entre 0 y el largo-1 
+        (si se pasa uno mas o uno menos se devuelve el primero o el ultimo respectivamente) 
       POST: Devuelve una referencia al elemento de la posicion pasada*/
     T operator[](int posicion);
 
