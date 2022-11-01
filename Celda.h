@@ -13,14 +13,14 @@ class Celda {
 
 private:
 ComportamientoDeCelda Comportamiento;
-Celula celula;
+Celula * celula;
 
 public:
 
 Celda();
 Celda(ComportamientoDeCelda comportamiento);
 ComportamientoDeCelda getComportamiento();
-Celula getCelula();
+Celula * getCelula();
 
 };
 

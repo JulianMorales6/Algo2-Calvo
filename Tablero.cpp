@@ -26,6 +26,7 @@ Tablero::Tablero(int capas, int filas, int columnas){//tablero de enteros para p
 
 
 Tablero::~Tablero(){
+    delete this->tablero;
 }
 
 

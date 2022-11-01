@@ -1,12 +1,12 @@
 #include "Celda.h"
 
 Celda::Celda() {
-    this->celula = Celula();
+    this->celula = new Celula();
     this->Comportamiento = Normal;
 };
 
 Celda::Celda(ComportamientoDeCelda comportamiento) {
-    this->celula = Celula();
+    this->celula = new Celula();
     this->Comportamiento = comportamiento;
 };
 
@@ -14,6 +14,6 @@ ComportamientoDeCelda Celda::getComportamiento() {
     return(this->Comportamiento);
 };
 
-Celula Celda::getCelula() {
+Celula * Celda::getCelula() {
     return(this->celula);
 };
