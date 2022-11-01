@@ -1,4 +1,4 @@
-#include "Celula.h"
+#include "Celula.cpp"
 
 enum ComportamientoDeCelda {
     Contaminada,

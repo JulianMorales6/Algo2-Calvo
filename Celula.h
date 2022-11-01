@@ -10,7 +10,7 @@ class Celula {
 private:
 
 EstadoDeCelula Estado;
-int Gen[];
+int Gen[CANTIDAD_GENES];
 
 public:
 
@@ -19,8 +19,9 @@ Celula(int genes[]);
 void inicializarCelula();
 void matarCelula();
 void revivirCelula(int genes[]);
-EstadoDeCelula obtenerEstado();
+EstadoDeCelula getEstado();
 void cambiarGen(int numeroDeGen, int cambio);
 int ObtenerGen(int numeroDeGen);
+void setEstadoDeCelula(EstadoDeCelula Estado);
 
 };

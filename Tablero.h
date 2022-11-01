@@ -1,8 +1,9 @@
 
 
-#include "Celula.h"
+#include "Celda.cpp"
 #include "ListaDobleCircular.h"
-typedef Lista<Lista<Lista<int *> *> *> *cubo;
+
+typedef Lista<Lista<Lista<Celda *> *> *> *cubo;
 
 class Tablero{
     private:

@@ -37,7 +37,7 @@ void Celula::revivirCelula(int genes[]){
     };
 };
 
-EstadoDeCelula Celula::obtenerEstado(){
+EstadoDeCelula Celula::getEstado(){
     return this->Estado;
 };
 
@@ -51,3 +51,7 @@ void Celula::cambiarGen(int numeroDeGen, int cambio) {
 int Celula::ObtenerGen(int numeroDeGen){
     return this->Gen[numeroDeGen];
 };
+
+void Celula::setEstadoDeCelula(EstadoDeCelula Estado) {
+    this->Estado = Estado;
+}
