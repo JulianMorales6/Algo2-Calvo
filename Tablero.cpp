@@ -69,3 +69,7 @@ void Tablero::mostrarTablero() {
         }
     }
 }
+
+void Tablero::cambiarEstadoTablero(int i, int j, int k, EstadoDeCelula estado) {
+    ((*(*(*this->tablero)[0])[3])[2])->getCelula()->setEstadoDeCelula(estado);
+}

@@ -25,6 +25,8 @@ class Tablero{
     /*PRE: 
       POST: */
     void mostrarTablero();
+
+    void cambiarEstadoTablero(int i, int j, int k, EstadoDeCelula estado);
 };
 
 
