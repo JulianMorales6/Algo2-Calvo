@@ -35,7 +35,7 @@ cubo Tablero::getTablero(){
 }
 
 
-void Tablero::mostrarTablero(){
+/*void Tablero::mostrarTablero(){
     int cont=1;
     for(int i=0; i<this->getTablero()->getCursor()->getCursor()->getLargo(); i++) {
         cout<<"capa "<<cont<<endl;cont++;
@@ -52,4 +52,20 @@ void Tablero::mostrarTablero(){
         
     } 
 }
+}
+*/
+
+void Tablero::mostrarTablero() {
+    int largoi = getTablero()->getLargo();
+    int largoj = getTablero()->getCursor()->getLargo();
+    int largok = getTablero()->getCursor()->getCursor()->getLargo();
+    for(int i = 0; i<largoi; i++) {
+        cout<<"Capa:"<<i+1<<endl;
+        for(int j = 0; j<largoj; j++) {
+            for(int k = 0; k<largok; k++) {
+                cout<<((*(*(*this->getTablero())[k])[j])[i])->getCelula()->getEstado();
+            }
+            cout<<endl;
+        }
+    }
 }

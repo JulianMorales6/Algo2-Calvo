@@ -3,9 +3,9 @@
 
 int main() {
 
-    Tablero tablero(3, 3, 3); //creo un tablero de (3x3x3) 3 capas, 3 filas y 3 columnas 
+    Tablero tablero(20, 20, 20); //creo un tablero de (3x3x3) 3 capas, 3 filas y 3 columnas 
     
-    Celda celda = *(*(*(*tablero.getTablero())[0])[0])[0]; //accedo a un casillero y lo modifico
+    Celda celda = *(*(*(*tablero.getTablero())[0])[0])[19]; //accedo a un casillero y lo modifico
     
     celda.getCelula()->setEstadoDeCelula(Viva);
 
