@@ -1,4 +1,5 @@
 #include "JuegoDeLaVida.h"
+#include <cstdlib>
 
 void JuegoDeLaVida::inicializarJuegoDeLaVida() {
     this->cargarConfiguracion();
@@ -23,3 +24,32 @@ void JuegoDeLaVida::cargarCelulasVivas() {
     }
     }
 
+void JuegoDeLaVida::cargarComportamientos() {
+    for(int i=0; i<this->configuracion.cantidadCeldasTipo1; i++){
+        this->cambiarComportamiento(rand()%(this->configuracion.ancho+ 1),rand()%(this->configuracion.largo+ 1),rand()%(this->configuracion.profundidad+ 1), Contaminada);
+    }
+    for(int i=0; i<this->configuracion.cantidadCeldasTipo2; i++){
+        this->cambiarComportamiento(rand()%(this->configuracion.ancho+ 1),rand()%(this->configuracion.largo+ 1),rand()%(this->configuracion.profundidad+ 1), Envenenada);
+    }    
+    for(int i=0; i<this->configuracion.cantidadCeldasTipo3; i++){
+        this->cambiarComportamiento(rand()%(this->configuracion.ancho+ 1),rand()%(this->configuracion.largo+ 1),rand()%(this->configuracion.profundidad+ 1), Procreadora);
+    }    
+    for(int i=0; i<this->configuracion.cantidadCeldasTipo4; i++){
+        this->cambiarComportamiento(rand()%(this->configuracion.ancho+ 1),rand()%(this->configuracion.largo+ 1),rand()%(this->configuracion.profundidad+ 1), Portal);
+    }    
+    for(int i=0; i<this->configuracion.cantidadCeldasTipo5; i++){
+        this->cambiarComportamiento(rand()%(this->configuracion.ancho+ 1),rand()%(this->configuracion.largo+ 1),rand()%(this->configuracion.profundidad+ 1), Radioactiva);
+    }    
+}
+
+void JuegoDeLaVida::cambiarComportamiento(int i, int j, int k, ComportamientoDeCelda comportamiento) {
+    this->tablero->cambiarComportamientoTablero(i,j,k,comportamiento);
+}
+
+ComportamientoDeCelda JuegoDeLaVida::obtenerComportamiento(int i, int j, int k) {
+    return((this->tablero)->getComportamientoTablero(i,j,k));
+}
+
+int generarNumeroRandom(int i) {
+    return(rand()%(i + 1));
+}

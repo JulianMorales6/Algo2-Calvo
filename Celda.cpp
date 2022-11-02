@@ -17,3 +17,7 @@ ComportamientoDeCelda Celda::getComportamiento() {
 Celula * Celda::getCelula() {
     return(this->celula);
 };
+
+void Celda::setComportamiento(ComportamientoDeCelda comportamiento) {
+    this->Comportamiento = comportamiento; 
+}

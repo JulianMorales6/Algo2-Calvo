@@ -27,6 +27,12 @@ class Tablero{
     void mostrarTablero();
 
     void cambiarEstadoTablero(int i, int j, int k, EstadoDeCelula estado);
+
+    void cambiarComportamientoTablero(int i, int j, int k, ComportamientoDeCelda comportamiento);
+
+    ComportamientoDeCelda getComportamientoTablero(int i, int j, int k);
+
+    Celda * getCelda(int i, int j, int k);
 };
 
 

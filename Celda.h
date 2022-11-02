@@ -21,6 +21,7 @@ Celda();
 Celda(ComportamientoDeCelda comportamiento);
 ComportamientoDeCelda getComportamiento();
 Celula * getCelula();
+void setComportamiento(ComportamientoDeCelda comportamiento);
 
 };
 
