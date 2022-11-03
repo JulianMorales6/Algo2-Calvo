@@ -3,13 +3,6 @@
 #include <fstream>
 #include <sstream>
 #define ARCHIVO_DIFICULTADES "data.csv"
-#define DIFICULTAD 0
-#define ALTURA_TABLERO 1
-#define ANCHO_TABLERO 2
-#define PROFUND_TABLERO 3
-#define VECINAS_P_NACER 4
-#define MIN_SEGUIR_VIVA 5
-#define MAX_SEGUIR_VIVA 6
 
 using namespace std;
 
@@ -35,7 +28,6 @@ int main()
     while(getline(archivo,linea)) {
         dificultad nuevaDificultad;
         stringstream stream(linea);
-        // string dificultad, alturaTablero, anchoTablero, profundidadTablero, vecinasParaNacer, minParaSeguirViva, maxParaSeguirViva;
         getline(stream, nuevaDificultad.dificultad, separador);
         getline(stream, nuevaDificultad.alturaTablero, separador);
         getline(stream, nuevaDificultad.anchoTablero, separador);
