@@ -1,5 +1,4 @@
 #include "JuegoDeLaVida.h"
-#include <cstdlib>
 
 void JuegoDeLaVida::inicializarJuegoDeLaVida() {
     this->cargarConfiguracion();
