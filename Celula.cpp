@@ -55,3 +55,7 @@ int Celula::ObtenerGen(int numeroDeGen){
 void Celula::setEstadoDeCelula(EstadoDeCelula Estado) {
     this->Estado = Estado;
 }
+
+int generarNumeroRandom(int i) {
+    return(rand()%(i + 1));
+}

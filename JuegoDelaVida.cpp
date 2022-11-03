@@ -50,6 +50,3 @@ ComportamientoDeCelda JuegoDeLaVida::obtenerComportamiento(int i, int j, int k) 
     return((this->tablero)->getComportamientoTablero(i,j,k));
 }
 
-int generarNumeroRandom(int i) {
-    return(rand()%(i + 1));
-}

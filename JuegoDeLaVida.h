@@ -47,10 +47,18 @@ class JuegoDeLaVida{
                 this->tablero->cambiarEstadoTablero(generarNumeroRandom(this->configuracion.ancho),generarNumeroRandom(this->configuracion.largo),generarNumeroRandom(this->configuracion.profundidad), estado);
             } if( comportamiento == Radioactiva) {
                 celda->getCelula()->cambiarGen(1,1);//cambiar los 1,1 por el comportamiento que deseemos
+            } if(comportamiento == Contaminada) {
+                estado = Muerta;
+            } if(comportamiento == Envenenada) {
+                celda->getCelula()->cambiarGen(generarNumeroRandom(3),0);
+            } if(comportamiento == Procreadora) {
+                --this->configuracion.x1;
+                --this->configuracion.x2;
+                --this->configuracion.x3; 
+            } 
             }
-        }
         this->tablero->cambiarEstadoTablero(i,j,k,estado);
-    }
+        }
     void cambiarComportamiento(int i, int j, int k, ComportamientoDeCelda comportamiento);
     ComportamientoDeCelda obtenerComportamiento(int i, int j, int k);
 };
