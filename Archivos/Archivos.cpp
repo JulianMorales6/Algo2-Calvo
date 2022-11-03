@@ -38,15 +38,15 @@ int main()
         getline(stream, nuevaDificultad.maxParaSeguirViva, separador);
 
         lista_dificultades[i] = nuevaDificultad;
-
-        cout<<"Dificultad: "<<nuevaDificultad.dificultad<<endl<<"Altura del tablero: "<<nuevaDificultad.alturaTablero<<endl<<"Ancho del tablero: "<<nuevaDificultad.anchoTablero<<endl<<"Profundidad del tablero: "<<nuevaDificultad.profundidadTablero<<endl<<"Vecinas vivas para que nazca una celula: "<<nuevaDificultad.vecinasParaNacer<<endl<<"Limite inferior de vecinas vivas para que siga viva una celula: "<<nuevaDificultad.minParaSeguirViva<<endl<<"Limite superior de vecinas vivas para que siga viva una celula: "<<nuevaDificultad.maxParaSeguirViva<<endl<<endl;
         i++;
     }
-    
+    cout<<"Elejir dificultad"<<endl;
     for (int i = 0; i <= 1; i++)
     {
-        cout<<"Dificultad: "<<lista_dificultades[i].dificultad<<endl<<"Altura del tablero: "<<lista_dificultades[i].alturaTablero<<endl<<"Ancho del tablero: "<<lista_dificultades[i].anchoTablero<<endl<<"Profundidad del tablero: "<<lista_dificultades[i].profundidadTablero<<endl<<"Vecinas vivas para que nazca una celula: "<<lista_dificultades[i].vecinasParaNacer<<endl<<"Limite inferior de vecinas vivas para que siga viva una celula: "<<lista_dificultades[i].minParaSeguirViva<<endl<<"Limite superior de vecinas vivas para que siga viva una celula: "<<lista_dificultades[i].maxParaSeguirViva<<endl<<endl;
+        int numero_opcion = i + 1;
+        cout<<numero_opcion<<" - "<<lista_dificultades[i].dificultad<<endl;
     }
+        cout<<"3 - Personalizada"<<endl;
     
     archivo.close();
 }
