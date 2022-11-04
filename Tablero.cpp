@@ -15,9 +15,8 @@ Tablero::Tablero(int capas, int filas, int columnas){//tablero de enteros para p
             this->tablero->getCursor()->add(fila);
 
             for(int k=0; k<columnas; k++){
-                Celda *p = new Celda;
-                p->getCelula()->inicializarCelula();
-                this->tablero->getCursor()->getCursor()->add(p); //en lugar de p iria el casillero
+                Celda *celda = new Celda;
+                this->tablero->getCursor()->getCursor()->add(celda); //en lugar de p iria el casillero
                 
             }
         }
