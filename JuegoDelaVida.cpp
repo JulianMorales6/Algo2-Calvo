@@ -1,4 +1,9 @@
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <sstream>
 #include "JuegoDeLaVida.h"
+#define ARCHIVO_CONFIGURACION "data.csv"
 
 void JuegoDeLaVida::inicializarJuegoDeLaVida() {
     this->cargarConfiguracion();
@@ -47,5 +52,56 @@ void JuegoDeLaVida::cambiarComportamiento(int i, int j, int k, ComportamientoDeC
 
 ComportamientoDeCelda JuegoDeLaVida::obtenerComportamiento(int i, int j, int k) {
     return((this->tablero)->getComportamientoTablero(i,j,k));
+}
+
+void JuegoDeLaVida::cargarConfiguracion() {
+    // Configuracion lista_dificultades[2];
+    ifstream archivo(ARCHIVO_CONFIGURACION);
+    string linea, dato;
+    char separador = ',';
+    int i = 0;
+    getline(archivo,linea);
+    while(getline(archivo,linea)) {
+        Configuracion nuevaDificultad;
+        stringstream stream(linea);
+        getline(stream, nuevaDificultad.dificultad, separador);
+
+        getline(stream, dato, separador);
+        nuevaDificultad.largo = stoi(dato);
+
+        getline(stream, dato, separador);
+        nuevaDificultad.ancho = stoi(dato);
+
+        getline(stream, dato, separador);
+        nuevaDificultad.profundidad = stoi(dato);
+
+        getline(stream, dato, separador);
+        nuevaDificultad.x1 = stoi(dato);
+
+        getline(stream, dato, separador);
+        nuevaDificultad.x2 = stoi(dato);
+
+        getline(stream, dato, separador);
+        nuevaDificultad.x3 = stoi(dato);
+
+        getline(stream, dato, separador);
+        nuevaDificultad.cantidadCeldasTipo1 = stoi(dato);
+
+        getline(stream, dato, separador);
+        nuevaDificultad.cantidadCeldasTipo2 = stoi(dato);
+
+        getline(stream, dato, separador);
+        nuevaDificultad.cantidadCeldasTipo3 = stoi(dato);
+
+        getline(stream, dato, separador);
+        nuevaDificultad.cantidadCeldasTipo4 = stoi(dato);
+
+        getline(stream, dato, separador);
+        nuevaDificultad.cantidadCeldasTipo5 = stoi(dato);
+
+        // lista_dificultades[i] = nuevaDificultad;
+        i++;
+    }
+    archivo.close();
 }
 

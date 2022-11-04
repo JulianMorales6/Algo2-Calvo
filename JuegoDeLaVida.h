@@ -1,9 +1,9 @@
 #include "Tablero.h"
 
 typedef struct{
-    int x1,x2,x3; //valores para nacimiento y muerte
     string dificultad;
     int largo,ancho,profundidad;//valores para el tamanio del tablero
+    int x1,x2,x3; //valores para nacimiento y muerte
     int cantidadCeldasTipo1;   //cantidad de celdas tipo contaminada
     int cantidadCeldasTipo2;   //cantidad de celdas tipo envenenada
     int cantidadCeldasTipo3;   //cantidad de celdas tipo procreadora
