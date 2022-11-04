@@ -8,6 +8,7 @@
 void JuegoDeLaVida::inicializarJuegoDeLaVida() {
     this->cargarConfiguracion();
     this->tablero = new Tablero(this->configuracion.largo,this->configuracion.ancho,this->configuracion.profundidad);
+    this->tableroAux = new Tablero(this->configuracion.largo,this->configuracion.ancho,this->configuracion.profundidad);
     this->cargarComportamientos();
     this->cargarCelulasVivas();
 }
@@ -105,3 +106,120 @@ void JuegoDeLaVida::cargarConfiguracion() {
     archivo.close();
 }
 
+void JuegoDeLaVida::interaccionesUsuario() {
+    int numeroIngresado;
+    cin.clear();
+    cin.ignore(100, '\n');
+    cout<<"Presione 1 para avanzar un turno, 2 para reiniciar el juego, 3 o cualquier otro digito para cerrarlo"<<endl;
+    while(cin>>numeroIngresado) {
+        cout<<"Presione 1 para avanzar un turno, 2 para reiniciar el juego, 3 o cualquier otro digito para cerrarlo"<<endl;
+        if(numeroIngresado == 1) {
+            this->pasarTurno();
+        }
+        if(numeroIngresado == 2) {
+            this->inicializarJuegoDeLaVida();
+        } else {
+            return;
+        }
+    }
+}
+
+void JuegoDeLaVida::pasarTurno() {
+    this->copiarTableroAuxiliar();
+    this->actualizarCelulasVivas();
+    this->controlMuertes();
+    this->actualizarControlMuertes();
+    ++this->estadisticas.turnos;
+}
+
+void JuegoDeLaVida::copiarTableroAuxiliar() {
+    for(int i = 0; i < this->configuracion.profundidad; i++) {
+        for(int j = 0; j < this->configuracion.largo; j++) {
+            for(int k = 0; k < this->configuracion.ancho; k++) {
+                this->tableroAux->getCelda(i,j,k)->getCelula()->setEstadoDeCelula(this->tablero->getCelda(i,j,k)->getCelula()->getEstado());
+            }
+        }
+    }
+} 
+
+void JuegoDeLaVida::actualizarCelulasVivas() {
+    for(int i = 0; i < this->configuracion.profundidad; i++) {
+        for(int j = 0; j < this->configuracion.largo; j++) {
+            for(int k = 0; k < this->configuracion.ancho; k++) {
+                actualizarEstadoCelula(i,j,k);
+            }
+        }
+    }
+}
+
+void JuegoDeLaVida::actualizarEstadoCelula(int i, int j, int k) {
+    int celulasVivasAlrededor = 0;
+    int gen1 = 0;
+    int gen2 = 0;
+    int gen3 = 0;//primera promedio, segundo maximo, tercera while hasta < 255
+    int maxi = i+1;
+    int mini = i-1;
+    int maxj = j+1;
+    int minj = j-1;
+    int maxk = k+1;
+    int mink = k-1;
+    Celda * celda = this->tableroAux->getCelda(i,j,k);
+    for(int a = mini; a<= maxi; k++) {
+        for(int b = minj; b<= maxj; b++) {
+            for(int c = mink; c<= maxk; c++) {
+                Celda * celdaAux = this->tableroAux->getCelda(a,b,c);
+                if(celdaAux->getCelula()->getEstado() == Viva) {
+                    celulasVivasAlrededor++;
+                    gen1 += celdaAux->getCelula()->getGen(1);
+                    gen3 += celdaAux->getCelula()->getGen(3);
+                    if(celdaAux->getCelula()->getGen(2) > gen2) {
+                        gen2 = celdaAux->getCelula()->getGen(2);
+                    }
+                    if(celda->getCelula()->getEstado() == Viva) {
+                        celulasVivasAlrededor--;
+                    }
+                }
+            }
+        }
+    }
+    if(celda->getCelula()->getEstado() == Muerta) {
+        if(celulasVivasAlrededor == this->configuracion.x1) {
+            this->cambiarEstado(i,j,k,Viva);
+            while(gen3>255) {
+                gen3 = gen3 - 255;
+            }
+            this->setGenesCelula(i,j,k,gen1/celulasVivasAlrededor,gen2,gen3);
+            this->estadisticas.celulasVivas++;
+            this->estadisticas.nacimientosDelTurno++;
+            this->estadisticas.nacimientosTotales++;
+        }  
+    } else {
+        if(celulasVivasAlrededor < this->configuracion.x2 || celulasVivasAlrededor > this->configuracion.x3) {
+            this->cambiarEstado(i,j,k,Muerta);
+            this->setGenesCelula(i,j,k,0,0,0);
+            this->estadisticas.celulasVivas--;
+            this->estadisticas.muertesDelTurno--;
+            this->estadisticas.muertesTotales--;        
+        }
+    }
+}
+
+void JuegoDeLaVida::setGenesCelula(int i, int j, int k, int gen1, int gen2, int gen3) {
+    Celula * celula = this->tablero->getCelda(i,j,k)->getCelula();
+    celula->cambiarGen(1,gen1);
+    celula->cambiarGen(2,gen2);
+    celula->cambiarGen(3,gen3);
+}
+    
+
+void JuegoDeLaVida::actualizarControlMuertes() {
+    this->estadisticas.controlMuertes == this->estadisticas.muertesTotales;
+    this->estadisticas.controlNacimientos == this->estadisticas.nacimientosTotales;
+}
+
+void JuegoDeLaVida::controlMuertes() {
+    if(this->estadisticas.controlMuertes == this->estadisticas.muertesTotales &&
+       this->estadisticas.controlNacimientos == this->estadisticas.nacimientosTotales) {
+            cout<<"El juego esta congelado, presione 2 para reiniciar o 3 para cerrar"<<endl;
+       }
+}

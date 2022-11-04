@@ -61,4 +61,12 @@ class JuegoDeLaVida{
         }
     void cambiarComportamiento(int i, int j, int k, ComportamientoDeCelda comportamiento);
     ComportamientoDeCelda obtenerComportamiento(int i, int j, int k);
+    void interaccionesUsuario();
+    void pasarTurno();
+    void copiarTableroAuxiliar();
+    void actualizarCelulasVivas();
+    void actualizarControlMuertes();
+    void actualizarEstadoCelula(int i, int j, int k);
+    void setGenesCelula(int i, int j, int k, int gen1, int gen2, int gen3);
+    void controlMuertes();
 };
