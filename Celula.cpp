@@ -20,7 +20,7 @@ void Celula::matarCelula() {
 void Celula::revivirCelula(){
     this->Estado = Viva;
     for(int i = 0; i<CANTIDAD_GENES; i++) {
-        this->Gen[i] = generarNumeroRandom(255);
+        this->Gen[i] = rand()%(255 + 1);
     }
 }
 

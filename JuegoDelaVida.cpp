@@ -5,13 +5,24 @@
 #include "JuegoDeLaVida.h"
 #define ARCHIVO_CONFIGURACION "data.csv"
 
+JuegoDeLaVida::JuegoDeLaVida() {
+    this->tablero = NULL;
+    this->tableroAux = NULL;
+}
+
+JuegoDeLaVida::~JuegoDeLaVida() {
+    delete this->tablero;
+    delete this->tableroAux;
+}
+
 void JuegoDeLaVida::inicializarJuegoDeLaVida() {
-    this->cargarConfiguracion();
+    //this->cargarConfiguracion();  hay que descomentarlo cuando este terminado el metodo
     this->tablero = new Tablero(this->configuracion.largo,this->configuracion.ancho,this->configuracion.profundidad);
     this->tableroAux = new Tablero(this->configuracion.largo,this->configuracion.ancho,this->configuracion.profundidad);
     this->cargarComportamientos();
     this->cargarCelulasVivas();
 }
+
 
 void JuegoDeLaVida::cargarCelulasVivas() {
     int i,j,k;
@@ -21,7 +32,7 @@ void JuegoDeLaVida::cargarCelulasVivas() {
             cout<<"Celula inválida, por favor ingrese otra:"<<endl;
             continue;
         }
-        cambiarEstado(i,j,k,Viva);
+        cambiarEstado(i-1,j-1,k-1,Viva);
         ++this->estadisticas.celulasVivas;
         ++this->estadisticas.nacimientosDelTurno;
         ++this->estadisticas.nacimientosTotales;
@@ -112,15 +123,20 @@ void JuegoDeLaVida::interaccionesUsuario() {
     cin.ignore(100, '\n');
     cout<<"Presione 1 para avanzar un turno, 2 para reiniciar el juego, 3 o cualquier otro digito para cerrarlo"<<endl;
     while(cin>>numeroIngresado) {
-        cout<<"Presione 1 para avanzar un turno, 2 para reiniciar el juego, 3 o cualquier otro digito para cerrarlo"<<endl;
+        this->tablero->mostrarTablero();
         if(numeroIngresado == 1) {
             this->pasarTurno();
+            
         }
         if(numeroIngresado == 2) {
             this->inicializarJuegoDeLaVida();
-        } else {
-            return;
         }
+        if(numeroIngresado == 3) {
+            break;
+        }
+        cout<<"Presione 1 para avanzar un turno, 2 para reiniciar el juego, 3 o cualquier otro digito para cerrarlo"<<endl;
+        cin.clear();
+        cin.ignore(100, '\n');
     }
 }
 
@@ -164,7 +180,7 @@ void JuegoDeLaVida::actualizarEstadoCelula(int i, int j, int k) {
     int maxk = k+1;
     int mink = k-1;
     Celda * celda = this->tableroAux->getCelda(i,j,k);
-    for(int a = mini; a<= maxi; k++) {
+    for(int a = mini; a<= maxi; a++) {
         for(int b = minj; b<= maxj; b++) {
             for(int c = mink; c<= maxk; c++) {
                 Celda * celdaAux = this->tableroAux->getCelda(a,b,c);
@@ -222,4 +238,41 @@ void JuegoDeLaVida::controlMuertes() {
        this->estadisticas.controlNacimientos == this->estadisticas.nacimientosTotales) {
             cout<<"El juego esta congelado, presione 2 para reiniciar o 3 para cerrar"<<endl;
        }
+}
+
+void JuegoDeLaVida::cambiarEstado(int i, int j, int k, EstadoDeCelula estado) {
+    Celda * celda = this->tablero->getCelda(i,j,k);
+    ComportamientoDeCelda comportamiento = celda->getComportamiento();
+    if(estado == Viva) {
+        if(comportamiento == Portal) {
+            this->tablero->cambiarEstadoTablero(generarNumeroRandom(this->configuracion.ancho),generarNumeroRandom(this->configuracion.largo),generarNumeroRandom(this->configuracion.profundidad), estado);
+        } if( comportamiento == Radioactiva) {
+            celda->getCelula()->cambiarGen(1,1);//cambiar los 1,1 por el comportamiento que deseemos
+        } if(comportamiento == Contaminada) {
+            estado = Muerta;
+        } if(comportamiento == Envenenada) {
+            celda->getCelula()->cambiarGen(generarNumeroRandom(3),0);
+        } if(comportamiento == Procreadora) {
+            --this->configuracion.x1;
+            --this->configuracion.x2;
+            --this->configuracion.x3; 
+        } 
+        }
+    this->tablero->cambiarEstadoTablero(i,j,k,estado);
+}
+
+//carga una configuracion default. lo cree para hacer pruebas de la logica del juego
+void JuegoDeLaVida::setConfiguracion() {
+    this->configuracion.ancho = 10;
+    this->configuracion.largo = 10;
+    this->configuracion.profundidad = 10;
+    this->configuracion.cantidadCeldasTipo1 = 2;
+    this->configuracion.cantidadCeldasTipo2 = 2;
+    this->configuracion.cantidadCeldasTipo3 = 2;
+    this->configuracion.cantidadCeldasTipo4 = 2;
+    this->configuracion.cantidadCeldasTipo5 = 2;
+    this->configuracion.dificultad = "Default";
+    this->configuracion.x1 = 3;
+    this->configuracion.x2 = 2;
+    this->configuracion.x3 = 4; 
 }
