@@ -14,8 +14,7 @@ Configuraciones::Configuraciones() {
     this->obtenerConfiguraciones();
 }
 
-void Configuraciones::obtenerConfiguraciones()
-{
+void Configuraciones::obtenerConfiguraciones() {
     ifstream archivo(ARCHIVO_CONFIGURACIONES);
     string linea, dato;
 

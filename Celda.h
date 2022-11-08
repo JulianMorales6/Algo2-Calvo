@@ -10,18 +10,15 @@ enum ComportamientoDeCelda {
 };
 
 class Celda {
+    private:
+    ComportamientoDeCelda Comportamiento;
+    Celula * celula;
 
-private:
-ComportamientoDeCelda Comportamiento;
-Celula * celula;
-
-public:
-
-Celda();
-Celda(ComportamientoDeCelda comportamiento);
-ComportamientoDeCelda getComportamiento();
-Celula * getCelula();
-void setComportamiento(ComportamientoDeCelda comportamiento);
-
+    public:
+    Celda();
+    Celda(ComportamientoDeCelda comportamiento);
+    ComportamientoDeCelda getComportamiento();
+    Celula * getCelula();
+    void setComportamiento(ComportamientoDeCelda comportamiento);
 };
 

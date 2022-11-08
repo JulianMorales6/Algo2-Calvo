@@ -82,7 +82,7 @@ template <class T> void Lista<T>::add(T elemento) {
 
 template <class T> void Lista<T>::add(T elemento, int posicion) {
     if(posicion < 0 || posicion > this->largo) {//validar la posicion ingresda
-        throw invalid_argument("posicion fuera de rango");
+        throw "se intentasto agregar en una posicion invalida";
     }  
     Nodo<T> *nuevoNodo=new Nodo<T>(elemento);
     
@@ -147,7 +147,7 @@ template <class T> void Lista<T>::retrocederCursor() {
 
 template <class T> T Lista<T>::getCursor() {
     if(this->cursor == NULL) {
-        throw invalid_argument("no hay cursor para una lista vacia");
+        throw "no hay cursor para una lista vacia";
     }  
     return this->cursor->_dato;
 }
@@ -187,7 +187,7 @@ template <class T> int Lista<T>::getLargo() {
 
 template <class T> T Lista<T>::operator[](int posicion){
     if(posicion < -1 || posicion > this->largo) {//validar la posicion ingresda
-        throw invalid_argument("posicion fuera de rango");
+        throw "indice de acceso a la lista fuera de rango";
     }  
     if(posicion == this->largo){
         posicion = 0;
@@ -195,19 +195,18 @@ template <class T> T Lista<T>::operator[](int posicion){
     if(posicion == -1){
         posicion = this->largo-1;
     }
-    int desdePrincipio = posicion; 
+    int menorDistancia = posicion;
     int desdeCursor = posicion - this->posicionCursor; 
-    int hastaFinal = this->largo - posicion-1; 
+    int hastaFinal = (this->largo-1) - posicion; 
     int hastaCursor = this->posicionCursor - posicion; 
-    int menorDistancia = desdePrincipio;
-
+    
     if(desdeCursor<menorDistancia && desdeCursor>=0){
         menorDistancia = desdeCursor;  
     }
     else if(hastaCursor<menorDistancia && hastaCursor>=0){
         menorDistancia = hastaCursor;
     }
-    else if(hastaFinal<menorDistancia && hastaFinal>=0){
+    else if(hastaFinal<menorDistancia){
         menorDistancia = hastaFinal;  
         this->inicializarCursor();
         this->retrocederCursor();
@@ -216,7 +215,7 @@ template <class T> T Lista<T>::operator[](int posicion){
         this->inicializarCursor();
     }
     for(int i=1; i<=menorDistancia; i++){
-        if(menorDistancia == desdePrincipio || menorDistancia == desdeCursor){
+        if(menorDistancia == posicion || menorDistancia == desdeCursor){
             this->avanzarCursor();
         }
         else{

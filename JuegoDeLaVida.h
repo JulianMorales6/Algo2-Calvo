@@ -1,6 +1,6 @@
 #include "Tablero.cpp"
 
-typedef struct{
+typedef struct {
     string dificultad;
     int largo,ancho,profundidad;//valores para el tamanio del tablero
     int x1,x2,x3; //valores para nacimiento y muerte
@@ -12,7 +12,7 @@ typedef struct{
     
 }Configuracion;
 
-typedef struct{
+typedef struct {
     int nacimientosTotales;
     int muertesTotales;
     int celulasVivas;
@@ -23,7 +23,7 @@ typedef struct{
     int controlNacimientos;
 }Estadisticas;
 
-class JuegoDeLaVida{
+class JuegoDeLaVida {
     private:
     Tablero * tablero;
     Tablero * tableroAux;

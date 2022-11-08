@@ -2,7 +2,7 @@
 
 #include "Tablero.h"
 
-Tablero::Tablero(int capas, int filas, int columnas){//tablero de enteros para probar
+Tablero::Tablero(int capas, int filas, int columnas){//-> profundidad, alto, ancho -> k,i,j
    
     this->tablero = new Lista<Lista<Lista<Celda *> *> *>;
     this->tablero->inicializarCursor();
@@ -16,7 +16,7 @@ Tablero::Tablero(int capas, int filas, int columnas){//tablero de enteros para p
 
             for(int k=0; k<columnas; k++){
                 Celda *celda = new Celda;
-                this->tablero->getCursor()->getCursor()->add(celda); //en lugar de p iria el casillero
+                this->tablero->getCursor()->getCursor()->add(celda);
                 
             }
         }

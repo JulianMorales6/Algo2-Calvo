@@ -17,8 +17,8 @@ JuegoDeLaVida::~JuegoDeLaVida() {
 
 void JuegoDeLaVida::inicializarJuegoDeLaVida() {
     //this->cargarConfiguracion();  hay que descomentarlo cuando este terminado el metodo
-    this->tablero = new Tablero(this->configuracion.largo,this->configuracion.ancho,this->configuracion.profundidad);
-    this->tableroAux = new Tablero(this->configuracion.largo,this->configuracion.ancho,this->configuracion.profundidad);
+    this->tablero = new Tablero(this->configuracion.profundidad, this->configuracion.largo, this->configuracion.ancho);
+    this->tableroAux = new Tablero(this->configuracion.profundidad, this->configuracion.largo, this->configuracion.ancho);
     this->cargarComportamientos();
     this->cargarCelulasVivas();
 }
@@ -32,7 +32,7 @@ void JuegoDeLaVida::cargarCelulasVivas() {
             cout<<"Celula inválida, por favor ingrese otra:"<<endl;
             continue;
         }
-        cambiarEstado(i-1,j-1,k-1,Viva);
+        cambiarEstado(k-1,i-1,j-1,Viva);
         ++this->estadisticas.celulasVivas;
         ++this->estadisticas.nacimientosDelTurno;
         ++this->estadisticas.nacimientosTotales;
@@ -42,19 +42,19 @@ void JuegoDeLaVida::cargarCelulasVivas() {
 
 void JuegoDeLaVida::cargarComportamientos() {
     for(int i=0; i<this->configuracion.cantidadCeldasTipo1; i++){
-        this->cambiarComportamiento(rand()%(this->configuracion.ancho+ 1),rand()%(this->configuracion.largo+ 1),rand()%(this->configuracion.profundidad+ 1), Contaminada);
+        this->cambiarComportamiento(rand()%(this->configuracion.profundidad+ 1),rand()%(this->configuracion.largo+ 1),rand()%(this->configuracion.ancho+ 1), Contaminada);
     }
     for(int i=0; i<this->configuracion.cantidadCeldasTipo2; i++){
-        this->cambiarComportamiento(rand()%(this->configuracion.ancho+ 1),rand()%(this->configuracion.largo+ 1),rand()%(this->configuracion.profundidad+ 1), Envenenada);
+        this->cambiarComportamiento(rand()%(this->configuracion.profundidad+ 1),rand()%(this->configuracion.largo+ 1),rand()%(this->configuracion.ancho+ 1), Envenenada);
     }    
     for(int i=0; i<this->configuracion.cantidadCeldasTipo3; i++){
-        this->cambiarComportamiento(rand()%(this->configuracion.ancho+ 1),rand()%(this->configuracion.largo+ 1),rand()%(this->configuracion.profundidad+ 1), Procreadora);
+        this->cambiarComportamiento(rand()%(this->configuracion.profundidad+ 1),rand()%(this->configuracion.largo+ 1),rand()%(this->configuracion.ancho+ 1), Procreadora);
     }    
     for(int i=0; i<this->configuracion.cantidadCeldasTipo4; i++){
-        this->cambiarComportamiento(rand()%(this->configuracion.ancho+ 1),rand()%(this->configuracion.largo+ 1),rand()%(this->configuracion.profundidad+ 1), Portal);
+        this->cambiarComportamiento(rand()%(this->configuracion.profundidad+ 1),rand()%(this->configuracion.largo+ 1),rand()%(this->configuracion.ancho+ 1), Portal);
     }    
     for(int i=0; i<this->configuracion.cantidadCeldasTipo5; i++){
-        this->cambiarComportamiento(rand()%(this->configuracion.ancho+ 1),rand()%(this->configuracion.largo+ 1),rand()%(this->configuracion.profundidad+ 1), Radioactiva);
+        this->cambiarComportamiento(rand()%(this->configuracion.profundidad+ 1),rand()%(this->configuracion.largo+ 1),rand()%(this->configuracion.ancho+ 1), Radioactiva);
     }    
 }
 
@@ -264,8 +264,8 @@ void JuegoDeLaVida::cambiarEstado(int i, int j, int k, EstadoDeCelula estado) {
 //carga una configuracion default. lo cree para hacer pruebas de la logica del juego
 void JuegoDeLaVida::setConfiguracion() {
     this->configuracion.ancho = 10;
-    this->configuracion.largo = 10;
-    this->configuracion.profundidad = 10;
+    this->configuracion.largo = 6;
+    this->configuracion.profundidad = 4;
     this->configuracion.cantidadCeldasTipo1 = 2;
     this->configuracion.cantidadCeldasTipo2 = 2;
     this->configuracion.cantidadCeldasTipo3 = 2;
