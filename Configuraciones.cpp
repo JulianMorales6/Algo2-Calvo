@@ -3,6 +3,7 @@
 #include <fstream>
 #include <sstream>
 #include "Configuraciones.h"
+#define ARCHIVO_CONFIGURACIONES "data.csv"
 
 using namespace std;
 
@@ -15,37 +16,62 @@ Configuraciones::Configuraciones() {
 }
 
 void Configuraciones::obtenerConfiguraciones() {
-    string rutaArchivo = "data.txt";
-    ifstream archivo;
-    archivo.open(rutaArchivo.c_str());
-    string linea;
-    getline(archivo, linea);
-    int i = 1;
-    while(! archivo.eof()) {
-        this->configAux = new Configuracion;
-        int largo, ancho, profundidad, x1, x2, x3, cantidadCeldasTipo1, cantidadCeldasTipo2, cantidadCeldasTipo3, cantidadCeldasTipo4, cantidadCeldasTipo5;
-        string dificultad;
+    ifstream archivo(ARCHIVO_CONFIGURACIONES);
+    string linea, dato;
 
-        archivo >> this->configAux->dificultad;
-        archivo >> this->configAux->largo;
-        archivo >> this->configAux->ancho;
-        archivo >> this->configAux->profundidad;
-        archivo >> this->configAux->x1;
-        archivo >> this->configAux->x2;
-        archivo >> this->configAux->x3;
-        archivo >> this->configAux->cantidadCeldasTipo1;
-        archivo >> this->configAux->cantidadCeldasTipo2;
-        archivo >> this->configAux->cantidadCeldasTipo3;
-        archivo >> this->configAux->cantidadCeldasTipo4;
-        archivo >> this->configAux->cantidadCeldasTipo5;
+    char separador = ',';
+    getline(archivo,linea);
+    int i = 1;
+    while(getline(archivo,linea)) {
+        this->configAux = new Configuracion;
+        stringstream stream(linea);
+        getline(stream, this->configAux->dificultad, separador);
+
+        getline(stream, dato, separador);
+        this->configAux->largo = stoi(dato);
+
+        getline(stream, dato, separador);
+        this->configAux->ancho = stoi(dato);
+
+        getline(stream, dato, separador);
+        this->configAux->profundidad = stoi(dato);
+
+        getline(stream, dato, separador);
+        this->configAux->x1 = stoi(dato);
+
+        getline(stream, dato, separador);
+        this->configAux->x2 = stoi(dato);
+
+        getline(stream, dato, separador);
+        this->configAux->x3 = stoi(dato);
+
+        getline(stream, dato, separador);
+        this->configAux->cantidadCeldasTipo1 = stoi(dato);
+
+        getline(stream, dato, separador);
+        this->configAux->cantidadCeldasTipo2 = stoi(dato);
+
+        getline(stream, dato, separador);
+        this->configAux->cantidadCeldasTipo3 = stoi(dato);
+
+        getline(stream, dato, separador);
+        this->configAux->cantidadCeldasTipo4 = stoi(dato);
+
+        getline(stream, dato, separador);
+        this->configAux->cantidadCeldasTipo5 = stoi(dato);
+        
         this->configAux->id = i;
-        Configuracion *punteroAuxiliar = configAux;this->lista->add(this->configAux);
+
+        // Configuracion *punteroAuxiliar = configAux;
+        this->lista->add(this->configAux);
         if (this->primero->dificultad == "")
         {
             this->primero = this->configAux;
         }
+        
         i++;
     }
+
     this->cantidadDeConfiguraciones = this->configAux->id;
 
     archivo.close();
@@ -70,7 +96,7 @@ Configuracion * Configuraciones::seleccionarUnaConfiguracion() {
     cout<<"Elija una dificultad o seleccione 'Carga manual' con uno de los numeros: "<<endl;
     cin>>idElegido;
     this->lista->inicializarCursor();
-    if (idElegido < 1 || idElegido > (this->cantidadDeConfiguraciones + 1)) {
+    if (!idElegido >= 1 && !idElegido >= (this->cantidadDeConfiguraciones + 1)) {
         throw "Esa opcion no existe.";
     }
     do
