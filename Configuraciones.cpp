@@ -86,17 +86,37 @@ void Configuraciones::mostrarConfiguraciones() {
             this->lista->avanzarCursor();
         } while (this->lista->getCursor()->id != this->primero->id);
     }
-    cout<<this->cantidadDeConfiguraciones<<endl;
+    cout<<this->cantidadDeConfiguraciones + 1<<" - Carga manual"<<endl;
     
+}
+
+Configuracion * Configuraciones::seleccionarUnaConfiguracion() {
+    int idElegido;
+    Configuracion * confElegida;
+    cout<<"Elija una dificultad o seleccione 'Carga manual' con uno de los numeros: "<<endl;
+    cin>>idElegido;
+    this->lista->inicializarCursor();
+    if (!idElegido >= 1 && !idElegido >= (this->cantidadDeConfiguraciones + 1)) {
+        throw "Esa opcion no existe.";
+    }
+    do
+    {
+        this->lista->avanzarCursor();
+        confElegida = this->lista->getCursor();
+    } while (idElegido != this->lista->getCursor()->id);
+    return confElegida;
 }
 
 Configuraciones::~Configuraciones() {
     delete this->configAux;
     delete this->lista;
+    delete this->primero;
 }
 
 int main() {
     Configuraciones * config = new Configuraciones;
     config->mostrarConfiguraciones();
+    Configuracion * confElegida = config->seleccionarUnaConfiguracion();
+    cout<<confElegida->dificultad;
     delete config;
 }

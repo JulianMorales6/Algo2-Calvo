@@ -11,7 +11,7 @@ typedef struct{
     int cantidadCeldasTipo4;   //cantidad de celdas tipo portal
     int cantidadCeldasTipo5;   //cantidad de celdas tipo radioactiva
     
-}Configuracion;
+} Configuracion;
 
 typedef Lista<Configuracion *> *ListaConfiguraciones;
 
@@ -24,11 +24,19 @@ private:
 public:
 
     // pre: El archivo "config.csv" no debe estar vacío.
-    // post: crea una lista de configuraciones a partir de "config.csv".
+    // post: crea una instancia "Configuraciones".
     Configuraciones();
 
-
+    //Post: Elimina la configuracion
     ~Configuraciones();
+
+    //Pre: El archivo "config.csv" debe existir y no debe estar vacío.
+    //Post: Lee el archivo y almacena las configuraciones en una lista
     void obtenerConfiguraciones();
+
+    //Post: Lista las dificultades en consola.
     void mostrarConfiguraciones();
+
+    //Post: Mediante ingreso de usuario, se establece la configuracion del juego.
+    Configuracion * seleccionarUnaConfiguracion();
 };
