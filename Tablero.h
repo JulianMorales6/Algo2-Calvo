@@ -26,13 +26,13 @@ class Tablero{
       POST: */
     void mostrarTablero();
 
-    void cambiarEstadoTablero(int i, int j, int k, EstadoDeCelula estado);
+    void cambiarEstadoTablero(int capa, int fila, int columna, EstadoDeCelula estado);
 
-    void cambiarComportamientoTablero(int i, int j, int k, ComportamientoDeCelda comportamiento);
+    void cambiarComportamientoTablero(int capa, int fila, int columna, ComportamientoDeCelda comportamiento);
 
-    ComportamientoDeCelda getComportamientoTablero(int i, int j, int k);
+    ComportamientoDeCelda getComportamientoTablero(int capa, int fila, int columna);
 
-    Celda * getCelda(int i, int j, int k);
+    Celda * getCelda(int capa, int fila, int columna);
 };
 
 

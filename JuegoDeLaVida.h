@@ -2,7 +2,7 @@
 
 typedef struct {
     string dificultad;
-    int largo,ancho,profundidad;//valores para el tamanio del tablero
+    int capas, filas, columnas;//valores para el tamanio del tablero
     int x1,x2,x3; //valores para nacimiento y muerte
     int cantidadCeldasTipo1;   //cantidad de celdas tipo contaminada
     int cantidadCeldasTipo2;   //cantidad de celdas tipo envenenada
@@ -39,15 +39,15 @@ class JuegoDeLaVida {
     void interaccionesUsuario();
     void cargarConfiguracion();
     void cargarComportamientos();
-    void cambiarEstado(int i, int j, int k, EstadoDeCelula estado);
-    void cambiarComportamiento(int i, int j, int k, ComportamientoDeCelda comportamiento);
-    ComportamientoDeCelda obtenerComportamiento(int i, int j, int k);
+    void cambiarEstado(int capa, int fila, int columna, EstadoDeCelula estado);
+    void cambiarComportamiento(int capa, int fila, int columna, ComportamientoDeCelda comportamiento);
+    ComportamientoDeCelda obtenerComportamiento(int capa, int fila, int columna);
     void pasarTurno();
     void copiarTableroAuxiliar();
     void actualizarCelulasVivas();
     void actualizarControlMuertes();
-    void actualizarEstadoCelula(int i, int j, int k);
-    void setGenesCelula(int i, int j, int k, int gen1, int gen2, int gen3);
+    void actualizarEstadoCelula(int capa, int fila, int columna);
+    void setGenesCelula(int capa, int fila, int columna, int gen1, int gen2, int gen3);
     void controlMuertes();
     void setConfiguracion();
 };

@@ -6,15 +6,15 @@ Tablero::Tablero(int capas, int filas, int columnas){//-> profundidad, alto, anc
    
     this->tablero = new Lista<Lista<Lista<Celda *> *> *>;
     this->tablero->inicializarCursor();
-    for(int i=0; i<capas; i++){
-        Lista<Lista<Celda *> *> *capa = new Lista<Lista<Celda *> *>;
-        this->tablero->add(capa);
+    for(int capa = 0; capa < capas; capa++){
+        Lista<Lista<Celda *> *> *listaDeCapas = new Lista<Lista<Celda *> *>;
+        this->tablero->add(listaDeCapas);
 
-        for(int j=0; j<filas; j++){
-            Lista<Celda *> *fila = new Lista<Celda *>;
-            this->tablero->getCursor()->add(fila);
+        for(int fila = 0; fila < filas; fila++){
+            Lista<Celda *> *listaDeFilas = new Lista<Celda *>;
+            this->tablero->getCursor()->add(listaDeFilas);
 
-            for(int k=0; k<columnas; k++){
+            for(int columna = 0; columna < columnas; columna++){
                 Celda *celda = new Celda;
                 this->tablero->getCursor()->getCursor()->add(celda);
                 
@@ -55,14 +55,14 @@ cubo Tablero::getTablero(){
 */
 
 void Tablero::mostrarTablero() {
-    int capa = getTablero()->getLargo();
-    int fila = getTablero()->getCursor()->getLargo();
-    int columna = getTablero()->getCursor()->getCursor()->getLargo();
-    for(int i = 0; i<capa; i++) {
-        cout<<"Capa:"<<i+1<<endl;
-        for(int j = 0; j<fila; j++) {
-            for(int k = 0; k<columna; k++) {
-                if (this->getCelda(i,j,k)->getCelula()->getEstado() == Muerta) {
+    int capas = getTablero()->getLargo();
+    int filas = getTablero()->getCursor()->getLargo();
+    int columnas = getTablero()->getCursor()->getCursor()->getLargo();
+    for(int capa = 0; capa < capas; capa++) {
+        cout<<"Capa:"<<capa+1<<endl;
+        for(int fila = 0; fila < filas; fila++) {
+            for(int columna = 0; columna < columnas; columna++) {
+                if (this->getCelda(capa, fila, columna)->getCelula()->getEstado() == Muerta) {
                     cout<<"□ ";
                 }     
                 else {
@@ -74,18 +74,18 @@ void Tablero::mostrarTablero() {
     }
 }
 
-void Tablero::cambiarEstadoTablero(int i, int j, int k, EstadoDeCelula estado) {
-    this->getCelda(i,j,k)->getCelula()->setEstadoDeCelula(estado);
+void Tablero::cambiarEstadoTablero(int capa, int fila, int columna, EstadoDeCelula estado) {
+    this->getCelda(capa,fila,columna)->getCelula()->setEstadoDeCelula(estado);
 }
 
-void Tablero::cambiarComportamientoTablero(int i, int j, int k, ComportamientoDeCelda comportamiento) {
-    this->getCelda(i,j,k)->setComportamiento(comportamiento);
+void Tablero::cambiarComportamientoTablero(int capa, int fila, int columna, ComportamientoDeCelda comportamiento) {
+    this->getCelda(capa,fila,columna)->setComportamiento(comportamiento);
 }
 
-ComportamientoDeCelda Tablero::getComportamientoTablero(int i, int j, int k) {
-    return(this->getCelda(i,j,k)->getComportamiento());
+ComportamientoDeCelda Tablero::getComportamientoTablero(int capa, int fila, int columna) {
+    return(this->getCelda(capa,fila,columna)->getComportamiento());
 }
 
-Celda * Tablero::getCelda(int i, int j, int k) {
-    return((*(*(*this->tablero)[i])[j])[k]);
+Celda * Tablero::getCelda(int capa, int fila, int columna) {
+    return((*(*(*this->tablero)[capa])[fila])[columna]);
 }
