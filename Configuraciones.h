@@ -2,6 +2,7 @@
 
 typedef struct{
     string dificultad;
+    int id;
     int largo,ancho,profundidad;//valores para el tamanio del tablero
     int x1,x2,x3; //valores para nacimiento y muerte
     int cantidadCeldasTipo1;   //cantidad de celdas tipo contaminada
@@ -16,18 +17,18 @@ typedef Lista<Configuracion *> *ListaConfiguraciones;
 
 class Configuraciones {
 private:
-    Configuracion configAux;
+    Configuracion * configAux;
     ListaConfiguraciones lista;
+    Configuracion * primero;
+    int cantidadDeConfiguraciones;
 public:
+
+    // pre: El archivo "config.csv" no debe estar vacío.
+    // post: crea una lista de configuraciones a partir de "config.csv".
     Configuraciones();
+
+
     ~Configuraciones();
     void obtenerConfiguraciones();
+    void mostrarConfiguraciones();
 };
-
-Configuraciones::Configuraciones()
-{
-}
-
-Configuraciones::~Configuraciones()
-{
-}
