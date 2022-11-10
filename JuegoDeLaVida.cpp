@@ -240,8 +240,8 @@ void JuegoDeLaVida::controlMuertes() {
        }
 }
 
-void JuegoDeLaVida::cambiarEstado(int i, int j, int k, EstadoDeCelula estado) {
-    Celda * celda = this->tablero->getCelda(i,j,k);
+void JuegoDeLaVida::cambiarEstado(int capa, int fila, int columna, EstadoDeCelula estado) {
+    Celda * celda = this->tablero->getCelda(capa,fila,columna);
     ComportamientoDeCelda comportamiento = celda->getComportamiento();
     if(estado == Viva) {
         if(comportamiento == Portal) {
@@ -258,7 +258,7 @@ void JuegoDeLaVida::cambiarEstado(int i, int j, int k, EstadoDeCelula estado) {
             --this->configuracion.x3; 
         } 
         }
-    this->tablero->cambiarEstadoTablero(i,j,k,estado);
+    this->tablero->cambiarEstadoTablero(capa, fila, columna, estado);
 }
 
 //carga una configuracion default. lo cree para hacer pruebas de la logica del juego
