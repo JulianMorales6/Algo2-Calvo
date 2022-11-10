@@ -1,6 +1,6 @@
-#ifndef NULL
-#define NULL 0
-#endif /* NULL */
+#ifndef NODO_H_
+#define NODO_H_
+
 
 
 template <class T> class Lista;
@@ -27,3 +27,6 @@ template <class T> Nodo<T>::Nodo(T dato) {
 template <class T> Nodo<T>::~Nodo() {
     delete this->_dato;
 }
+
+
+#endif /* NODO_H_ */

@@ -1,3 +1,5 @@
+#ifndef CELULA_H_
+#define CELULA_H_
 const int CANTIDAD_GENES = 3;
 
 enum EstadoDeCelula {
@@ -32,3 +34,5 @@ class Celula {
       POST: Cambia el valor del gen seleccionado por el pasado*/
     void cambiarGen(int numeroDeGen, int cambio);
 };
+
+#endif /* CELULA_H_ */

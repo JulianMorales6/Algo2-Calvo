@@ -1,3 +1,5 @@
+#ifndef CELDA_H_
+#define CELDA_H_
 #include "Celula.cpp"
 
 enum ComportamientoDeCelda {
@@ -21,4 +23,4 @@ class Celda {
     Celula * getCelula();
     void setComportamiento(ComportamientoDeCelda comportamiento);
 };
-
+#endif /* CELDA_H_ */

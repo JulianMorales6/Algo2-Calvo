@@ -1,3 +1,5 @@
+#ifndef LISTADOBLECIRCULAR_H_
+#define LISTADOBLECIRCULAR_H_
 #include <iostream>
 using namespace std;
 
@@ -276,7 +278,7 @@ template <class T> T Lista<T>::operator[] (int j) {
 
 */
 
-
+#endif /* LISTADOBLECIRCULAR_H_ */
 
 
 

@@ -1,3 +1,6 @@
+#ifndef CONFIGURACIONES_H_
+#define CONFIGURACIONES_H_
+
 #include "ListaDobleCircular.h"
 
 typedef struct{
@@ -40,3 +43,5 @@ public:
     //Post: Mediante ingreso de usuario, se establece la configuracion del juego.
     Configuracion * seleccionarUnaConfiguracion();
 };
+
+#endif /* CONFIGURACIONES_H_ */

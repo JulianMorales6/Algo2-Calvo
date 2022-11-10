@@ -1,3 +1,5 @@
+#ifndef JUEGODELAVIDA_H_
+#define JUEGODELAVIDA_H_
 #include "Tablero.cpp"
 
 typedef struct {
@@ -51,3 +53,4 @@ class JuegoDeLaVida {
     void controlMuertes();
     void setConfiguracion();
 };
+#endif /* JUEGODELAVIDA_H_ */

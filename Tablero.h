@@ -1,4 +1,5 @@
-
+#ifndef TABLERO_H_
+#define TABLERO_H_
 
 #include "Celda.cpp"
 #include "ListaDobleCircular.h"
@@ -35,4 +36,4 @@ class Tablero{
     Celda * getCelda(int capa, int fila, int columna);
 };
 
-
+#endif /* TABLERO_H_ */
