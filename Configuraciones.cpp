@@ -10,7 +10,7 @@ using namespace std;
 
 Configuraciones::Configuraciones() {
     this->lista = new Lista<Configuracion *>;
-    this->primero = new Configuracion;
+    this->primeraConf = new Configuracion;
     this->obtenerConfiguraciones();
 }
 
@@ -33,16 +33,16 @@ void Configuraciones::obtenerConfiguraciones() {
         archivo >> this->configAux->x1;
         archivo >> this->configAux->x2;
         archivo >> this->configAux->x3;
-        archivo >> this->configAux->cantidadCeldasTipo1;
-        archivo >> this->configAux->cantidadCeldasTipo2;
-        archivo >> this->configAux->cantidadCeldasTipo3;
-        archivo >> this->configAux->cantidadCeldasTipo4;
-        archivo >> this->configAux->cantidadCeldasTipo5;
+        archivo >> this->configAux->cantidadCeldasContaminadas;
+        archivo >> this->configAux->cantidadCeldasEnvenenadas;
+        archivo >> this->configAux->cantidadCeldasProcreadoras;
+        archivo >> this->configAux->cantidadCeldasPortales;
+        archivo >> this->configAux->cantidadCeldasRadioactivas;
         this->configAux->id = i;
         Configuracion *punteroAuxiliar = configAux;this->lista->add(this->configAux);
-        if (this->primero->dificultad == "")
+        if (this->primeraConf->dificultad == "")
         {
-            this->primero = this->configAux;
+            this->primeraConf = this->configAux;
         }
         i++;
     }
@@ -58,7 +58,7 @@ void Configuraciones::mostrarConfiguraciones() {
         {
             cout<<this->lista->getCursor()->id<<" - "<<this->lista->getCursor()->dificultad<<endl;
             this->lista->avanzarCursor();
-        } while (this->lista->getCursor()->id != this->primero->id);
+        } while (this->lista->getCursor()->id != this->primeraConf->id);
     }
     cout<<this->cantidadDeConfiguraciones + 1<<" - Carga manual"<<endl;
     
@@ -82,9 +82,7 @@ Configuracion * Configuraciones::seleccionarUnaConfiguracion() {
 }
 
 Configuraciones::~Configuraciones() {
-    delete this->configAux;
     delete this->lista;
-    delete this->primero;
 }
 
 int main() {
@@ -93,4 +91,5 @@ int main() {
     Configuracion * confElegida = config->seleccionarUnaConfiguracion();
     cout<<confElegida->dificultad;
     delete config;
+    return 0;
 }
