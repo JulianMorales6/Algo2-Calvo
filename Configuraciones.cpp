@@ -83,6 +83,8 @@ Configuracion * Configuraciones::seleccionarUnaConfiguracion() {
 
 Configuraciones::~Configuraciones() {
     delete this->lista;
+    delete this->configAux;
+    delete this->primeraConf;
 }
 
 int main() {

@@ -7,6 +7,6 @@ int main() {
     juego->setConfiguracion();
     juego->inicializarJuegoDeLaVida();
     juego->interaccionesUsuario();
-
+    delete juego;
     return 0;
 }

@@ -25,6 +25,23 @@ Tablero::Tablero(int capas, int filas, int columnas){//-> profundidad, alto, anc
 
 
 Tablero::~Tablero(){
+    this->tablero->inicializarCursor();
+    do {
+        Lista<Lista<Celda *> *> *listaDeCapas = this->tablero->getCursor();
+        listaDeCapas->inicializarCursor();
+        do {
+            Lista<Celda *> *listaDeFilas = listaDeCapas->getCursor();
+            listaDeFilas->inicializarCursor();
+            do {
+                delete listaDeFilas->getCursor();
+            } while(listaDeFilas->avanzarCursor()); 
+
+            delete listaDeFilas;
+        }while(listaDeCapas->avanzarCursor());
+
+        delete listaDeCapas;
+    }while(this->tablero->avanzarCursor());
+
     delete this->tablero;
 }
 
@@ -33,26 +50,6 @@ cubo Tablero::getTablero(){
     return this->tablero;
 }
 
-
-/*void Tablero::mostrarTablero(){
-    int cont=1;
-    for(int i=0; i<this->getTablero()->getCursor()->getCursor()->getLargo(); i++) {
-        cout<<"capa "<<cont<<endl;cont++;
-    for(int i=1; i<=this->getTablero()->getLargo(); i++){
-
-        for(int i=1; i<=this->getTablero()->getCursor()->getLargo(); i++){
-            cout<<this->getTablero()->getCursor()->getCursor()->getCursor()->getCelula()->getEstado();
-            this->getTablero()->getCursor()->getCursor()->avanzarCursor();
-            this->getTablero()->getCursor()->avanzarCursor();
-            this->getTablero()->avanzarCursor();
-        }
-        this->getTablero()->inicializarCursor();
-        cout<<endl;
-        
-    } 
-}
-}
-*/
 
 void Tablero::mostrarTablero() {
     int capas = getTablero()->getLargo();
@@ -73,6 +70,7 @@ void Tablero::mostrarTablero() {
         }
     }
 }
+
 
 void Tablero::cambiarEstadoTablero(int capa, int fila, int columna, EstadoDeCelula estado) {
     this->getCelda(capa,fila,columna)->getCelula()->setEstadoDeCelula(estado);

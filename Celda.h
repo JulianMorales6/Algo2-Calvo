@@ -19,6 +19,7 @@ class Celda {
     public:
     Celda();
     Celda(ComportamientoDeCelda comportamiento);
+    ~Celda();
     ComportamientoDeCelda getComportamiento();
     Celula * getCelula();
     void setComportamiento(ComportamientoDeCelda comportamiento);

@@ -14,7 +14,7 @@ template <class T> class Nodo {
     Nodo<T> *_anterior;
     public:
     Nodo(T dato);
-    ~Nodo();
+    
 };
 
 template <class T> Nodo<T>::Nodo(T dato) {
@@ -22,10 +22,6 @@ template <class T> Nodo<T>::Nodo(T dato) {
     _siguiente = NULL;
     _anterior = NULL;
 
-}
-
-template <class T> Nodo<T>::~Nodo() {
-    delete this->_dato;
 }
 
 

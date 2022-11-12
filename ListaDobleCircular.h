@@ -16,10 +16,10 @@ template <class T> class Lista {
     Lista();
     /*POST: Borra los nodos creados con new*/
     ~Lista();
-    /*POST: Agrega el elemento pasado al final de la lista*/
+    /*POST: Agrega el elemento pasado al final de la lista y deja el cursor apuntando al mismo*/
     void add(T elemento);
     /*PRE: La posicion pasada esta entre 0 y el largo de la lista
-      POST: Inserta el elemento en la posicion pasada*/
+      POST: Inserta el elemento en la posicion pasada y deja el cursor apuntando al mismo*/
 	void add(T elemento, int posicion);
     /*POST: Devuelve el largo de la lista*/
     int getLargo();
@@ -31,12 +31,12 @@ template <class T> class Lista {
     /*PRE: La lista no puede estar vacia
       POST: Inicializa el cursor en el primer nodo*/
     void inicializarCursor();
-    /*PRE: La lista no puede estar vacia
-      POST: Avanza el cursor un lugar*/
-    void avanzarCursor();
-    /*PRE: La lista no puede estar vacia
-      POST: Retrocede el cursor un lugar*/
-    void retrocederCursor();
+    /*PRE: El cursor debe estar inicializado o en algun nodo, la lista no puede estar vacia
+      POST: Avanza el cursor un lugar y devuelve false si al avanzar vuelve al primero*/
+    bool avanzarCursor();
+    /*PRE: El cursor debe estar inicializado o en algun nodo, la lista no puede estar vacia
+      POST: Retrocede el cursor un lugar y devuelve false si al retroceder vuelve al ultimo*/
+    bool retrocederCursor();
     /*PRE: La lista no puede estar vacia
       POST: Devuelve el dato al que apunta el cursor*/
     T getCursor();
@@ -110,8 +110,8 @@ template <class T> void Lista<T>::add(T elemento, int posicion) {
             this->primero = nuevoNodo;
         }
     }
-    this->cursor = nuevoNodo;
     this->largo++;
+    this->cursor = nuevoNodo;
 }
 
 
@@ -121,29 +121,27 @@ template <class T> void Lista<T>::inicializarCursor(){
 }
 
 
-template <class T> void Lista<T>::avanzarCursor() {
-    if(!this->estaVacia()) {
-        this->cursor = this->cursor->_siguiente;
-        if(this->cursor == this->primero){
-            this->posicionCursor = 0;
-        }
-        else{
-            this->posicionCursor++;
-        }
+template <class T> bool Lista<T>::avanzarCursor() {
+    this->cursor = this->cursor->_siguiente;
+    if(this->cursor == this->primero){
+        this->posicionCursor = 0;
     }
+    else{
+        this->posicionCursor++;
+    }
+    return(this->cursor != this->primero);
 }
 
 
-template <class T> void Lista<T>::retrocederCursor() {
-    if(!this->estaVacia()) {
-        this->cursor = this->cursor->_anterior;
-        if(this->cursor == this->primero->_anterior){
-            this->posicionCursor = this->largo-1;
-        }
-        else{
-            this->posicionCursor--;
-        }
+template <class T> bool Lista<T>::retrocederCursor() {
+    this->cursor = this->cursor->_anterior;
+    if(this->cursor == this->primero->_anterior){
+        this->posicionCursor = this->largo-1;
     }
+    else{
+        this->posicionCursor--;
+    }
+    return(this->cursor != this->primero->_anterior);
 }
 
 
@@ -275,12 +273,28 @@ template <class T> T Lista<T>::operator[] (int j) {
     dato = nodoAux->_dato;
     return dato;
 };
-
 */
 
 #endif /* LISTADOBLECIRCULAR_H_ */
 
 
 
+/* para pruebas
+int main() {
+    Lista<int *> *lista = new Lista<int*>;
+    int* numero = new int;
+    *numero = 5;
+    lista->add(numero);
+    lista->add(numero);
+    lista->add(numero);
+    lista->inicializarCursor();
+   
+    while(lista->avanzarCursor()) {
+        cout<<"hola"<<endl;
+    }
 
-
+    delete lista;
+    delete numero;
+    return 0;
+}
+*/
