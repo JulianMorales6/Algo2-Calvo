@@ -6,7 +6,7 @@
 struct Configuracion{
     string dificultad;
     int id;
-    int largo,ancho,profundidad;//valores para el tamanio del tablero
+    int capas,filas,columnas;//valores para el tamanio del tablero
     int x1,x2,x3; //valores para nacimiento y muerte
     int cantidadCeldasContaminadas;   //cantidad de celdas tipo contaminada
     int cantidadCeldasEnvenenadas;   //cantidad de celdas tipo envenenada
@@ -26,7 +26,7 @@ private:
     int cantidadDeConfiguraciones;
 public:
 
-    // pre: El archivo "config.csv" no debe estar vacío.
+    // pre: El archivo "Configuracion.txt" no debe estar vacío.
     // post: crea una instancia "Configuraciones".
     Configuraciones();
 
@@ -41,7 +41,9 @@ public:
     void mostrarConfiguraciones();
 
     //Post: Mediante ingreso de usuario, se establece la configuracion del juego.
-    Configuracion * seleccionarUnaConfiguracion();
+    Configuracion seleccionarUnaConfiguracion();
+
+    Configuracion cargarManualConfig(Configuracion confElegida);
 };
 
 #endif /* CONFIGURACIONES_H_ */

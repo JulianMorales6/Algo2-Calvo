@@ -1,18 +1,19 @@
 #ifndef JUEGODELAVIDA_H_
 #define JUEGODELAVIDA_H_
 #include "Tablero.cpp"
+#include "Configuraciones.h"
 
-typedef struct {
-    string dificultad;
-    int capas, filas, columnas;//valores para el tamanio del tablero
-    int x1,x2,x3; //valores para nacimiento y muerte
-    int cantidadCeldasTipo1;   //cantidad de celdas tipo contaminada
-    int cantidadCeldasTipo2;   //cantidad de celdas tipo envenenada
-    int cantidadCeldasTipo3;   //cantidad de celdas tipo procreadora
-    int cantidadCeldasTipo4;   //cantidad de celdas tipo portal
-    int cantidadCeldasTipo5;   //cantidad de celdas tipo radioactiva
+// typedef struct {
+//     string dificultad;
+//     int capas, filas, columnas;//valores para el tamanio del tablero
+//     int x1,x2,x3; //valores para nacimiento y muerte
+//     int cantidadCeldasTipo1;   //cantidad de celdas tipo contaminada
+//     int cantidadCeldasTipo2;   //cantidad de celdas tipo envenenada
+//     int cantidadCeldasTipo3;   //cantidad de celdas tipo procreadora
+//     int cantidadCeldasTipo4;   //cantidad de celdas tipo portal
+//     int cantidadCeldasTipo5;   //cantidad de celdas tipo radioactiva
     
-}Configuracion;
+// }Configuracion;
 
 typedef struct {
     int nacimientosTotales;

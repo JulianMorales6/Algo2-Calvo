@@ -3,6 +3,8 @@
 #include <fstream>
 #include <sstream>
 #include "JuegoDeLaVida.h"
+#include "Configuraciones.h"
+#include "Configuraciones.cpp"
 #define ARCHIVO_CONFIGURACION "data.csv"
 
 JuegoDeLaVida::JuegoDeLaVida() {
@@ -16,7 +18,7 @@ JuegoDeLaVida::~JuegoDeLaVida() {
 }
 
 void JuegoDeLaVida::inicializarJuegoDeLaVida() {
-    //this->cargarConfiguracion();  hay que descomentarlo cuando este terminado el metodo
+    this->cargarConfiguracion();
     this->tablero = new Tablero(this->configuracion.capas, this->configuracion.filas, this->configuracion.columnas);
     this->tableroAux = new Tablero(this->configuracion.capas, this->configuracion.filas, this->configuracion.columnas);
     this->cargarComportamientos();
@@ -41,19 +43,19 @@ void JuegoDeLaVida::cargarCelulasVivas() {
 }
 
 void JuegoDeLaVida::cargarComportamientos() {
-    for(int i=0; i<this->configuracion.cantidadCeldasTipo1; i++){
+    for(int i=0; i<this->configuracion.cantidadCeldasContaminadas; i++){
         this->cambiarComportamiento(rand()%(this->configuracion.capas+ 1),rand()%(this->configuracion.filas+ 1),rand()%(this->configuracion.columnas+ 1), Contaminada);
     }
-    for(int i=0; i<this->configuracion.cantidadCeldasTipo2; i++){
+    for(int i=0; i<this->configuracion.cantidadCeldasEnvenenadas; i++){
         this->cambiarComportamiento(rand()%(this->configuracion.capas+ 1),rand()%(this->configuracion.filas+ 1),rand()%(this->configuracion.columnas+ 1), Envenenada);
     }    
-    for(int i=0; i<this->configuracion.cantidadCeldasTipo3; i++){
+    for(int i=0; i<this->configuracion.cantidadCeldasProcreadoras; i++){
         this->cambiarComportamiento(rand()%(this->configuracion.capas+ 1),rand()%(this->configuracion.filas+ 1),rand()%(this->configuracion.columnas+ 1), Procreadora);
     }    
-    for(int i=0; i<this->configuracion.cantidadCeldasTipo4; i++){
+    for(int i=0; i<this->configuracion.cantidadCeldasPortales; i++){
         this->cambiarComportamiento(rand()%(this->configuracion.capas+ 1),rand()%(this->configuracion.filas+ 1),rand()%(this->configuracion.columnas+ 1), Portal);
     }    
-    for(int i=0; i<this->configuracion.cantidadCeldasTipo5; i++){
+    for(int i=0; i<this->configuracion.cantidadCeldasRadioactivas; i++){
         this->cambiarComportamiento(rand()%(this->configuracion.capas+ 1),rand()%(this->configuracion.filas+ 1),rand()%(this->configuracion.columnas+ 1), Radioactiva);
     }    
 }
@@ -67,54 +69,23 @@ ComportamientoDeCelda JuegoDeLaVida::obtenerComportamiento(int capa, int fila, i
 }
 
 void JuegoDeLaVida::cargarConfiguracion() {
-    // Configuracion lista_dificultades[2];
-    ifstream archivo(ARCHIVO_CONFIGURACION);
-    string linea, dato;
-    char separador = ',';
-    int i = 0;
-    getline(archivo,linea);
-    while(getline(archivo,linea)) {
-        Configuracion nuevaDificultad;
-        stringstream stream(linea);
-        getline(stream, nuevaDificultad.dificultad, separador);
-
-        getline(stream, dato, separador);
-        nuevaDificultad.filas = stoi(dato);
-
-        getline(stream, dato, separador);
-        nuevaDificultad.columnas = stoi(dato);
-
-        getline(stream, dato, separador);
-        nuevaDificultad.capas = stoi(dato);
-
-        getline(stream, dato, separador);
-        nuevaDificultad.x1 = stoi(dato);
-
-        getline(stream, dato, separador);
-        nuevaDificultad.x2 = stoi(dato);
-
-        getline(stream, dato, separador);
-        nuevaDificultad.x3 = stoi(dato);
-
-        getline(stream, dato, separador);
-        nuevaDificultad.cantidadCeldasTipo1 = stoi(dato);
-
-        getline(stream, dato, separador);
-        nuevaDificultad.cantidadCeldasTipo2 = stoi(dato);
-
-        getline(stream, dato, separador);
-        nuevaDificultad.cantidadCeldasTipo3 = stoi(dato);
-
-        getline(stream, dato, separador);
-        nuevaDificultad.cantidadCeldasTipo4 = stoi(dato);
-
-        getline(stream, dato, separador);
-        nuevaDificultad.cantidadCeldasTipo5 = stoi(dato);
-
-        // lista_dificultades[i] = nuevaDificultad;
-        i++;
-    }
-    archivo.close();
+    Configuraciones * listaDeConfigs = new Configuraciones;
+    listaDeConfigs->mostrarConfiguraciones();
+    Configuracion confElegida = listaDeConfigs->seleccionarUnaConfiguracion();
+    
+    this->configuracion.dificultad = confElegida.dificultad;
+    this->configuracion.capas = confElegida.capas;
+    this->configuracion.filas = confElegida.filas;
+    this->configuracion.columnas = confElegida.columnas;
+    this->configuracion.x1 = confElegida.x1;
+    this->configuracion.x2 = confElegida.x2;
+    this->configuracion.x3 = confElegida.x3;
+    this->configuracion.cantidadCeldasContaminadas = confElegida.cantidadCeldasContaminadas;
+    this->configuracion.cantidadCeldasEnvenenadas = confElegida.cantidadCeldasEnvenenadas;
+    this->configuracion.cantidadCeldasProcreadoras = confElegida.cantidadCeldasProcreadoras;
+    this->configuracion.cantidadCeldasPortales = confElegida.cantidadCeldasPortales;
+    this->configuracion.cantidadCeldasRadioactivas = confElegida.cantidadCeldasRadioactivas;
+    delete listaDeConfigs;
 }
 
 void JuegoDeLaVida::interaccionesUsuario() {
@@ -267,11 +238,11 @@ void JuegoDeLaVida::setConfiguracion() {
     this->configuracion.filas = 6;
     this->configuracion.columnas = 10;
     
-    this->configuracion.cantidadCeldasTipo1 = 2;
-    this->configuracion.cantidadCeldasTipo2 = 2;
-    this->configuracion.cantidadCeldasTipo3 = 2;
-    this->configuracion.cantidadCeldasTipo4 = 2;
-    this->configuracion.cantidadCeldasTipo5 = 2;
+    this->configuracion.cantidadCeldasContaminadas = 2;
+    this->configuracion.cantidadCeldasEnvenenadas = 2;
+    this->configuracion.cantidadCeldasProcreadoras = 2;
+    this->configuracion.cantidadCeldasPortales = 2;
+    this->configuracion.cantidadCeldasRadioactivas = 2;
     this->configuracion.dificultad = "Default";
     this->configuracion.x1 = 3;
     this->configuracion.x2 = 2;

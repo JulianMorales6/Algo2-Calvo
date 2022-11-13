@@ -15,7 +15,7 @@ Configuraciones::Configuraciones() {
 }
 
 void Configuraciones::obtenerConfiguraciones() {
-    string rutaArchivo = "data.txt";
+    string rutaArchivo = "Configuracion.txt";
     ifstream archivo;
     archivo.open(rutaArchivo.c_str());
     string linea;
@@ -27,9 +27,9 @@ void Configuraciones::obtenerConfiguraciones() {
         string dificultad;
 
         archivo >> this->configAux->dificultad;
-        archivo >> this->configAux->largo;
-        archivo >> this->configAux->ancho;
-        archivo >> this->configAux->profundidad;
+        archivo >> this->configAux->capas;
+        archivo >> this->configAux->filas;
+        archivo >> this->configAux->columnas;
         archivo >> this->configAux->x1;
         archivo >> this->configAux->x2;
         archivo >> this->configAux->x3;
@@ -64,20 +64,51 @@ void Configuraciones::mostrarConfiguraciones() {
     
 }
 
-Configuracion * Configuraciones::seleccionarUnaConfiguracion() {
+Configuracion Configuraciones::seleccionarUnaConfiguracion() {
     int idElegido;
-    Configuracion * confElegida;
+    Configuracion confElegida;
     cout<<"Elija una dificultad o seleccione 'Carga manual' con uno de los numeros: "<<endl;
     cin>>idElegido;
     this->lista->inicializarCursor();
     if (idElegido < 1 || idElegido > (this->cantidadDeConfiguraciones + 1)) {
         throw "Esa opcion no existe.";
     }
+    if (idElegido == (this->cantidadDeConfiguraciones + 1)) {
+        confElegida = cargarManualConfig(confElegida);
+    } else {
     do
     {
         this->lista->avanzarCursor();
-        confElegida = this->lista->getCursor();
+        confElegida = *this->lista->getCursor();
     } while (idElegido != this->lista->getCursor()->id);
+    }
+    return confElegida;
+}
+
+Configuracion Configuraciones::cargarManualConfig(Configuracion confElegida) {
+    cout<<"Cantidad de capas: ";
+    cin>>confElegida.capas;
+    cout<<"Cantidad de filas: ";
+    cin>>confElegida.filas;
+    cout<<"Cantidad de columnas: ";
+    cin>>confElegida.columnas;
+    cout<<"x1: ";
+    cin>>confElegida.x1;
+    cout<<"x2: ";
+    cin>>confElegida.x2;
+    cout<<"x3: ";
+    cin>>confElegida.x3;
+    cout<<"Cantidad de celdas contaminadas: ";
+    cin>>confElegida.cantidadCeldasContaminadas;
+    cout<<"Cantidad de celdas envenenadas: ";
+    cin>>confElegida.cantidadCeldasEnvenenadas;
+    cout<<"Cantidad de celdas procreadoras: ";
+    cin>>confElegida.cantidadCeldasProcreadoras;
+    cout<<"Cantidad de celdas portales: ";
+    cin>>confElegida.cantidadCeldasPortales;
+    cout<<"Cantidad de celdas radioactivas: ";
+    cin>>confElegida.cantidadCeldasRadioactivas;
+    confElegida.dificultad = "Custom";
     return confElegida;
 }
 
@@ -87,11 +118,11 @@ Configuraciones::~Configuraciones() {
     delete this->primeraConf;
 }
 
-int main() {
-    Configuraciones * config = new Configuraciones;
-    config->mostrarConfiguraciones();
-    Configuracion * confElegida = config->seleccionarUnaConfiguracion();
-    cout<<confElegida->dificultad;
-    delete config;
-    return 0;
-}
+// int main() {
+//     Configuraciones * config = new Configuraciones;
+//     config->mostrarConfiguraciones();
+//     Configuracion * confElegida = config->seleccionarUnaConfiguracion();
+//     cout<<confElegida->dificultad;
+//     delete config;
+//     return 0;
+// }
