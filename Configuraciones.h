@@ -46,6 +46,8 @@ public:
     Configuracion cargarManualConfig(Configuracion confElegida);
 
     void escribirUltimaConf(Configuracion conf);
+
+    void validarConfiguracion(Configuracion conf);
 };
 
 #endif /* CONFIGURACIONES_H_ */

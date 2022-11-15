@@ -104,7 +104,29 @@ Configuracion Configuraciones::seleccionarUnaConfiguracion() {
         confElegida = *this->lista->getCursor();
     } while (idElegido != this->lista->getCursor()->id);
     }
+    validarConfiguracion(confElegida);
     return confElegida;
+}
+
+void Configuraciones::validarConfiguracion(Configuracion conf) {
+    int cantidadTotalCeldas, cantidadDeCeldasConComportamiento;
+    bool error = false;
+    cantidadTotalCeldas = conf.capas * conf.filas * conf.columnas;
+    cantidadDeCeldasConComportamiento = conf.cantidadCeldasContaminadas + conf.cantidadCeldasEnvenenadas + conf.cantidadCeldasProcreadoras + conf.cantidadCeldasPortales + conf.cantidadCeldasRadioactivas;
+
+    if (cantidadDeCeldasConComportamiento > cantidadTotalCeldas)
+    {
+        error = true;
+    }
+    if(conf.x1 > 26 || conf.x1 < 0 || conf.x2 > 26 || conf.x2 < 0 || conf.x3 > 26 || conf.x3 < 0) {
+        error = true;
+    }
+    
+    if(error) {
+        cout<<"Error de configuracion, tenga en cuenta que: "<<endl<<"  Los cinco comportamientos de celdas no deben ser negativos y su suma no puede ser mayor al producto de capas, filas y columnas."<<endl<<"    Tanto las vecinas necesarias para nacer, las vecinas minimas para seguir viva y las vecinas maximas para seguir viva deben tener un valor de entre 0 y 26, ambos valores incluidos"<<endl;
+        seleccionarUnaConfiguracion();
+    }
+
 }
 
 Configuracion Configuraciones::cargarManualConfig(Configuracion confElegida) {
@@ -131,6 +153,7 @@ Configuracion Configuraciones::cargarManualConfig(Configuracion confElegida) {
     cout<<"Cantidad de celdas radioactivas: ";
     cin>>confElegida.cantidadCeldasRadioactivas;
     confElegida.dificultad = "Custom";
+    validarConfiguracion(confElegida);
     escribirUltimaConf(confElegida);
     return confElegida;
 }
