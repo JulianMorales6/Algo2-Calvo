@@ -56,7 +56,29 @@ void Configuraciones::mostrarConfiguraciones() {
     if(!this->lista->estaVacia()) {
         do
         {
-            cout<<this->lista->getCursor()->id<<" - "<<this->lista->getCursor()->dificultad<<endl;
+            cout<<this->lista->getCursor()->id<<" - "<<this->lista->getCursor()->dificultad<<endl<<
+            "    Capas: "<<
+            this->lista->getCursor()->capas<<endl<<
+            "    Filas: "<<
+            this->lista->getCursor()->filas<<endl<<
+            "    Columnas: "<<
+            this->lista->getCursor()->columnas<<endl<<
+            "    Vecinas necesarias para nacer: "<<
+            this->lista->getCursor()->x1<<endl<<
+            "    Vecinas minimas para seguir viva: "<<
+            this->lista->getCursor()->x2<<endl<<
+            "    Vecinas maximas para seguir vivas: "<<
+            this->lista->getCursor()->x3<<endl<<
+            "    Cantidad de celdas contaminadas: "<<
+            this->lista->getCursor()->cantidadCeldasContaminadas<<endl<<
+            "    Cantidad de celdas envenenadas: "<<
+            this->lista->getCursor()->cantidadCeldasEnvenenadas<<endl<<
+            "    Cantidad de celdas procreadoras: "<<
+            this->lista->getCursor()->cantidadCeldasProcreadoras<<endl<<
+            "    Cantidad de celdas portales: "<<
+            this->lista->getCursor()->cantidadCeldasPortales<<endl<<
+            "    Cantidad de celdas radioactivas: "<<
+            this->lista->getCursor()->cantidadCeldasRadioactivas<<endl<<endl;
             this->lista->avanzarCursor();
         } while (this->lista->getCursor()->id != this->primeraConf->id);
     }
@@ -109,7 +131,15 @@ Configuracion Configuraciones::cargarManualConfig(Configuracion confElegida) {
     cout<<"Cantidad de celdas radioactivas: ";
     cin>>confElegida.cantidadCeldasRadioactivas;
     confElegida.dificultad = "Custom";
+    escribirUltimaConf(confElegida);
     return confElegida;
+}
+
+void Configuraciones::escribirUltimaConf(Configuracion conf) {
+    FILE* archivo;
+    archivo = fopen("Configuracion.txt", "a");
+    fprintf(archivo, "%s %d %d %d %d %d %d %d %d %d %d %d", "\nUltima_custom_ingresada", conf.capas, conf.filas, conf.columnas, conf.x1, conf.x2, conf.x3, conf.cantidadCeldasContaminadas, conf.cantidadCeldasEnvenenadas, conf.cantidadCeldasProcreadoras, conf.cantidadCeldasPortales, conf.cantidadCeldasRadioactivas);
+    fclose(archivo);
 }
 
 Configuraciones::~Configuraciones() {
@@ -117,12 +147,3 @@ Configuraciones::~Configuraciones() {
     delete this->configAux;
     delete this->primeraConf;
 }
-
-// int main() {
-//     Configuraciones * config = new Configuraciones;
-//     config->mostrarConfiguraciones();
-//     Configuracion * confElegida = config->seleccionarUnaConfiguracion();
-//     cout<<confElegida->dificultad;
-//     delete config;
-//     return 0;
-// }
