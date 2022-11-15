@@ -250,7 +250,7 @@ void JuegoDeLaVida::setConfiguracion() {
     this->configuracion.x3 = 4; 
 }
 
-
+/*
 void JuegoDeLaVida::dibujarJuegoDeLaVida() {
     int capas = this->tablero->getTablero()->getLargo();
     int filas = this->tablero->getTablero()->getCursor()->getLargo();
@@ -339,3 +339,4 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
         imagen.WriteToFile(ruta);
     }
 }
+*/
