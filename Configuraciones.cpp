@@ -114,16 +114,21 @@ void Configuraciones::validarConfiguracion(Configuracion conf) {
     cantidadTotalCeldas = conf.capas * conf.filas * conf.columnas;
     cantidadDeCeldasConComportamiento = conf.cantidadCeldasContaminadas + conf.cantidadCeldasEnvenenadas + conf.cantidadCeldasProcreadoras + conf.cantidadCeldasPortales + conf.cantidadCeldasRadioactivas;
 
+    if(conf.cantidadCeldasContaminadas < 0 || conf.cantidadCeldasEnvenenadas < 0 || conf.cantidadCeldasProcreadoras < 0 || conf.cantidadCeldasPortales < 0 || conf.cantidadCeldasRadioactivas < 0 || conf.x1 < 0 || conf.x2 < 0 || conf.x3 < 0 || conf.capas < 0 || conf.filas < 0 || conf.columnas < 0) {
+        error = true;
+    }
+
+    if(conf.x1 > 26 || conf.x2 > 26 || conf.x3 > 26) {
+        error = true;
+    }
+
     if (cantidadDeCeldasConComportamiento > cantidadTotalCeldas)
     {
         error = true;
     }
-    if(conf.x1 > 26 || conf.x1 < 0 || conf.x2 > 26 || conf.x2 < 0 || conf.x3 > 26 || conf.x3 < 0) {
-        error = true;
-    }
     
     if(error) {
-        cout<<"Error de configuracion, tenga en cuenta que: "<<endl<<"  Los cinco comportamientos de celdas no deben ser negativos y su suma no puede ser mayor al producto de capas, filas y columnas."<<endl<<"    Tanto las vecinas necesarias para nacer, las vecinas minimas para seguir viva y las vecinas maximas para seguir viva deben tener un valor de entre 0 y 26, ambos valores incluidos"<<endl;
+        cout<<"Error de configuracion, tenga en cuenta que: "<<endl<<"Todos los valores que ingresa deben ser enteros positivos o 0"<<endl<<"  Los cinco comportamientos de celdas no deben ser negativos y su suma no puede ser mayor al producto de capas, filas y columnas."<<endl<<"    Tanto las vecinas necesarias para nacer, las vecinas minimas para seguir viva y las vecinas maximas para seguir viva deben tener un valor de maximo 26"<<endl;
         seleccionarUnaConfiguracion();
     }
 
