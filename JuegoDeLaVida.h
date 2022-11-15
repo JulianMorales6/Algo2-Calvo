@@ -2,6 +2,10 @@
 #define JUEGODELAVIDA_H_
 #include "Tablero.cpp"
 #include "Configuraciones.h"
+#include "bmp/EasyBMP.h"
+#include "bmp/EasyBMP_Geometry.h"
+#include "bmp/EasyBMP_Font.h"
+#include <string>
 
 // typedef struct {
 //     string dificultad;
@@ -38,6 +42,7 @@ class JuegoDeLaVida {
     ~JuegoDeLaVida();
     void inicializarJuegoDeLaVida();
     void mostrarJuegoDeLaVida();
+    void dibujarJuegoDeLaVida();
     void cargarCelulasVivas();
     void interaccionesUsuario();
     void cargarConfiguracion();
