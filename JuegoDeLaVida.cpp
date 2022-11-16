@@ -221,16 +221,27 @@ void JuegoDeLaVida::cambiarEstado(int capa, int fila, int columna, EstadoDeCelul
     if(estado == Viva) {
         if(comportamiento == Portal) {
             this->tablero->getCelda(generarNumeroRandom(this->configuracion.capas),generarNumeroRandom(this->configuracion.filas),generarNumeroRandom(this->configuracion.columnas))->getCelula()->setEstadoDeCelula(estado);
+            estado = Muerta;
         } if( comportamiento == Radioactiva) {
-            celda->getCelula()->cambiarGen(1,1);//tiene 50% de afectar a cada gen y si lo afecta lo hace la mitad
+            for(int i = 1; i<4; i++) {
+                if(generarNumeroRandom(10) > 5) {
+                    celda->getCelula()->cambiarGen(i,celda->getCelula()->getGen(i));//tiene 50% de afectar a cada gen y si lo afecta lo hace la mitad
+                }
+            }
         } if(comportamiento == Contaminada) {
             estado = Muerta;
         } if(comportamiento == Envenenada) {
             celda->getCelula()->cambiarGen(generarNumeroRandom(3),0);
         } if(comportamiento == Procreadora) {
-            --this->configuracion.x1;
-            --this->configuracion.x2;
-            --this->configuracion.x3; 
+            if(this->configuracion.x1 > 2) {
+                --this->configuracion.x1;
+            }
+            if(this->configuracion.x2 > 3) {
+                --this->configuracion.x2;
+            }
+            if(this->configuracion.x3 > 4) {
+                --this->configuracion.x3; 
+            }
         } 
         }
     this->tablero->getCelda(capa,fila,columna)->getCelula()->setEstadoDeCelula(estado);
