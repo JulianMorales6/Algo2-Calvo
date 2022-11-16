@@ -42,7 +42,6 @@ class JuegoDeLaVida {
     ~JuegoDeLaVida();
     void inicializarJuegoDeLaVida();
     void mostrarJuegoDeLaVida();
-    void dibujarJuegoDeLaVida();
     void cargarCelulasVivas();
     void interaccionesUsuario();
     void cargarConfiguracion();

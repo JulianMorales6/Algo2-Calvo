@@ -1,120 +1,125 @@
-#include <iostream>
-using namespace std;
-#include "JuegoDeLaVida.cpp"
-#include "bmp/EasyBMP.h"
-#include "bmp/EasyBMP_Geometry.h"
-#include "bmp/EasyBMP_Font.h"
-#include <string>
 
-void dibujarTablero(Tablero *tablero) {
-    int capas = tablero->getTablero()->getLargo();
-    int filas = tablero->getTablero()->getCursor()->getLargo();
-    int columnas = tablero->getTablero()->getCursor()->getCursor()->getLargo();
-    int margenInferior = 20;
-    int tamanioCelda = 20;
-    int radioCelula = 8;
+#include "Dibujar.h"
 
-    //colores para el tablero
-    RGBApixel grisClaro;
-    grisClaro.Red = 30;
-    grisClaro.Green = 30;
-    grisClaro.Blue = 30;
-
-    RGBApixel grisOscuro;
-    grisOscuro.Red = 20;
-    grisOscuro.Green = 20;
-    grisOscuro.Blue = 20;
-
-    RGBApixel blanco;
-    blanco.Red = 255;
-    blanco.Green = 255;
-    blanco.Blue = 255;
-
-
+Dibujar::Dibujar(Tablero *tableroPasado, Estadisticas estadisticasPasadas) {
+    this->tablero = tableroPasado;
+    this->estadisticas = estadisticasPasadas;
+    this->capas = tableroPasado->getTablero()->getLargo();
+    this->filas = tableroPasado->getTablero()->getCursor()->getLargo();
+    this->columnas = tableroPasado->getTablero()->getCursor()->getCursor()->getLargo();
     
+    this->grisClaro.Red = 30;
+    this->grisClaro.Green = 30;
+    this->grisClaro.Blue = 30;
+
+    this->grisOscuro.Red = 20;
+    this->grisOscuro.Green = 20;
+    this->grisOscuro.Blue = 20;
+
+    this->blanco.Red = 255;
+    this->blanco.Green = 255;
+    this->blanco.Blue = 255;
+}
+
+
+void Dibujar::dibujarJuego() {
+    //falta dibujar portada
+
     for(int capa = 1; capa <= capas; capa++) {
-        
-        BMP imagen; //crear nueva imagen para cada capa
+        BMP imagenCapa;
+        imagenCapa.SetSize(this->columnas*TAMANIO_CELDA, (this->filas*TAMANIO_CELDA)+MARGEN_INFERIOR);
 
-        imagen.SetSize(columnas*tamanioCelda, (filas*tamanioCelda)+margenInferior);//defino tamanio
-
-        for(int i=0; i<imagen.TellWidth(); i++) {//fondo
-            for(int j=0; j<imagen.TellHeight(); j++) {
-                *imagen(i,j) = grisOscuro;
+        for(int i=0; i<imagenCapa.TellWidth(); i++) {//color del fondo
+            for(int j=0; j<imagenCapa.TellHeight(); j++) {
+                *imagenCapa(i,j) = this->grisOscuro;
             }
         }
-        
-        for(int y=0; y<=imagen.TellHeight()-margenInferior; y=y+tamanioCelda) {//lineas
-            DrawLine(imagen, 0, y, imagen.TellWidth(), y, grisClaro);
-        }
-        for(int x=0; x<=imagen.TellWidth(); x=x+tamanioCelda) {
-            DrawLine(imagen, x, 0, x, imagen.TellHeight()-margenInferior, grisClaro);
-        }
+        this->dibujarCeldas(imagenCapa);
+        this->dibujarInfoCapa(imagenCapa, capa);
 
-        char texto2[1024];//dibujo el numero de capa
-        int ceroAscii = 48;
-        char numeroCapa[22] = "Capa";
-        numeroCapa[4] = ' ';
-        int indice = 5;
-        for(int i=1, resto=10000, entero=1000;  i<=4; i++, resto=resto/10, entero = entero/10){
-            //if para que no muestre 0001
-            numeroCapa[indice] = ceroAscii+(char)(capa%resto)/entero;
-            indice++;
-            
-        }
-        
-        strcpy(texto2, numeroCapa);
-        PrintString(imagen, texto2, imagen.TellWidth()-80, imagen.TellHeight()-15, 10, blanco);
-
-        for(int fila = 1; fila <= filas; fila++) {//dibujo las celdas y las celulas
+        for(int fila = 1; fila <= filas; fila++) {
             for(int columna = 1; columna <= columnas; columna++) {
                 Celda *celda = tablero->getCelda(capa, fila, columna); 
                 if(celda->getComportamiento() != Normal) {
-                    char texto[1024];
-                    char comportamiento[20] = "c";
-                    strcpy(texto, comportamiento);
-                    PrintString(imagen, texto, (columna*tamanioCelda)-12, (fila*tamanioCelda)-18, 10, blanco);
-                    /*
-                    RGBApixel colorCelda;
-                    colorCelda.Red = 48;
-                    colorCelda.Green = 137;
-                    colorCelda.Blue = 90;
-                    colorCelda.Alpha = 240;
-                    for(int i=(columna*20)-19; i<(columna*20); i++) {//fondo
-                        for(int j=(fila*20)-19; j<(fila*20); j++) {
-                            *imagen(i,j) = colorCelda;
-                        }
-                    }
-                    */
+                    this->dibujarComportamientoCelda(imagenCapa, celda, columna, fila);
                 }
                 Celula *celula = tablero->getCelda(capa, fila, columna)->getCelula();
-                RGBApixel colorCelula;
-                colorCelula.Red = celula->getGen(0);
-                colorCelula.Green = celula->getGen(1);
-                colorCelula.Blue = celula->getGen(2);
-                if(celula->getEstado() == Viva) {
-                    DrawArc(imagen, (columna*tamanioCelda)-10, (fila*tamanioCelda)-10, radioCelula, 0, 7, colorCelula);
-                }
-                else {//sacar el else si viva o muerta solo se va a distinguir por el color
-                    DrawArc(imagen, (columna*tamanioCelda)-10, (fila*tamanioCelda)-10, radioCelula, 0, 5, colorCelula);
-                }
+                this->dibujarCelula(imagenCapa, celula, columna, fila);
             }
         }
-        /*
-        int mil, centena, decena, unidad;
-        unidad = capa%10;
-        decena = (capa%100)/10;
-        centena = (capa%1000)/100;
-        mil = (capa%10000)/1000;
-        */
-        char ruta[22] = "imagenes/capa0000.bmp";
-        ruta[13] = ceroAscii+(char)(capa%10000)/1000;
-        ruta[14] = ceroAscii+(char)(capa%1000)/100;
-        ruta[15] = ceroAscii+(char)(capa%100)/10;
-        ruta[16] = ceroAscii+(char)capa%10;
-        imagen.WriteToFile(ruta);
+        this->guardarImagen(imagenCapa, capa);
     }
 }
+
+
+void Dibujar::dibujarCeldas(BMP imagenCapa) {
+    for(int y=0; y<=imagenCapa.TellHeight()-MARGEN_INFERIOR; y=y+TAMANIO_CELDA) {
+        DrawLine(imagenCapa, 0, y, imagenCapa.TellWidth(), y, this->grisClaro);
+    }
+    for(int x=0; x<=imagenCapa.TellWidth(); x=x+TAMANIO_CELDA) {
+        DrawLine(imagenCapa, x, 0, x, imagenCapa.TellHeight()-MARGEN_INFERIOR, this->grisClaro);
+    }
+}
+
+
+void Dibujar::dibujarComportamientoCelda(BMP imagenCapa, Celda *celda, int columna, int fila) {
+    char texto[1024];
+    //falta poner mas comportamientos
+    char comportamiento[20] = "c";
+    strcpy(texto, comportamiento);
+    PrintString(imagenCapa, texto, (columna*TAMANIO_CELDA)-12, (fila*TAMANIO_CELDA)-18, 10, this->blanco);
+}
+
+
+void Dibujar::dibujarPortada() {
+
+}
+
+
+void Dibujar::dibujarInfoCapa(BMP imagenCapa, int capa) {
+    char texto[1024];
+    char numeroCapa[22] = "Capa";
+    numeroCapa[4] = ' ';
+    int indice = 5;
+    for(int i=1, resto=10000, entero=1000;  i<=4; i++, resto=resto/10, entero = entero/10){
+        //if para que no muestre 0001
+        numeroCapa[indice] = CERO_ASCII+(char)(capa%resto)/entero;
+        indice++;
+    }
+    strcpy(texto, numeroCapa);
+    PrintString(imagenCapa, texto, imagenCapa.TellWidth()-80, imagenCapa.TellHeight()-15, 10, this->blanco);
+}
+
+
+void Dibujar::dibujarCelula(BMP imagenCapa, Celula *celula, int columna, int fila) {
+    RGBApixel colorCelula;
+    colorCelula.Red = celula->getGen(0);
+    colorCelula.Green = celula->getGen(1);
+    colorCelula.Blue = celula->getGen(2);
+    if(celula->getEstado() == Viva) {
+        DrawArc(imagenCapa, (columna*TAMANIO_CELDA)-10, (fila*TAMANIO_CELDA)-10, RADIO_CELULA, 0, 7, colorCelula);
+    }
+    else {//sacar el else si viva o muerta solo se va a distinguir por el color
+        DrawArc(imagenCapa, (columna*TAMANIO_CELDA)-10, (fila*TAMANIO_CELDA)-10, RADIO_CELULA, 0, 5, colorCelula);
+    }
+}
+
+
+void Dibujar::guardarImagen(BMP imagen, int capa){
+    char ruta[22] = "imagenes/capa0000.bmp";
+    ruta[13] = CERO_ASCII+(char)(capa%10000)/1000;
+    ruta[14] = CERO_ASCII+(char)(capa%1000)/100;
+    ruta[15] = CERO_ASCII+(char)(capa%100)/10;
+    ruta[16] = CERO_ASCII+(char)capa%10;
+    imagen.WriteToFile(ruta);
+}
+
+
+
+
+    
+
+
 
 
 
@@ -126,7 +131,7 @@ void dibujarTablero(Tablero *tablero) {
     cout << "colors: " << imagen.TellNumberOfColors() << endl;
 */
 
-
+/*
 int main() {
 
     Tablero *tablero;
@@ -142,4 +147,5 @@ int main() {
 
     return 0;
 }
+*/
 //se compila en terminal ->  g++ Dibujar.cpp bmp/EasyBMP.cpp bmp/EasyBMP_Geometry.cpp bmp/EasyBMP_Font.cpp -o dibujar
