@@ -71,19 +71,6 @@ void Tablero::mostrarTablero() {
     }
 }
 
-
-void Tablero::cambiarEstadoTablero(int capa, int fila, int columna, EstadoDeCelula estado) {
-    this->getCelda(capa,fila,columna)->getCelula()->setEstadoDeCelula(estado);
-}
-
-void Tablero::cambiarComportamientoTablero(int capa, int fila, int columna, ComportamientoDeCelda comportamiento) {
-    this->getCelda(capa,fila,columna)->setComportamiento(comportamiento);
-}
-
-ComportamientoDeCelda Tablero::getComportamientoTablero(int capa, int fila, int columna) {
-    return(this->getCelda(capa,fila,columna)->getComportamiento());
-}
-
 Celda * Tablero::getCelda(int capa, int fila, int columna) {
     return((*(*(*this->tablero)[capa])[fila])[columna]);
 }

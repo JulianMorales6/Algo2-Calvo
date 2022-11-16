@@ -15,24 +15,19 @@ class Tablero{
       POST: Crea una instancia de tablero con las dimensiones pasadas*/
     Tablero(int capas, int filas, int columnas);
     /*PRE: 
-      POST: */
+      POST: Destruye la instancia de tablero eliminando todos sus nodos */
     ~Tablero();
     /*PRE: 
-      POST: */
+      POST: Devuelve un puntero al tablero */
     cubo getTablero();
     /*PRE: 
-      POST: */
+      POST: Inicializa las celulas y celdas del tablero*/
     void incializarTablero();
     /*PRE: 
-      POST: */
+      POST: Imprime por terminal las capas del tablero */
     void mostrarTablero();
-
-    void cambiarEstadoTablero(int capa, int fila, int columna, EstadoDeCelula estado);
-
-    void cambiarComportamientoTablero(int capa, int fila, int columna, ComportamientoDeCelda comportamiento);
-
-    ComportamientoDeCelda getComportamientoTablero(int capa, int fila, int columna);
-
+    /*PRE: 
+      POST: Devuleve un puntero a celda correspondiente a las coordenadas pasadas */
     Celda * getCelda(int capa, int fila, int columna);
 };
 

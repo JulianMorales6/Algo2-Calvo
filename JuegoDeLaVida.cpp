@@ -29,8 +29,8 @@ void JuegoDeLaVida::inicializarJuegoDeLaVida() {
 void JuegoDeLaVida::cargarCelulasVivas() {
     int capa, fila, columna;
     cout<<"Si desea ingresar una Celula viva introduzca el primer valor - Enter, segundo valor - Enter y tercer valor - Enter. De lo contrario presione cualquier letra"<<endl;
-    while(cin >> fila >> columna >> capa) {
-        if(capa <= 0 || fila <= 0 || columna <= 0) {
+    while(cin >> columna >> fila >> capa) {
+        if(capa <= 0 || fila <= 0 || columna <= 0 || capa > this->configuracion.capas || columna > this->configuracion.columnas || fila > this->configuracion.filas) {
             cout<<"Celula inválida, por favor ingrese otra:"<<endl;
             continue;
         }
@@ -40,6 +40,7 @@ void JuegoDeLaVida::cargarCelulasVivas() {
         ++this->estadisticas.nacimientosTotales;
         cout<<"Si no quiere agregar otra presione cualquier letra y Enter"<<endl;
     }
+    this->estadisticas.turnos++;
 }
 
 void JuegoDeLaVida::cargarComportamientos() {
@@ -61,11 +62,11 @@ void JuegoDeLaVida::cargarComportamientos() {
 }
 
 void JuegoDeLaVida::cambiarComportamiento(int capa, int fila, int columna, ComportamientoDeCelda comportamiento) {
-    this->tablero->cambiarComportamientoTablero(capa, fila, columna, comportamiento);
+    this->tablero->getCelda(capa, fila, columna)->setComportamiento(comportamiento);
 }
 
 ComportamientoDeCelda JuegoDeLaVida::obtenerComportamiento(int capa, int fila, int columna) {
-    return((this->tablero)->getComportamientoTablero(capa, fila, columna));
+    return((this->tablero)->getCelda(capa, fila, columna)->getComportamiento());
 }
 
 void JuegoDeLaVida::cargarConfiguracion() {
@@ -95,6 +96,7 @@ void JuegoDeLaVida::interaccionesUsuario() {
     cout<<"Presione 1 para avanzar un turno, 2 para reiniciar el juego, 3 o cualquier otro digito para cerrarlo"<<endl;
     while(cin>>numeroIngresado) {
         this->tablero->mostrarTablero();
+        this->imprimirEstadisticas();
         if(numeroIngresado == 1) {
             this->pasarTurno();
             
@@ -117,6 +119,8 @@ void JuegoDeLaVida::pasarTurno() {
     this->controlMuertes();
     this->actualizarControlMuertes();
     ++this->estadisticas.turnos;
+    this->estadisticas.muertesDelTurno = 0;
+    this->estadisticas.nacimientosDelTurno = 0;
 }
 
 void JuegoDeLaVida::copiarTableroAuxiliar() {
@@ -185,8 +189,8 @@ void JuegoDeLaVida::actualizarEstadoCelula(int capa, int fila, int columna) {
             this->cambiarEstado(capa, fila, columna, Muerta);
             this->setGenesCelula(capa, fila, columna, 0,0,0);
             this->estadisticas.celulasVivas--;
-            this->estadisticas.muertesDelTurno--;
-            this->estadisticas.muertesTotales--;        
+            this->estadisticas.muertesDelTurno++;
+            this->estadisticas.muertesTotales++;        
         }
     }
 }
@@ -205,8 +209,8 @@ void JuegoDeLaVida::actualizarControlMuertes() {
 }
 
 void JuegoDeLaVida::controlMuertes() {
-    if(this->estadisticas.controlMuertes == this->estadisticas.muertesTotales &&
-       this->estadisticas.controlNacimientos == this->estadisticas.nacimientosTotales) {
+    if(this->estadisticas.muertesDelTurno == 0 &&
+       this->estadisticas.nacimientosDelTurno == 0) {
             cout<<"El juego esta congelado, presione 2 para reiniciar o 3 para cerrar"<<endl;
        }
 }
@@ -216,9 +220,9 @@ void JuegoDeLaVida::cambiarEstado(int capa, int fila, int columna, EstadoDeCelul
     ComportamientoDeCelda comportamiento = celda->getComportamiento();
     if(estado == Viva) {
         if(comportamiento == Portal) {
-            this->tablero->cambiarEstadoTablero(generarNumeroRandom(this->configuracion.capas),generarNumeroRandom(this->configuracion.filas),generarNumeroRandom(this->configuracion.columnas), estado);
+            this->tablero->getCelda(generarNumeroRandom(this->configuracion.capas),generarNumeroRandom(this->configuracion.filas),generarNumeroRandom(this->configuracion.columnas))->getCelula()->setEstadoDeCelula(estado);
         } if( comportamiento == Radioactiva) {
-            celda->getCelula()->cambiarGen(1,1);//cambiar los 1,1 por el comportamiento que deseemos
+            celda->getCelula()->cambiarGen(1,1);//tiene 50% de afectar a cada gen y si lo afecta lo hace la mitad
         } if(comportamiento == Contaminada) {
             estado = Muerta;
         } if(comportamiento == Envenenada) {
@@ -229,7 +233,7 @@ void JuegoDeLaVida::cambiarEstado(int capa, int fila, int columna, EstadoDeCelul
             --this->configuracion.x3; 
         } 
         }
-    this->tablero->cambiarEstadoTablero(capa, fila, columna, estado);
+    this->tablero->getCelda(capa,fila,columna)->getCelula()->setEstadoDeCelula(estado);
 }
 
 //carga una configuracion default. lo cree para hacer pruebas de la logica del juego
@@ -249,3 +253,12 @@ void JuegoDeLaVida::setConfiguracion() {
     this->configuracion.x3 = 4; 
 }
 
+void JuegoDeLaVida::imprimirEstadisticas() {
+    cout<<"ESTADISTICAS"<<endl;
+    cout<<"CV: "<<this->estadisticas.celulasVivas<<" CQN: "<<this->estadisticas.nacimientosDelTurno<<" CQM: "<<this->estadisticas.muertesDelTurno<<endl;
+    float promedioDeNacimientos = (float)this->estadisticas.nacimientosTotales / (float)this->estadisticas.turnos;
+    float promedioDeMuertes = (float)this->estadisticas.muertesTotales /  (float)this->estadisticas.turnos;
+    cout<<"PN: "<<promedioDeNacimientos<<" PM: "<<promedioDeMuertes<<endl;
+    cout<<"Muertes del turno: "<< this->estadisticas.muertesDelTurno<<endl;
+    cout<<"Nacimiento del turno "<< this->estadisticas.nacimientosDelTurno<<endl;
+}
