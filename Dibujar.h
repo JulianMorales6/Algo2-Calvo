@@ -26,12 +26,12 @@ class Dibujar {
     public:
     Dibujar(Tablero *tableroPasado, Estadisticas estadisticasPasadas);
     void dibujarJuego();
-    void dibujarPortada();
-    void dibujarCeldas(BMP imagenCapa);
-    void dibujarComportamientoCelda(BMP imagenCapa, Celda *celda, int columna, int fila);
-    void dibujarInfoCapa(BMP imagenCapa, int capa);
-    void dibujarCelula(BMP imagenCapa, Celula *celula, int columna, int fila);
-    void guardarImagen(BMP imagen, int capa);
+    void dibujarEstadisticas();
+    void dibujarCeldas(BMP &imagenCapa);
+    void dibujarComportamientoCelda(BMP &imagenCapa, Celda *celda, int columna, int fila);
+    void dibujarInfoCapa(BMP &imagenCapa, int capa);
+    void dibujarCelula(BMP &imagenCapa, Celula *celula, int columna, int fila);
+    void guardarImagen(BMP &imagenCapa, int capa);
 };
 
 /*
