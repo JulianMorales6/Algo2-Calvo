@@ -23,8 +23,6 @@ void Configuraciones::obtenerConfiguraciones() {
     int i = 1;
     while(! archivo.eof()) {
         this->configAux = new Configuracion;
-        int largo, ancho, profundidad, x1, x2, x3, cantidadCeldasTipo1, cantidadCeldasTipo2, cantidadCeldasTipo3, cantidadCeldasTipo4, cantidadCeldasTipo5;
-        string dificultad;
 
         archivo >> this->configAux->dificultad;
         archivo >> this->configAux->capas;
@@ -118,7 +116,7 @@ void Configuraciones::validarConfiguracion(Configuracion conf) {
         error = true;
     }
 
-    if(conf.x1 > 26 || conf.x2 > 26 || conf.x3 > 26) {
+    if(conf.x1 > 26 || conf.x2 > 26 || conf.x3 > 26 || conf.x2 > conf.x3) {
         error = true;
     }
 
@@ -128,7 +126,7 @@ void Configuraciones::validarConfiguracion(Configuracion conf) {
     }
     
     if(error) {
-        cout<<"Error de configuracion, tenga en cuenta que: "<<endl<<"Todos los valores que ingresa deben ser enteros positivos o 0"<<endl<<"  Los cinco comportamientos de celdas no deben ser negativos y su suma no puede ser mayor al producto de capas, filas y columnas."<<endl<<"    Tanto las vecinas necesarias para nacer, las vecinas minimas para seguir viva y las vecinas maximas para seguir viva deben tener un valor de maximo 26"<<endl;
+        cout<<"Error de configuracion, tenga en cuenta que: "<<endl<<"Todos los valores que ingresa deben ser enteros positivos o 0"<<endl<<"  Los cinco comportamientos de celdas no deben ser negativos y su suma no puede ser mayor al producto de capas, filas y columnas."<<endl<<"    Tanto las vecinas necesarias para nacer, las vecinas minimas para seguir viva y las vecinas maximas para seguir viva deben tener un valor de maximo 26"<<endl<<"Vecinas minimas para no morir (x2) debe ser menor o igual a Vecinas maximas para no morir (x3)"<<endl;
         seleccionarUnaConfiguracion();
     }
 
@@ -141,11 +139,11 @@ Configuracion Configuraciones::cargarManualConfig(Configuracion confElegida) {
     cin>>confElegida.filas;
     cout<<"Cantidad de columnas: ";
     cin>>confElegida.columnas;
-    cout<<"x1: ";
+    cout<<"Vecinas vivas necesarias para nacer: ";
     cin>>confElegida.x1;
-    cout<<"x2: ";
+    cout<<"Minimo de vecinas vivas para no morir: ";
     cin>>confElegida.x2;
-    cout<<"x3: ";
+    cout<<"Maximo de vecinas vivas para no morir: ";
     cin>>confElegida.x3;
     cout<<"Cantidad de celdas contaminadas: ";
     cin>>confElegida.cantidadCeldasContaminadas;
@@ -164,10 +162,28 @@ Configuracion Configuraciones::cargarManualConfig(Configuracion confElegida) {
 }
 
 void Configuraciones::escribirUltimaConf(Configuracion conf) {
-    FILE* archivo;
-    archivo = fopen("Configuracion.txt", "a");
-    fprintf(archivo, "%s %d %d %d %d %d %d %d %d %d %d %d", "\nUltima_custom_ingresada", conf.capas, conf.filas, conf.columnas, conf.x1, conf.x2, conf.x3, conf.cantidadCeldasContaminadas, conf.cantidadCeldasEnvenenadas, conf.cantidadCeldasProcreadoras, conf.cantidadCeldasPortales, conf.cantidadCeldasRadioactivas);
-    fclose(archivo);
+    string rutaArchivo = "Configuracion.txt", rutaTemp = "Configuracion.tmp", dato;
+    ifstream archivo;
+    ofstream archivoTemp;
+    archivo.open(rutaArchivo.c_str());
+    archivoTemp.open(rutaTemp.c_str());
+    getline(archivo, dato);
+    archivoTemp << dato << '\n';
+    archivo >> dato;
+    while(dato != "UltimaCustomIngresada" && !archivo.eof()) {
+        archivoTemp << dato << ' ';
+        getline(archivo, dato);
+        archivoTemp << dato << '\n';
+        archivo >> dato;
+    }
+
+    archivo.close();
+
+    archivoTemp << "UltimaCustomIngresada " << conf.capas << " " << conf.filas << " " << conf.columnas << " " << conf.x1 << " " << conf.x2 << " " << conf.x3 << " " << conf.cantidadCeldasContaminadas << " " << conf.cantidadCeldasEnvenenadas << " " << conf.cantidadCeldasProcreadoras << " " << conf.cantidadCeldasPortales << " " << conf.cantidadCeldasRadioactivas;
+
+    archivoTemp.close();
+    remove("Configuracion.txt");
+    rename("Configuracion.tmp", "Configuracion.txt");
 }
 
 Configuraciones::~Configuraciones() {
