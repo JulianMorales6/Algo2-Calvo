@@ -1,6 +1,6 @@
 #include <iostream>
 using namespace std;
-#include "JuegoDeLaVida.cpp"
+#include "JuegoDeLaVida.h"
 #include "bmp/EasyBMP.h"
 #include "bmp/EasyBMP_Geometry.h"
 #include "bmp/EasyBMP_Font.h"

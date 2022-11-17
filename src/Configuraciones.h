@@ -2,19 +2,7 @@
 #define CONFIGURACIONES_H_
 
 #include "ListaDobleCircular.h"
-
-struct Configuracion{
-    string dificultad;
-    int id;
-    int capas,filas,columnas;//valores para el tamanio del tablero
-    int x1,x2,x3; //valores para nacimiento y muerte
-    int cantidadCeldasContaminadas;   //cantidad de celdas tipo contaminada
-    int cantidadCeldasEnvenenadas;   //cantidad de celdas tipo envenenada
-    int cantidadCeldasProcreadoras;   //cantidad de celdas tipo procreadora
-    int cantidadCeldasPortales;   //cantidad de celdas tipo portal
-    int cantidadCeldasRadioactivas;   //cantidad de celdas tipo radioactiva
-    
-};
+#include "Configuracion.h"
 
 typedef Lista<Configuracion *> *ListaConfiguraciones;
 
