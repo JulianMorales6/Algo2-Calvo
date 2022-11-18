@@ -1,11 +1,6 @@
-#include <iostream>
-#include <string>
-#include <fstream>
-#include <sstream>
+
 #include "JuegoDeLaVida.h"
-#include "Configuraciones.h"
-#include "Configuraciones.cpp"
-#define ARCHIVO_CONFIGURACION "data.csv"
+
 
 JuegoDeLaVida::JuegoDeLaVida() {
     this->tablero = NULL;
@@ -34,7 +29,8 @@ void JuegoDeLaVida::cargarCelulasVivas() {
             cout<<"Celula inválida, por favor ingrese otra:"<<endl;
             continue;
         }
-        cambiarEstado(capa-1, fila-1, columna-1, Viva);
+        //cambiarEstado(capa-1, fila-1, columna-1, Viva);
+        this->tablero->getCelda(capa-1, fila-1, columna-1)->getCelula()->revivirCelula();
         ++this->estadisticas.celulasVivas;
         ++this->estadisticas.nacimientosDelTurno;
         ++this->estadisticas.nacimientosTotales;
@@ -96,6 +92,7 @@ void JuegoDeLaVida::interaccionesUsuario() {
     cout<<"Presione 1 para avanzar un turno, 2 para reiniciar el juego, 3 o cualquier otro digito para cerrarlo"<<endl;
     while(cin>>numeroIngresado) {
         this->tablero->mostrarTablero();
+        this->dibujarJuegoDeLaVida();
         this->imprimirEstadisticas();
         if(numeroIngresado == 1) {
             this->pasarTurno();
@@ -272,4 +269,125 @@ void JuegoDeLaVida::imprimirEstadisticas() {
     cout<<"PN: "<<promedioDeNacimientos<<" PM: "<<promedioDeMuertes<<endl;
     cout<<"Muertes del turno: "<< this->estadisticas.muertesDelTurno<<endl;
     cout<<"Nacimiento del turno "<< this->estadisticas.nacimientosDelTurno<<endl;
+}
+
+
+void JuegoDeLaVida::dibujarJuegoDeLaVida() {
+    int capas = this->tablero->getTablero()->getLargo();
+    int filas = this->tablero->getTablero()->getCursor()->getLargo();
+    int columnas = this->tablero->getTablero()->getCursor()->getCursor()->getLargo();
+
+
+    //colores para el tablero
+    RGBApixel grisClaro;
+    grisClaro.Red = 30;
+    grisClaro.Green = 30;
+    grisClaro.Blue = 30;
+
+    RGBApixel grisOscuro;
+    grisOscuro.Red = 20;
+    grisOscuro.Green = 20;
+    grisOscuro.Blue = 20;
+
+    RGBApixel blanco;
+    blanco.Red = 255;
+    blanco.Green = 255;
+    blanco.Blue = 255;
+
+    BMP imagenPortada;
+    imagenPortada.SetSize(650, 150);
+    for(int i=0; i<imagenPortada.TellWidth(); i++) {//color del fondo
+        for(int j=0; j<imagenPortada.TellHeight(); j++) {
+            *imagenPortada(i,j) = grisClaro;
+        }
+    }
+    char encabezado[1024] = "ESTADISTICAS     ", cadena0[1024] = "  Turnos: ", nTurnos[22];
+    sprintf(nTurnos, "%i", this->estadisticas.turnos);
+    strcat(encabezado, cadena0);
+    strcat(encabezado, nTurnos);
+    PrintString(imagenPortada, encabezado, 30, 30, 14, blanco);
+
+    char cadena1[1024] = "Celulas Vivas: ", vivas[22], cadena2[1024] = "  Nacimientos del turno: ", nacimientos[22], cadena3[1024] =  "  Muertes del turno: ", muertes[22];
+    sprintf(vivas, "%i", this->estadisticas.celulasVivas);
+    sprintf(nacimientos, "%i", this->estadisticas.nacimientosDelTurno);
+    sprintf(muertes, "%i", this->estadisticas.muertesDelTurno);
+    strcat(cadena1, vivas);
+    strcat(cadena1, cadena2);
+    strcat(cadena1, nacimientos);
+    strcat(cadena1, cadena3);
+    strcat(cadena1, muertes);
+    PrintString(imagenPortada, cadena1, 30, 60, 12, blanco);
+
+    char cadena4[1024] = "Nacimientos totales: ", nacimientosTotales[22], cadena5[1024] = "  Muertes totales: ", MuertesTotales[22];
+    sprintf(nacimientosTotales, "%i", this->estadisticas.nacimientosTotales);
+    sprintf(MuertesTotales, "%i", this->estadisticas.muertesTotales);
+    strcat(cadena4, nacimientosTotales);
+    strcat(cadena4, cadena5);
+    strcat(cadena4, MuertesTotales);
+    PrintString(imagenPortada, cadena4, 30, 80, 12, blanco);
+
+    char cadena6[1024] = "Porcentaje de nacimientos: ", porcNaciemientos[22], cadena7[1024] = "  Porcentaje de muertes ", porcMuertes[22];
+    sprintf(porcNaciemientos, "%i", this->estadisticas.nacimientosTotales / this->estadisticas.turnos);
+    sprintf(porcMuertes, "%i", this->estadisticas.muertesTotales /  this->estadisticas.turnos);
+    strcat(cadena6, porcNaciemientos);
+    strcat(cadena6, cadena7);
+    strcat(cadena6, porcMuertes);
+    PrintString(imagenPortada, cadena6, 30, 100, 12, blanco);
+
+    imagenPortada.WriteToFile("imagenes/estadisticas.bmp");
+
+    for(int capa = 1; capa <= capas; capa++) {
+        BMP imagenCapa; //crear nueva imagen para cada capa
+
+        imagenCapa.SetSize(columnas*TAMANIO_CELDA, (filas*TAMANIO_CELDA)+MARGEN_INFERIOR);
+
+        for(int i=0; i<imagenCapa.TellWidth(); i++) {//color del fondo
+            for(int j=0; j<imagenCapa.TellHeight(); j++) {
+                *imagenCapa(i,j) = grisOscuro;
+            }
+        }
+        
+        for(int y=0; y<=imagenCapa.TellHeight()-MARGEN_INFERIOR; y=y+TAMANIO_CELDA) {
+            DrawLine(imagenCapa, 0, y, imagenCapa.TellWidth(), y, grisClaro);
+        }
+        for(int x=0; x<=imagenCapa.TellWidth(); x=x+TAMANIO_CELDA) {
+            DrawLine(imagenCapa, x, 0, x, imagenCapa.TellHeight()-MARGEN_INFERIOR, grisClaro);
+        }
+
+        char cadena[1024] = "Capa ";
+        char numeroCapa[22];
+        sprintf(numeroCapa, "%d", capa);
+        strcat(cadena, numeroCapa);
+        PrintString(imagenCapa, cadena, imagenCapa.TellWidth()-80, imagenCapa.TellHeight()-15, 10, blanco);
+        
+        for(int fila = 1; fila <= filas; fila++) {//dibujo las celdas y las celulas
+            for(int columna = 1; columna <= columnas; columna++) {
+                Celda *celda = this->tablero->getCelda(capa-1, fila-1, columna-1); 
+                if(celda->getComportamiento() != Normal) {
+                    char comportamiento[4] = " ";
+                    switch(celda->getComportamiento()) {
+                        case Envenenada: comportamiento[0] = 'E'; break;
+                        case Portal: comportamiento[0] = 'P'; break;
+                        case Contaminada: comportamiento[0] = 'C'; break;
+                        case Radioactiva: comportamiento[0] = 'R'; break;
+                        case Procreadora: comportamiento[0] = 'A'; break;
+                    }
+                    PrintString(imagenCapa, comportamiento, (columna*TAMANIO_CELDA)-12, (fila*TAMANIO_CELDA)-12, 5, blanco);
+                }
+                Celula *celula = this->tablero->getCelda(capa-1, fila-1, columna-1)->getCelula();
+                RGBApixel colorCelula;
+                colorCelula.Red = celula->getGen(0);
+                colorCelula.Green = celula->getGen(1);
+                colorCelula.Blue = celula->getGen(2);
+                if(celula->getEstado() == Viva) {
+                    DrawArc(imagenCapa, (columna*TAMANIO_CELDA)-10, (fila*TAMANIO_CELDA)-10, RADIO_CELULA, 0, 7, colorCelula);
+                }
+            }
+        }
+        char ruta[22] = "imagenes/capa", formato[5] = ".bmp", numeroImagen[22];
+        sprintf(numeroImagen, "%d", capa);
+        strcat(ruta, numeroImagen);
+        strcat(ruta, formato);
+        imagenCapa.WriteToFile(ruta);
+    }
 }

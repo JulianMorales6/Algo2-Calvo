@@ -1,11 +1,21 @@
 #ifndef JUEGODELAVIDA_H_
 #define JUEGODELAVIDA_H_
+
 #include "Tablero.cpp"
-#include "Configuraciones.h"
-#include "bmp/EasyBMP.h"
-#include "bmp/EasyBMP_Geometry.h"
-#include "bmp/EasyBMP_Font.h"
+#include <iostream>
 #include <string>
+#include <fstream>
+#include <sstream>
+#include "Configuraciones.cpp"
+
+#include "bmp/EasyBMP.cpp"
+#include "bmp/EasyBMP_Geometry.cpp"
+#include "bmp/EasyBMP_Font.cpp"
+
+static const int MARGEN_INFERIOR = 20;
+static const int TAMANIO_CELDA = 20;
+static const int RADIO_CELULA = 8;
+static const int CERO_ASCII = 48;
 
 // typedef struct {
 //     string dificultad;
@@ -103,5 +113,7 @@ class JuegoDeLaVida {
    /* PRE:
       POST: Imprime las estadisticas del JuegoDeLaVida*/
    void imprimirEstadisticas();
+
+   void dibujarJuegoDeLaVida();
 };
 #endif /* JUEGODELAVIDA_H_ */
