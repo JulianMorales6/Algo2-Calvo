@@ -14,7 +14,7 @@ Configuraciones::Configuraciones() {
 }
 
 void Configuraciones::obtenerConfiguraciones() {
-    string rutaArchivo = "src/Configuracion.txt";
+    string rutaArchivo = "Configuracion.txt";
     ifstream archivo;
     archivo.open(rutaArchivo.c_str());
     string linea;
@@ -36,8 +36,7 @@ void Configuraciones::obtenerConfiguraciones() {
         archivo >> this->configAux->cantidadCeldasPortales;
         archivo >> this->configAux->cantidadCeldasRadioactivas;
         this->configAux->id = i;
-        //Configuracion *punteroAuxiliar = configAux;
-        this->lista->add(this->configAux);
+        Configuracion *punteroAuxiliar = configAux;this->lista->add(this->configAux);
         if (this->primeraConf->dificultad == "")
         {
             this->primeraConf = this->configAux;

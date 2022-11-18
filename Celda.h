@@ -1,6 +1,6 @@
 #ifndef CELDA_H_
 #define CELDA_H_
-#include "Celula.h"
+#include "Celula.cpp"
 
 enum ComportamientoDeCelda {
     Contaminada,

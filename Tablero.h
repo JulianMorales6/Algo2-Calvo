@@ -1,7 +1,7 @@
 #ifndef TABLERO_H_
 #define TABLERO_H_
 
-#include "Celda.h"
+#include "Celda.cpp"
 #include "ListaDobleCircular.h"
 
 typedef Lista<Lista<Lista<Celda *> *> *> *cubo;

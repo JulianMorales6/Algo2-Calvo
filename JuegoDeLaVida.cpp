@@ -4,7 +4,7 @@
 #include <sstream>
 #include "JuegoDeLaVida.h"
 #include "Configuraciones.h"
-
+#include "Configuraciones.cpp"
 #define ARCHIVO_CONFIGURACION "data.csv"
 
 JuegoDeLaVida::JuegoDeLaVida() {
@@ -204,8 +204,8 @@ void JuegoDeLaVida::setGenesCelula(int capa, int fila, int columna, int gen1, in
     
 
 void JuegoDeLaVida::actualizarControlMuertes() {
-    this->estadisticas.controlMuertes = this->estadisticas.muertesTotales;// no hay un = demas?
-    this->estadisticas.controlNacimientos = this->estadisticas.nacimientosTotales;
+    this->estadisticas.controlMuertes == this->estadisticas.muertesTotales;// no hay un = demas?
+    this->estadisticas.controlNacimientos == this->estadisticas.nacimientosTotales;
 }
 
 void JuegoDeLaVida::controlMuertes() {
@@ -220,18 +220,18 @@ void JuegoDeLaVida::cambiarEstado(int capa, int fila, int columna, EstadoDeCelul
     ComportamientoDeCelda comportamiento = celda->getComportamiento();
     if(estado == Viva) {
         if(comportamiento == Portal) {
-            //this->tablero->getCelda(generarNumeroRandom(this->configuracion.capas),generarNumeroRandom(this->configuracion.filas),generarNumeroRandom(this->configuracion.columnas))->getCelula()->setEstadoDeCelula(estado);
+            this->tablero->getCelda(generarNumeroRandom(this->configuracion.capas),generarNumeroRandom(this->configuracion.filas),generarNumeroRandom(this->configuracion.columnas))->getCelula()->setEstadoDeCelula(estado);
             estado = Muerta;
         } if( comportamiento == Radioactiva) {
             for(int i = 1; i<4; i++) {
-                /*if(generarNumeroRandom(10) > 5) {
+                if(generarNumeroRandom(10) > 5) {
                     celda->getCelula()->cambiarGen(i,celda->getCelula()->getGen(i));//tiene 50% de afectar a cada gen y si lo afecta lo hace la mitad
-                }*/
+                }
             }
         } if(comportamiento == Contaminada) {
             estado = Muerta;
         } if(comportamiento == Envenenada) {
-            //celda->getCelula()->cambiarGen(generarNumeroRandom(3),0);
+            celda->getCelula()->cambiarGen(generarNumeroRandom(3),0);
         } if(comportamiento == Procreadora) {
             if(this->configuracion.x1 > 2) {
                 --this->configuracion.x1;

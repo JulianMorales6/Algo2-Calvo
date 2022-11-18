@@ -1,5 +1,5 @@
 
-#include "JuegoDeLaVida.h"
+#include "JuegoDeLaVida.cpp"
 
 int main() {
 

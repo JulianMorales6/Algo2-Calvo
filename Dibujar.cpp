@@ -144,7 +144,7 @@ void Dibujar::guardarImagen(BMP &imagenCapa, int capa){
     cout << "colors: " << imagen.TellNumberOfColors() << endl;
 */
 
-/*
+
 int main() {
 
     Tablero *tablero;
@@ -163,6 +163,5 @@ int main() {
 
     return 0;
 }
-*/
 
 //se compila en terminal ->  g++ Dibujar.cpp bmp/EasyBMP.cpp bmp/EasyBMP_Geometry.cpp bmp/EasyBMP_Font.cpp -o dibujar

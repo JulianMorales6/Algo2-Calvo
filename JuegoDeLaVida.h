@@ -1,9 +1,7 @@
 #ifndef JUEGODELAVIDA_H_
 #define JUEGODELAVIDA_H_
-#include "Tablero.h"
+#include "Tablero.cpp"
 #include "Configuraciones.h"
-#include "Estadisticas.h"
-#include "Configuracion.h"
 #include "bmp/EasyBMP.h"
 #include "bmp/EasyBMP_Geometry.h"
 #include "bmp/EasyBMP_Font.h"
@@ -21,7 +19,6 @@
     
 // }Configuracion;
 
-/*
 typedef struct {
     int nacimientosTotales;
     int muertesTotales;
@@ -32,7 +29,6 @@ typedef struct {
     int controlMuertes;
     int controlNacimientos;
 }Estadisticas;
-*/
 
 class JuegoDeLaVida {
     private:
