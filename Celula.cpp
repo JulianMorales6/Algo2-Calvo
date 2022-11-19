@@ -1,6 +1,8 @@
 
 #include "Celula.h"
 
+
+
 Celula::Celula() {    
     this->Estado = Muerta;
     for(int i = 0; i<CANTIDAD_GENES; i++) {

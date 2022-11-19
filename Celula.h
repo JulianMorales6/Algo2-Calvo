@@ -1,6 +1,8 @@
 #ifndef CELULA_H_
 #define CELULA_H_
+
 #include <cstdlib>
+
 const int CANTIDAD_GENES = 3;
 
 enum EstadoDeCelula {

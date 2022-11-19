@@ -1,5 +1,6 @@
 #ifndef CELDA_H_
 #define CELDA_H_
+
 #include "Celula.cpp"
 
 enum ComportamientoDeCelda {
@@ -30,4 +31,5 @@ class Celda {
     /*POST: Cambia el comportamiento de la celda al pasado por parametro*/
     void setComportamiento(ComportamientoDeCelda comportamiento);
 };
+
 #endif /* CELDA_H_ */

@@ -1,9 +1,11 @@
 #ifndef LISTADOBLECIRCULAR_H_
 #define LISTADOBLECIRCULAR_H_
+
 #include <iostream>
+#include "Nodo.h"
 using namespace std;
 
-#include "Nodo.h"
+
 
 template <class T> class Lista {
     private:
@@ -225,76 +227,8 @@ template <class T> T Lista<T>::operator[](int posicion){
     return this->cursor->_dato;
 }
 
-
-/*
-template <class T> T Lista<T>::operator[] (int j) {
-    j--;
-    while(j> this->largo-1) {
-        j = j-this->largo;
-    };
-    while(j< 0) {
-        j = j+this->largo;
-    }; 
-    
-    int dif;
-    Nodo<T> * nodoAux;
-    T dato;
-    if(j>this->posicionCursor) {
-        dif = j-this->posicionCursor;
-        if(dif<=this->largo-j) {
-            nodoAux = this->cursor;
-            for(int i = 0; i <= j-this->posicionCursor; i++) {
-                nodoAux = nodoAux->_siguiente;
-                this->avanzarCursor();
-            }
-        } else {
-            nodoAux = this->primero;
-            for(int i = 0; i <= this->largo-j; i++) {
-                nodoAux = nodoAux->_anterior;
-                this->retrocederCursor();
-            }
-        }
-    } else {
-        dif = this->posicionCursor-j;
-        if(dif<j) {
-            nodoAux = this->cursor;
-            for(int i = 0; i <= this->posicionCursor-j; i++) {
-                nodoAux = nodoAux->_anterior;
-                this->retrocederCursor();
-            }
-        } else {
-            nodoAux = this->primero;
-            for(int i = 0; i <= j; i++) {
-                nodoAux = nodoAux->_siguiente;
-                this->avanzarCursor();
-            }
-        }
-    }
-    dato = nodoAux->_dato;
-    return dato;
-};
-*/
-
 #endif /* LISTADOBLECIRCULAR_H_ */
 
 
 
-/* para pruebas
-int main() {
-    Lista<int *> *lista = new Lista<int*>;
-    int* numero = new int;
-    *numero = 5;
-    lista->add(numero);
-    lista->add(numero);
-    lista->add(numero);
-    lista->inicializarCursor();
-   
-    while(lista->avanzarCursor()) {
-        cout<<"hola"<<endl;
-    }
 
-    delete lista;
-    delete numero;
-    return 0;
-}
-*/

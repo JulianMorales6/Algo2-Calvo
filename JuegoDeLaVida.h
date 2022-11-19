@@ -1,23 +1,16 @@
 #ifndef JUEGODELAVIDA_H_
 #define JUEGODELAVIDA_H_
-
 #include "Tablero.cpp"
 #include "Configuraciones.cpp"
-#include <cstdlib>
-#include <iostream>
-#include <fstream>
-#include <sstream>
-#include <string>
 
 #include "bmp/EasyBMP.cpp"
 #include "bmp/EasyBMP_Geometry.cpp"
 #include "bmp/EasyBMP_Font.cpp"
 
-
-static const int MARGEN_INFERIOR = 20;
-static const int TAMANIO_CELDA = 20;
-static const int RADIO_CELULA = 8;
-static const int CERO_ASCII = 48;
+const int MARGEN_INFERIOR = 20;
+const int TAMANIO_CELDA = 20;
+const int RADIO_CELULA = 8;
+const int CERO_ASCII = 48;
 
 
 typedef struct {
@@ -65,7 +58,7 @@ class JuegoDeLaVida {
        POST: Carga los comportamientos de las celdas, especificados en la configuracion*/    
     void cargarComportamientos();
     /* PRE:
-       POST: Corrobora si una celula que nace esta en una celda contaminada y lleva a cabo el comportamiento de la misma*/    
+       POST: Corrobora si una celula que nace esta en una celda contaminada y lleva a cabo el comportamiento de la misma*/
     void ejecutarComportamiento(int capa, int fila, int columna);
     /* PRE:
        POST: Cambia el comportamiento de la celda correspondiente a las coordenadas pasadas por parametro
@@ -104,4 +97,7 @@ class JuegoDeLaVida {
       POST: Crea imagenes y dibuja en formato bmp el JuegoDeLaVida*/
    void dibujarJuegoDeLaVida();
 };
+
+
+
 #endif /* JUEGODELAVIDA_H_ */

@@ -1,5 +1,4 @@
 
-
 #include "Tablero.h"
 
 Tablero::Tablero(int capas, int filas, int columnas){//-> profundidad, alto, ancho -> k,i,j

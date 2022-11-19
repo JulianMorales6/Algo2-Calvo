@@ -1,10 +1,11 @@
 #ifndef CONFIGURACIONES_H_
 #define CONFIGURACIONES_H_
+
+#include "ListaDobleCircular.h"
 #include <iostream>
 #include <string>
 #include <fstream>
-#include "ListaDobleCircular.h"
-
+#include <sstream>
 
 struct Configuracion{
     string dificultad;

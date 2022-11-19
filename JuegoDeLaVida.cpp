@@ -1,6 +1,8 @@
 
 #include "JuegoDeLaVida.h"
 
+#define ARCHIVO_CONFIGURACION "data.csv"
+
 JuegoDeLaVida::JuegoDeLaVida() {
     this->tablero = NULL;
     this->tableroAux = NULL;
@@ -156,7 +158,7 @@ void JuegoDeLaVida::actualizarEstadoCelula(int capa, int fila, int columna) {
     int minj = fila-1;
     int maxk = columna+1;
     int mink = columna-1;
-    
+
     for(int a = mini; a<= maxi; a++) {
         for(int b = minj; b<= maxj; b++) {
             for(int c = mink; c<= maxk; c++) {
@@ -196,7 +198,7 @@ void JuegoDeLaVida::actualizarEstadoCelula(int capa, int fila, int columna) {
         }
     }
 }
-  
+
 void JuegoDeLaVida::actualizarControlMuertes() {
     this->estadisticas.controlMuertes = this->estadisticas.muertesTotales;
     this->estadisticas.controlNacimientos = this->estadisticas.nacimientosTotales;
@@ -214,23 +216,25 @@ void JuegoDeLaVida::ejecutarComportamiento(int capa, int fila, int columna) {
     ComportamientoDeCelda comportamiento = this->tablero->getCelda(capa,fila,columna)->getComportamiento();
     if(celula->getEstado() == Viva) {
         if(comportamiento == Portal) {
+        	/*
             this->tablero->getCelda(generarNumeroRandom(this->configuracion.capas),
                                     generarNumeroRandom(this->configuracion.filas),
-                                    generarNumeroRandom(this->configuracion.columnas))->getCelula()->revivirCelula();
-        } 
+                                    generarNumeroRandom(this->configuracion.columnas))->getCelula()->revivirCelula();*/
+        }
         if( comportamiento == Radioactiva) {
             for(int i = 0; i<3; i++) {
+            	/*
                 if(generarNumeroRandom(10) > 5) {
                     celula->setGen(i, celula->getGen(i)/2);//tiene 50% de afectar a cada gen y si lo afecta lo hace la mitad
-                }
+                }*/
             }
-        } 
+        }
         if(comportamiento == Contaminada) {
-            celula->matarCelula();
-        } 
+            //celula->matarCelula();
+        }
         if(comportamiento == Envenenada) {
-            celula->setGen(generarNumeroRandom(3), 0);
-        } 
+            /*celula->setGen(generarNumeroRandom(3), 0);*/
+        }
         if(comportamiento == Procreadora) {
             /*
             if(this->configuracion.x1 > 2) {
@@ -282,9 +286,9 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
 
     //colores para el tablero
     RGBApixel grisClaro;
-    grisClaro.Red = 30;
-    grisClaro.Green = 30;
-    grisClaro.Blue = 30;
+    grisClaro.Red = 40;
+    grisClaro.Green = 40;
+    grisClaro.Blue = 40;
 
     RGBApixel grisOscuro;
     grisOscuro.Red = 20;
@@ -386,8 +390,8 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
                 }
             }
         }
-        char ruta[40] = "imagenes/capa", formato[5] = ".bmp", numeroImagen[22];
-        sprintf(numeroImagen, "%d", capa);
+        char ruta[1024] = "imagenes/capa", formato[5] = ".bmp", numeroImagen[22];
+        sprintf(numeroImagen, "%i", capa);
         strcat(ruta, numeroImagen);
         strcat(ruta, formato);
         imagenCapa.WriteToFile(ruta);

@@ -1,5 +1,5 @@
-#include "Configuraciones.h"
 
+#include "Configuraciones.h"
 using namespace std;
 
 
@@ -33,7 +33,8 @@ void Configuraciones::obtenerConfiguraciones() {
         archivo >> this->configAux->cantidadCeldasPortales;
         archivo >> this->configAux->cantidadCeldasRadioactivas;
         this->configAux->id = i;
-        Configuracion *punteroAuxiliar = configAux;this->lista->add(this->configAux);
+        //Configuracion *punteroAuxiliar = configAux;
+        this->lista->add(this->configAux);
         if (this->primeraConf->dificultad == "")
         {
             this->primeraConf = this->configAux;
