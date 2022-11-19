@@ -1,10 +1,10 @@
-#include <cstdlib>
+
 #include "Celula.h"
 
 Celula::Celula() {    
     this->Estado = Muerta;
     for(int i = 0; i<CANTIDAD_GENES; i++) {
-        this->Gen[i] = 0;
+        this->genes[i] = 0;
     }
 }
 
@@ -12,7 +12,7 @@ Celula::Celula() {
 void Celula::matarCelula() {
     this->Estado = Muerta;
     for(int i = 0; i<CANTIDAD_GENES; i++) {
-        this->Gen[i] = 0;
+        this->genes[i] = 0;
     }
 }
 
@@ -20,15 +20,15 @@ void Celula::matarCelula() {
 void Celula::revivirCelula(){
     this->Estado = Viva;
     for(int i = 0; i<CANTIDAD_GENES; i++) {
-        this->Gen[i] = rand()%(255 + 1);
+        this->genes[i] = rand()%(255 + 1);
     }
 }
 
 
-void Celula::revivirCelula(int genes[]){
+void Celula::revivirCelula(int genesHeredados[]){
     this->Estado = Viva;
     for(int i = 0; i<CANTIDAD_GENES; i++) {
-        this->Gen[i] = genes[i];
+        this->genes[i] = genesHeredados[i];
     }
 }
 
@@ -38,20 +38,20 @@ EstadoDeCelula Celula::getEstado(){
 }
 
 
-void Celula::cambiarGen(int numeroDeGen, int cambio) {
+void Celula::setGen(int numeroDeGen, int cambio) {
     if(cambio > 255 || cambio < 0) {
         cambio = 0;
     }
-    this->Gen[numeroDeGen] = cambio;
+    this->genes[numeroDeGen] = cambio;
 }
 
 
 int Celula::getGen(int numeroDeGen){
-    return this->Gen[numeroDeGen];
+    return this->genes[numeroDeGen];
 }
 
 
-void Celula::setEstadoDeCelula(EstadoDeCelula Estado) {
+void Celula::setEstado(EstadoDeCelula Estado) {
     this->Estado = Estado;
 }
 

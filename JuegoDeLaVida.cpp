@@ -1,7 +1,6 @@
 
 #include "JuegoDeLaVida.h"
 
-
 JuegoDeLaVida::JuegoDeLaVida() {
     this->tablero = NULL;
     this->tableroAux = NULL;
@@ -23,14 +22,14 @@ void JuegoDeLaVida::inicializarJuegoDeLaVida() {
 
 void JuegoDeLaVida::cargarCelulasVivas() {
     int capa, fila, columna;
-    cout<<"Si desea ingresar una Celula viva introduzca el primer valor - Enter, segundo valor - Enter y tercer valor - Enter. De lo contrario presione cualquier letra"<<endl;
+    cout<<"Si desea ingresar una Celula viva introduzca un valor para x - Enter, un valor para y - Enter y un valor para z - Enter. De lo contrario presione cualquier letra"<<endl;
     while(cin >> columna >> fila >> capa) {
         if(capa <= 0 || fila <= 0 || columna <= 0 || capa > this->configuracion.capas || columna > this->configuracion.columnas || fila > this->configuracion.filas) {
             cout<<"Celula inválida, por favor ingrese otra:"<<endl;
             continue;
         }
-        //cambiarEstado(capa-1, fila-1, columna-1, Viva);
         this->tablero->getCelda(capa-1, fila-1, columna-1)->getCelula()->revivirCelula();
+        ejecutarComportamiento(capa-1, fila-1, columna-1);
         ++this->estadisticas.celulasVivas;
         ++this->estadisticas.nacimientosDelTurno;
         ++this->estadisticas.nacimientosTotales;
@@ -124,7 +123,10 @@ void JuegoDeLaVida::copiarTableroAuxiliar() {
     for(int capa = 0; capa < this->configuracion.capas; capa++) {
         for(int fila = 0; fila < this->configuracion.filas; fila++) {
             for(int columna = 0; columna < this->configuracion.columnas; columna++) {
-                this->tableroAux->getCelda(capa,fila,columna)->getCelula()->setEstadoDeCelula(this->tablero->getCelda(capa,fila,columna)->getCelula()->getEstado());
+                this->tableroAux->getCelda(capa,fila,columna)->getCelula()->setEstado(this->tablero->getCelda(capa,fila,columna)->getCelula()->getEstado());
+                for(int i=0; i<3; i++) {
+                    this->tableroAux->getCelda(capa,fila,columna)->getCelula()->setGen(i, this->tablero->getCelda(capa,fila,columna)->getCelula()->getGen(i));
+                }
             }
         }
     }
@@ -141,29 +143,32 @@ void JuegoDeLaVida::actualizarCelulasVivas() {
 }
 
 void JuegoDeLaVida::actualizarEstadoCelula(int capa, int fila, int columna) {
+    Celda * celda = this->tablero->getCelda(capa,fila,columna);
+    Celda * celdaAux = this->tableroAux->getCelda(capa,fila,columna);
     int celulasVivasAlrededor = 0;
-    int gen1 = 0;
-    int gen2 = 0;
-    int gen3 = 0;//primera promedio, segundo maximo, tercera while hasta < 255
+    int genesHeredados[3];
+    genesHeredados[0] = 0;
+    genesHeredados[1] = 0;
+    genesHeredados[2] = 0;//primera promedio, segundo maximo, tercera while hasta < 255
     int maxi = capa+1;
     int mini = capa-1;
     int maxj = fila+1;
     int minj = fila-1;
     int maxk = columna+1;
     int mink = columna-1;
-    Celda * celda = this->tableroAux->getCelda(capa,fila,columna);
+    
     for(int a = mini; a<= maxi; a++) {
         for(int b = minj; b<= maxj; b++) {
             for(int c = mink; c<= maxk; c++) {
-                Celda * celdaAux = this->tableroAux->getCelda(a,b,c);
-                if(celdaAux->getCelula()->getEstado() == Viva) {
+                Celda * celdaVecina = this->tableroAux->getCelda(a,b,c);
+                if(celdaVecina->getCelula()->getEstado() == Viva) {
                     celulasVivasAlrededor++;
-                    gen1 += celdaAux->getCelula()->getGen(1);
-                    gen3 += celdaAux->getCelula()->getGen(3);
-                    if(celdaAux->getCelula()->getGen(2) > gen2) {
-                        gen2 = celdaAux->getCelula()->getGen(2);
+                    genesHeredados[0] += celdaVecina->getCelula()->getGen(0);
+                    genesHeredados[2] += celdaVecina->getCelula()->getGen(2);
+                    if(celdaVecina->getCelula()->getGen(2) > genesHeredados[1]) {
+                        genesHeredados[1] = celdaVecina->getCelula()->getGen(1);
                     }
-                    if(celda->getCelula()->getEstado() == Viva) {
+                    if(celdaAux->getCelula()->getEstado() == Viva) {
                         celulasVivasAlrededor--;
                     }
                 }
@@ -172,37 +177,29 @@ void JuegoDeLaVida::actualizarEstadoCelula(int capa, int fila, int columna) {
     }
     if(celda->getCelula()->getEstado() == Muerta) {
         if(celulasVivasAlrededor == this->configuracion.x1) {
-            this->cambiarEstado(capa, fila, columna, Viva);
-            while(gen3>255) {
-                gen3 = gen3 - 255;
+            genesHeredados[0] = genesHeredados[0]/celulasVivasAlrededor;
+            while(genesHeredados[2]>255) {
+                genesHeredados[2] = genesHeredados[2] - 255;
             }
-            this->setGenesCelula(capa, fila, columna,gen1/celulasVivasAlrededor,gen2,gen3);
+            celda->getCelula()->revivirCelula(genesHeredados);
+            ejecutarComportamiento(capa, fila, columna);
             this->estadisticas.celulasVivas++;
             this->estadisticas.nacimientosDelTurno++;
             this->estadisticas.nacimientosTotales++;
         }  
     } else {
         if(celulasVivasAlrededor < this->configuracion.x2 || celulasVivasAlrededor > this->configuracion.x3) {
-            this->cambiarEstado(capa, fila, columna, Muerta);
-            this->setGenesCelula(capa, fila, columna, 0,0,0);
+            celda->getCelula()->matarCelula();
             this->estadisticas.celulasVivas--;
             this->estadisticas.muertesDelTurno++;
             this->estadisticas.muertesTotales++;        
         }
     }
 }
-
-void JuegoDeLaVida::setGenesCelula(int capa, int fila, int columna, int gen1, int gen2, int gen3) {
-    Celula * celula = this->tablero->getCelda(capa, fila, columna)->getCelula();
-    celula->cambiarGen(1,gen1);
-    celula->cambiarGen(2,gen2);
-    celula->cambiarGen(3,gen3);
-}
-    
-
+  
 void JuegoDeLaVida::actualizarControlMuertes() {
-    this->estadisticas.controlMuertes == this->estadisticas.muertesTotales;// no hay un = demas?
-    this->estadisticas.controlNacimientos == this->estadisticas.nacimientosTotales;
+    this->estadisticas.controlMuertes = this->estadisticas.muertesTotales;
+    this->estadisticas.controlNacimientos = this->estadisticas.nacimientosTotales;
 }
 
 void JuegoDeLaVida::controlMuertes() {
@@ -212,24 +209,30 @@ void JuegoDeLaVida::controlMuertes() {
        }
 }
 
-void JuegoDeLaVida::cambiarEstado(int capa, int fila, int columna, EstadoDeCelula estado) {
-    Celda * celda = this->tablero->getCelda(capa,fila,columna);
-    ComportamientoDeCelda comportamiento = celda->getComportamiento();
-    if(estado == Viva) {
+void JuegoDeLaVida::ejecutarComportamiento(int capa, int fila, int columna) {
+    Celula * celula = this->tablero->getCelda(capa,fila,columna)->getCelula();
+    ComportamientoDeCelda comportamiento = this->tablero->getCelda(capa,fila,columna)->getComportamiento();
+    if(celula->getEstado() == Viva) {
         if(comportamiento == Portal) {
-            this->tablero->getCelda(generarNumeroRandom(this->configuracion.capas),generarNumeroRandom(this->configuracion.filas),generarNumeroRandom(this->configuracion.columnas))->getCelula()->setEstadoDeCelula(estado);
-            estado = Muerta;
-        } if( comportamiento == Radioactiva) {
-            for(int i = 1; i<4; i++) {
+            this->tablero->getCelda(generarNumeroRandom(this->configuracion.capas),
+                                    generarNumeroRandom(this->configuracion.filas),
+                                    generarNumeroRandom(this->configuracion.columnas))->getCelula()->revivirCelula();
+        } 
+        if( comportamiento == Radioactiva) {
+            for(int i = 0; i<3; i++) {
                 if(generarNumeroRandom(10) > 5) {
-                    celda->getCelula()->cambiarGen(i,celda->getCelula()->getGen(i));//tiene 50% de afectar a cada gen y si lo afecta lo hace la mitad
+                    celula->setGen(i, celula->getGen(i)/2);//tiene 50% de afectar a cada gen y si lo afecta lo hace la mitad
                 }
             }
-        } if(comportamiento == Contaminada) {
-            estado = Muerta;
-        } if(comportamiento == Envenenada) {
-            celda->getCelula()->cambiarGen(generarNumeroRandom(3),0);
-        } if(comportamiento == Procreadora) {
+        } 
+        if(comportamiento == Contaminada) {
+            celula->matarCelula();
+        } 
+        if(comportamiento == Envenenada) {
+            celula->setGen(generarNumeroRandom(3), 0);
+        } 
+        if(comportamiento == Procreadora) {
+            /*
             if(this->configuracion.x1 > 2) {
                 --this->configuracion.x1;
             }
@@ -239,9 +242,9 @@ void JuegoDeLaVida::cambiarEstado(int capa, int fila, int columna, EstadoDeCelul
             if(this->configuracion.x3 > 4) {
                 --this->configuracion.x3; 
             }
+            */
         } 
-        }
-    this->tablero->getCelda(capa,fila,columna)->getCelula()->setEstadoDeCelula(estado);
+    }
 }
 
 //carga una configuracion default. lo cree para hacer pruebas de la logica del juego
@@ -270,7 +273,6 @@ void JuegoDeLaVida::imprimirEstadisticas() {
     cout<<"Muertes del turno: "<< this->estadisticas.muertesDelTurno<<endl;
     cout<<"Nacimiento del turno "<< this->estadisticas.nacimientosDelTurno<<endl;
 }
-
 
 void JuegoDeLaVida::dibujarJuegoDeLaVida() {
     int capas = this->tablero->getTablero()->getLargo();
@@ -346,7 +348,7 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
                 *imagenCapa(i,j) = grisOscuro;
             }
         }
-        
+
         for(int y=0; y<=imagenCapa.TellHeight()-MARGEN_INFERIOR; y=y+TAMANIO_CELDA) {
             DrawLine(imagenCapa, 0, y, imagenCapa.TellWidth(), y, grisClaro);
         }
@@ -359,10 +361,10 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
         sprintf(numeroCapa, "%d", capa);
         strcat(cadena, numeroCapa);
         PrintString(imagenCapa, cadena, imagenCapa.TellWidth()-80, imagenCapa.TellHeight()-15, 10, blanco);
-        
+
         for(int fila = 1; fila <= filas; fila++) {//dibujo las celdas y las celulas
             for(int columna = 1; columna <= columnas; columna++) {
-                Celda *celda = this->tablero->getCelda(capa-1, fila-1, columna-1); 
+                Celda *celda = this->tablero->getCelda(capa-1, fila-1, columna-1);
                 if(celda->getComportamiento() != Normal) {
                     char comportamiento[4] = " ";
                     switch(celda->getComportamiento()) {
@@ -372,7 +374,7 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
                         case Radioactiva: comportamiento[0] = 'R'; break;
                         case Procreadora: comportamiento[0] = 'A'; break;
                     }
-                    PrintString(imagenCapa, comportamiento, (columna*TAMANIO_CELDA)-12, (fila*TAMANIO_CELDA)-12, 5, blanco);
+                    PrintString(imagenCapa, comportamiento, (columna*TAMANIO_CELDA)-12, (fila*TAMANIO_CELDA)-12, 6, grisClaro);
                 }
                 Celula *celula = this->tablero->getCelda(capa-1, fila-1, columna-1)->getCelula();
                 RGBApixel colorCelula;
@@ -384,7 +386,7 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
                 }
             }
         }
-        char ruta[22] = "imagenes/capa", formato[5] = ".bmp", numeroImagen[22];
+        char ruta[40] = "imagenes/capa", formato[5] = ".bmp", numeroImagen[22];
         sprintf(numeroImagen, "%d", capa);
         strcat(ruta, numeroImagen);
         strcat(ruta, formato);

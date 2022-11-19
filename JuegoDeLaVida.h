@@ -2,32 +2,23 @@
 #define JUEGODELAVIDA_H_
 
 #include "Tablero.cpp"
+#include "Configuraciones.cpp"
+#include <cstdlib>
 #include <iostream>
-#include <string>
 #include <fstream>
 #include <sstream>
-#include "Configuraciones.cpp"
+#include <string>
 
 #include "bmp/EasyBMP.cpp"
 #include "bmp/EasyBMP_Geometry.cpp"
 #include "bmp/EasyBMP_Font.cpp"
+
 
 static const int MARGEN_INFERIOR = 20;
 static const int TAMANIO_CELDA = 20;
 static const int RADIO_CELULA = 8;
 static const int CERO_ASCII = 48;
 
-// typedef struct {
-//     string dificultad;
-//     int capas, filas, columnas;//valores para el tamanio del tablero
-//     int x1,x2,x3; //valores para nacimiento y muerte
-//     int cantidadCeldasTipo1;   //cantidad de celdas tipo contaminada
-//     int cantidadCeldasTipo2;   //cantidad de celdas tipo envenenada
-//     int cantidadCeldasTipo3;   //cantidad de celdas tipo procreadora
-//     int cantidadCeldasTipo4;   //cantidad de celdas tipo portal
-//     int cantidadCeldasTipo5;   //cantidad de celdas tipo radioactiva
-    
-// }Configuracion;
 
 typedef struct {
     int nacimientosTotales;
@@ -39,6 +30,7 @@ typedef struct {
     int controlMuertes;
     int controlNacimientos;
 }Estadisticas;
+
 
 class JuegoDeLaVida {
     private:
@@ -73,9 +65,8 @@ class JuegoDeLaVida {
        POST: Carga los comportamientos de las celdas, especificados en la configuracion*/    
     void cargarComportamientos();
     /* PRE:
-       POST: Cambia el estado de la celula correspondiente a las coordenadas pasadas por parametro
-             a el estado pasado por parametro*/    
-    void cambiarEstado(int capa, int fila, int columna, EstadoDeCelula estado);
+       POST: Corrobora si una celula que nace esta en una celda contaminada y lleva a cabo el comportamiento de la misma*/    
+    void ejecutarComportamiento(int capa, int fila, int columna);
     /* PRE:
        POST: Cambia el comportamiento de la celda correspondiente a las coordenadas pasadas por parametro
              a el comportameinto pasado por parametro*/    
@@ -101,10 +92,6 @@ class JuegoDeLaVida {
         de ser necesario calcula los genes*/    
     void actualizarEstadoCelula(int capa, int fila, int columna);
     /* PRE:
-       POST: Carga los genes pasados por parametro a la celula correspondiente a las coordenadas
-       pasadas por parametro*/    
-    void setGenesCelula(int capa, int fila, int columna, int gen1, int gen2, int gen3);
-    /* PRE:
        POST: Determina si el juego esta congelado imprimiendolo por pantalla*/    
     void controlMuertes();
     /* PRE:
@@ -113,7 +100,8 @@ class JuegoDeLaVida {
    /* PRE:
       POST: Imprime las estadisticas del JuegoDeLaVida*/
    void imprimirEstadisticas();
-
+   /* PRE:
+      POST: Crea imagenes y dibuja en formato bmp el JuegoDeLaVida*/
    void dibujarJuegoDeLaVida();
 };
 #endif /* JUEGODELAVIDA_H_ */
