@@ -40,5 +40,8 @@ class Celula {
       POST: Cambia el valor del gen seleccionado por el pasado*/
     void setGen(int numeroDeGen, int cambio);
 };
+/*PRE: 
+  POST: Devuelve un numero random entre 0 y el pasado*/
+int generarNumeroRandom(int i);
 
 #endif /* CELULA_H_ */

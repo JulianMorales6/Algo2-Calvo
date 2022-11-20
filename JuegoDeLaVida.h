@@ -2,6 +2,7 @@
 #define JUEGODELAVIDA_H_
 #include "Tablero.cpp"
 #include "Configuraciones.cpp"
+#include "Dibujar.h"
 
 #include "bmp/EasyBMP.cpp"
 #include "bmp/EasyBMP_Geometry.cpp"

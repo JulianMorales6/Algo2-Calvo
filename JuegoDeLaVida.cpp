@@ -21,10 +21,10 @@ void JuegoDeLaVida::inicializarJuegoDeLaVida() {
     this->cargarCelulasVivas();
 }
 
-
 void JuegoDeLaVida::cargarCelulasVivas() {
     int capa, fila, columna;
-    cout<<"Si desea ingresar una Celula viva introduzca un valor para x - Enter, un valor para y - Enter y un valor para z - Enter. De lo contrario presione cualquier letra"<<endl;
+    cout<<"Si desea ingresar una Celula viva introduzca";
+    cout<<" un valor para x - Enter, un valor para y - Enter y un valor para z - Enter. De lo contrario presione cualquier letra"<<endl;
     while(cin >> columna >> fila >> capa) {
         if(capa <= 0 || fila <= 0 || columna <= 0 || capa > this->configuracion.capas || columna > this->configuracion.columnas || fila > this->configuracion.filas) {
             cout<<"Celula inválida, por favor ingrese otra:"<<endl;
@@ -33,8 +33,6 @@ void JuegoDeLaVida::cargarCelulasVivas() {
         this->tablero->getCelda(capa-1, fila-1, columna-1)->getCelula()->revivirCelula();
         ejecutarComportamiento(capa-1, fila-1, columna-1);
         ++this->estadisticas.celulasVivas;
-        ++this->estadisticas.nacimientosDelTurno;
-        ++this->estadisticas.nacimientosTotales;
         cout<<"Si no quiere agregar otra presione cualquier letra y Enter"<<endl;
     }
     this->estadisticas.turnos++;
@@ -42,19 +40,29 @@ void JuegoDeLaVida::cargarCelulasVivas() {
 
 void JuegoDeLaVida::cargarComportamientos() {
     for(int i=0; i<this->configuracion.cantidadCeldasContaminadas; i++){
-        this->cambiarComportamiento(rand()%(this->configuracion.capas+ 1),rand()%(this->configuracion.filas+ 1),rand()%(this->configuracion.columnas+ 1), Contaminada);
+        this->cambiarComportamiento(generarNumeroRandom(this->configuracion.capas),
+                                    generarNumeroRandom(this->configuracion.filas),
+                                    generarNumeroRandom(this->configuracion.columnas), Contaminada);
     }
     for(int i=0; i<this->configuracion.cantidadCeldasEnvenenadas; i++){
-        this->cambiarComportamiento(rand()%(this->configuracion.capas+ 1),rand()%(this->configuracion.filas+ 1),rand()%(this->configuracion.columnas+ 1), Envenenada);
+        this->cambiarComportamiento(generarNumeroRandom(this->configuracion.capas),
+                                    generarNumeroRandom(this->configuracion.filas),
+                                    generarNumeroRandom(this->configuracion.columnas), Envenenada);
     }    
     for(int i=0; i<this->configuracion.cantidadCeldasProcreadoras; i++){
-        this->cambiarComportamiento(rand()%(this->configuracion.capas+ 1),rand()%(this->configuracion.filas+ 1),rand()%(this->configuracion.columnas+ 1), Procreadora);
+        this->cambiarComportamiento(generarNumeroRandom(this->configuracion.capas),
+                                    generarNumeroRandom(this->configuracion.filas),
+                                    generarNumeroRandom(this->configuracion.columnas), Procreadora);
     }    
     for(int i=0; i<this->configuracion.cantidadCeldasPortales; i++){
-        this->cambiarComportamiento(rand()%(this->configuracion.capas+ 1),rand()%(this->configuracion.filas+ 1),rand()%(this->configuracion.columnas+ 1), Portal);
+        this->cambiarComportamiento(generarNumeroRandom(this->configuracion.capas),
+                                    generarNumeroRandom(this->configuracion.filas),
+                                    generarNumeroRandom(this->configuracion.columnas), Portal);
     }    
     for(int i=0; i<this->configuracion.cantidadCeldasRadioactivas; i++){
-        this->cambiarComportamiento(rand()%(this->configuracion.capas+ 1),rand()%(this->configuracion.filas+ 1),rand()%(this->configuracion.columnas+ 1), Radioactiva);
+        this->cambiarComportamiento(generarNumeroRandom(this->configuracion.capas),
+                                    generarNumeroRandom(this->configuracion.filas),
+                                    generarNumeroRandom(this->configuracion.columnas), Radioactiva);
     }    
 }
 
@@ -90,14 +98,19 @@ void JuegoDeLaVida::interaccionesUsuario() {
     int numeroIngresado;
     cin.clear();
     cin.ignore(100, '\n');
+    this->tablero->mostrarTablero();
+    this->imprimirEstadisticas();
+    this->dibujarJuegoDeLaVida();
     cout<<"Presione 1 para avanzar un turno, 2 para reiniciar el juego, 3 o cualquier otro digito para cerrarlo"<<endl;
     while(cin>>numeroIngresado) {
-        this->tablero->mostrarTablero();
-        this->dibujarJuegoDeLaVida();
-        this->imprimirEstadisticas();
         if(numeroIngresado == 1) {
             this->pasarTurno();
-            
+            this->tablero->mostrarTablero();
+            this->imprimirEstadisticas();
+            this->dibujarJuegoDeLaVida();
+            ++this->estadisticas.turnos;
+            this->estadisticas.muertesDelTurno = 0;
+            this->estadisticas.nacimientosDelTurno = 0;
         }
         if(numeroIngresado == 2) {
             this->inicializarJuegoDeLaVida();
@@ -116,9 +129,6 @@ void JuegoDeLaVida::pasarTurno() {
     this->actualizarCelulasVivas();
     this->controlMuertes();
     this->actualizarControlMuertes();
-    ++this->estadisticas.turnos;
-    this->estadisticas.muertesDelTurno = 0;
-    this->estadisticas.nacimientosDelTurno = 0;
 }
 
 void JuegoDeLaVida::copiarTableroAuxiliar() {
@@ -148,21 +158,21 @@ void JuegoDeLaVida::actualizarEstadoCelula(int capa, int fila, int columna) {
     Celda * celda = this->tablero->getCelda(capa,fila,columna);
     Celda * celdaAux = this->tableroAux->getCelda(capa,fila,columna);
     int celulasVivasAlrededor = 0;
-    int genesHeredados[3];
+    int genesHeredados[3];//primera promedio, segundo maximo, tercera while hasta < 255
     genesHeredados[0] = 0;
     genesHeredados[1] = 0;
-    genesHeredados[2] = 0;//primera promedio, segundo maximo, tercera while hasta < 255
-    int maxi = capa+1;
-    int mini = capa-1;
-    int maxj = fila+1;
-    int minj = fila-1;
-    int maxk = columna+1;
-    int mink = columna-1;
+    genesHeredados[2] = 0;
+    int capaMax = capa+1;
+    int capaMin = capa-1;
+    int filaMax = fila+1;
+    int filaMin = fila-1;
+    int columnaMax = columna+1;
+    int columnaMin = columna-1;
 
-    for(int a = mini; a<= maxi; a++) {
-        for(int b = minj; b<= maxj; b++) {
-            for(int c = mink; c<= maxk; c++) {
-                Celda * celdaVecina = this->tableroAux->getCelda(a,b,c);
+    for(int k = capaMin; k<= capaMax; k++) {
+        for(int i = filaMin; i<= filaMax; i++) {
+            for(int j = columnaMin; j<= columnaMax; j++) {
+                Celda * celdaVecina = this->tableroAux->getCelda(k, i, j);
                 if(celdaVecina->getCelula()->getEstado() == Viva) {
                     celulasVivasAlrededor++;
                     genesHeredados[0] += celdaVecina->getCelula()->getGen(0);
@@ -205,8 +215,7 @@ void JuegoDeLaVida::actualizarControlMuertes() {
 }
 
 void JuegoDeLaVida::controlMuertes() {
-    if(this->estadisticas.muertesDelTurno == 0 &&
-       this->estadisticas.nacimientosDelTurno == 0) {
+    if(this->estadisticas.muertesDelTurno == 0 && this->estadisticas.nacimientosDelTurno == 0) {
             cout<<"El juego esta congelado, presione 2 para reiniciar o 3 para cerrar"<<endl;
        }
 }
@@ -216,24 +225,22 @@ void JuegoDeLaVida::ejecutarComportamiento(int capa, int fila, int columna) {
     ComportamientoDeCelda comportamiento = this->tablero->getCelda(capa,fila,columna)->getComportamiento();
     if(celula->getEstado() == Viva) {
         if(comportamiento == Portal) {
-        	/*
             this->tablero->getCelda(generarNumeroRandom(this->configuracion.capas),
                                     generarNumeroRandom(this->configuracion.filas),
-                                    generarNumeroRandom(this->configuracion.columnas))->getCelula()->revivirCelula();*/
+                                    generarNumeroRandom(this->configuracion.columnas))->getCelula()->revivirCelula();
         }
         if( comportamiento == Radioactiva) {
             for(int i = 0; i<3; i++) {
-            	/*
                 if(generarNumeroRandom(10) > 5) {
                     celula->setGen(i, celula->getGen(i)/2);//tiene 50% de afectar a cada gen y si lo afecta lo hace la mitad
-                }*/
+                }
             }
         }
         if(comportamiento == Contaminada) {
-            //celula->matarCelula();
+            celula->matarCelula();
         }
         if(comportamiento == Envenenada) {
-            /*celula->setGen(generarNumeroRandom(3), 0);*/
+            celula->setGen(generarNumeroRandom(3), 0);
         }
         if(comportamiento == Procreadora) {
             /*
@@ -273,9 +280,9 @@ void JuegoDeLaVida::imprimirEstadisticas() {
     cout<<"CV: "<<this->estadisticas.celulasVivas<<" CQN: "<<this->estadisticas.nacimientosDelTurno<<" CQM: "<<this->estadisticas.muertesDelTurno<<endl;
     float promedioDeNacimientos = (float)this->estadisticas.nacimientosTotales / (float)this->estadisticas.turnos;
     float promedioDeMuertes = (float)this->estadisticas.muertesTotales /  (float)this->estadisticas.turnos;
-    cout<<"PN: "<<promedioDeNacimientos<<" PM: "<<promedioDeMuertes<<endl;
-    cout<<"Muertes del turno: "<< this->estadisticas.muertesDelTurno<<endl;
-    cout<<"Nacimiento del turno "<< this->estadisticas.nacimientosDelTurno<<endl;
+    cout<<"%N: "<<promedioDeNacimientos<<" %M: "<<promedioDeMuertes<<endl;
+    cout<<"Muertes Totales: "<< this->estadisticas.muertesTotales<<endl;
+    cout<<"Nacimiento Totales "<< this->estadisticas.nacimientosTotales<<endl;
 }
 
 void JuegoDeLaVida::dibujarJuegoDeLaVida() {
@@ -333,8 +340,8 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
     PrintString(imagenPortada, cadena4, 30, 80, 12, blanco);
 
     char cadena6[1024] = "Porcentaje de nacimientos: ", porcNaciemientos[22], cadena7[1024] = "  Porcentaje de muertes ", porcMuertes[22];
-    sprintf(porcNaciemientos, "%i", this->estadisticas.nacimientosTotales / this->estadisticas.turnos);
-    sprintf(porcMuertes, "%i", this->estadisticas.muertesTotales /  this->estadisticas.turnos);
+    sprintf(porcNaciemientos, "%f", (float)this->estadisticas.nacimientosTotales / (float)this->estadisticas.turnos);
+    sprintf(porcMuertes, "%f", (float)this->estadisticas.muertesTotales /  (float)this->estadisticas.turnos);
     strcat(cadena6, porcNaciemientos);
     strcat(cadena6, cadena7);
     strcat(cadena6, porcMuertes);
@@ -395,5 +402,6 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
         strcat(ruta, numeroImagen);
         strcat(ruta, formato);
         imagenCapa.WriteToFile(ruta);
+
     }
 }

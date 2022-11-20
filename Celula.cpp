@@ -1,15 +1,12 @@
 
 #include "Celula.h"
 
-
-
 Celula::Celula() {    
     this->Estado = Muerta;
     for(int i = 0; i<CANTIDAD_GENES; i++) {
         this->genes[i] = 0;
     }
 }
-
 
 void Celula::matarCelula() {
     this->Estado = Muerta;
@@ -18,14 +15,12 @@ void Celula::matarCelula() {
     }
 }
 
-
 void Celula::revivirCelula(){
     this->Estado = Viva;
     for(int i = 0; i<CANTIDAD_GENES; i++) {
         this->genes[i] = rand()%(255 + 1);
     }
 }
-
 
 void Celula::revivirCelula(int genesHeredados[]){
     this->Estado = Viva;
@@ -34,11 +29,9 @@ void Celula::revivirCelula(int genesHeredados[]){
     }
 }
 
-
 EstadoDeCelula Celula::getEstado(){
     return this->Estado;
 }
-
 
 void Celula::setGen(int numeroDeGen, int cambio) {
     if(cambio > 255 || cambio < 0) {
@@ -47,16 +40,13 @@ void Celula::setGen(int numeroDeGen, int cambio) {
     this->genes[numeroDeGen] = cambio;
 }
 
-
 int Celula::getGen(int numeroDeGen){
     return this->genes[numeroDeGen];
 }
 
-
 void Celula::setEstado(EstadoDeCelula Estado) {
     this->Estado = Estado;
 }
-
 
 int generarNumeroRandom(int i) {
     return(rand()%(i + 1));
