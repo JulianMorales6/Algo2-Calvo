@@ -184,6 +184,12 @@ void Configuraciones::escribirUltimaConf(Configuracion conf) {
 }
 
 Configuraciones::~Configuraciones() {
+    this->lista->inicializarCursor();
+    do
+    {
+        delete this->lista->getCursor();
+    } while (this->lista->avanzarCursor());
+    
     delete this->lista;
     delete this->configAux;
     delete this->primeraConf;

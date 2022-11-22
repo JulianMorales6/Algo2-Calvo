@@ -3,14 +3,15 @@
 #include <dirent.h>
 #include <iostream>
 
-void vaciarCarpetaImagenes() {
+void vaciarCarpetaImagenes(char ruta_carpeta[32]) {
 
-    DIR *directorio = opendir("imagenes/");
+    DIR *directorio = opendir(ruta_carpeta);
     struct dirent *archivo;
 
     if(directorio != NULL) {
         while((archivo = readdir(directorio)) != NULL) {
-            char ruta[64] = "imagenes/";
+            char ruta[64] = "";
+            strcat(ruta, ruta_carpeta);
             strcat(ruta, archivo->d_name);
             remove(ruta);
         }
@@ -18,7 +19,8 @@ void vaciarCarpetaImagenes() {
 }
 
 int main() {
-    vaciarCarpetaImagenes();
+    char ruta_carpeta[32] = "imagenes/";
+    vaciarCarpetaImagenes(ruta_carpeta);
     JuegoDeLaVida * juego = new JuegoDeLaVida;
     juego->inicializarJuegoDeLaVida();
     juego->interaccionesUsuario();
