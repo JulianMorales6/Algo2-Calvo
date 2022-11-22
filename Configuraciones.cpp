@@ -109,7 +109,7 @@ void Configuraciones::validarConfiguracion(Configuracion conf) {
     cantidadTotalCeldas = conf.capas * conf.filas * conf.columnas;
     cantidadDeCeldasConComportamiento = conf.cantidadCeldasContaminadas + conf.cantidadCeldasEnvenenadas + conf.cantidadCeldasProcreadoras + conf.cantidadCeldasPortales + conf.cantidadCeldasRadioactivas;
 
-    if(conf.cantidadCeldasContaminadas < 0 || conf.cantidadCeldasEnvenenadas < 0 || conf.cantidadCeldasProcreadoras < 0 || conf.cantidadCeldasPortales < 0 || conf.cantidadCeldasRadioactivas < 0 || conf.x1 < 0 || conf.x2 < 0 || conf.x3 < 0 || conf.capas < 3 || conf.filas < 3 || conf.columnas < 3) {
+    if(conf.cantidadCeldasContaminadas < 0 || conf.cantidadCeldasEnvenenadas < 0 || conf.cantidadCeldasProcreadoras < 0 || conf.cantidadCeldasPortales < 0 || conf.cantidadCeldasRadioactivas < 0 || conf.x1 < 0 || conf.x2 < 0 || conf.x3 < 0 || conf.capas < 3 || conf.filas < 3 || conf.columnas < 3 || conf.capas > 100 || conf.filas > 100 || conf.columnas > 100) {
         error = true;
     }
 
@@ -123,7 +123,7 @@ void Configuraciones::validarConfiguracion(Configuracion conf) {
     }
     
     if(error) {
-        cout<<"Error de configuracion, tenga en cuenta que: "<<endl<<"Todos los valores que ingresa deben ser enteros positivos o 0, salvo capas, filas y columnas que deben ser mayores o iguales a 3."<<endl<<"  Los cinco comportamientos de celdas no deben ser negativos y su suma no puede ser mayor al producto de capas, filas y columnas."<<endl<<"    Tanto las vecinas necesarias para nacer, las vecinas minimas para seguir viva y las vecinas maximas para seguir viva deben tener un valor de maximo 26"<<endl<<"Vecinas minimas para no morir (x2) debe ser menor o igual a Vecinas maximas para no morir (x3)"<<endl;
+        cout<<"Error de configuracion, tenga en cuenta que: "<<endl<<"Todos los valores que ingresa deben ser enteros positivos o 0, salvo capas, filas y columnas que deben ser mayores o iguales a 3 y menores o iguales a 100."<<endl<<"  Los cinco comportamientos de celdas no deben ser negativos y su suma no puede ser mayor al producto de capas, filas y columnas."<<endl<<"    Tanto las vecinas necesarias para nacer, las vecinas minimas para seguir viva y las vecinas maximas para seguir viva deben tener un valor de maximo 26"<<endl<<"Vecinas minimas para no morir (x2) debe ser menor o igual a Vecinas maximas para no morir (x3)"<<endl;
         seleccionarUnaConfiguracion();
     }
 
