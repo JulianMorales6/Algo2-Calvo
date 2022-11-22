@@ -6,6 +6,14 @@
 JuegoDeLaVida::JuegoDeLaVida() {
     this->tablero = NULL;
     this->tableroAux = NULL;
+    this->estadisticas.nacimientosTotales = 0;
+    this->estadisticas.muertesTotales = 0;
+    this->estadisticas.celulasVivas = 0;
+    this->estadisticas.nacimientosDelTurno = 0;
+    this->estadisticas.muertesDelTurno = 0;
+    this->estadisticas.turnos = 0;
+    this->estadisticas.controlMuertes = 0;
+    this->estadisticas.controlNacimientos = 0;
 }
 
 JuegoDeLaVida::~JuegoDeLaVida() {
