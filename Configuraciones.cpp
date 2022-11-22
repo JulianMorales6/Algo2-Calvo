@@ -191,6 +191,4 @@ Configuraciones::~Configuraciones() {
     } while (this->lista->avanzarCursor());
     
     delete this->lista;
-    delete this->configAux;
-    delete this->primeraConf;
 }
