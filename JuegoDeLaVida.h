@@ -22,6 +22,7 @@ typedef struct {
     int turnos;
     int controlMuertes;
     int controlNacimientos;
+    bool flagCongelado;
 }Estadisticas;
 
 
@@ -96,6 +97,9 @@ class JuegoDeLaVida {
    /* PRE:
       POST: Crea imagenes y dibuja en formato bmp el JuegoDeLaVida*/
    void dibujarJuegoDeLaVida();
+   /* PRE:
+      POST: Inicializa como vivas de forma aleatoria la cantidad de celulas especificadas en la configuracion*/
+   void inicializarCelulasConfiguracion();
 };
 
 

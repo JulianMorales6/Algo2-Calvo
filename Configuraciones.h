@@ -17,6 +17,7 @@ struct Configuracion{
     int cantidadCeldasProcreadoras;   //cantidad de celdas tipo procreadora
     int cantidadCeldasPortales;   //cantidad de celdas tipo portal
     int cantidadCeldasRadioactivas;   //cantidad de celdas tipo radioactiva
+    int cantidadCelulasVivas;   //cantidad de celulas vivas de acuerdo a la configuracion elegida
 };
 
 typedef Lista<Configuracion *> *ListaConfiguraciones;

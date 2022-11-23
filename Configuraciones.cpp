@@ -32,6 +32,7 @@ void Configuraciones::obtenerConfiguraciones() {
         archivo >> this->configAux->cantidadCeldasProcreadoras;
         archivo >> this->configAux->cantidadCeldasPortales;
         archivo >> this->configAux->cantidadCeldasRadioactivas;
+        archivo >> this->configAux->cantidadCelulasVivas;
         this->configAux->id = i;
         //Configuracion *punteroAuxiliar = configAux;
         this->lista->add(this->configAux);
@@ -73,7 +74,9 @@ void Configuraciones::mostrarConfiguraciones() {
             "    Cantidad de celdas portales: "<<
             this->lista->getCursor()->cantidadCeldasPortales<<endl<<
             "    Cantidad de celdas radioactivas: "<<
-            this->lista->getCursor()->cantidadCeldasRadioactivas<<endl<<endl;
+            this->lista->getCursor()->cantidadCeldasRadioactivas<<endl<<
+            "    Cantidad de celulas vivas: "<<
+            this->lista->getCursor()->cantidadCelulasVivas<<endl<<endl;
             this->lista->avanzarCursor();
         } while (this->lista->getCursor()->id != this->primeraConf->id);
     }
@@ -117,11 +120,14 @@ void Configuraciones::validarConfiguracion(Configuracion conf) {
         error = true;
     }
 
-    if (cantidadDeCeldasConComportamiento > cantidadTotalCeldas)
-    {
+    if (cantidadDeCeldasConComportamiento > cantidadTotalCeldas) {
         error = true;
     }
     
+    if (conf.cantidadCelulasVivas < 0 || conf.cantidadCelulasVivas > cantidadTotalCeldas/2) {
+        error = true;
+    }
+
     if(error) {
         cout<<"Error de configuracion, tenga en cuenta que: "<<endl<<"Todos los valores que ingresa deben ser enteros positivos o 0, salvo capas, filas y columnas que deben ser mayores o iguales a 3 y menores o iguales a 100."<<endl<<"  Los cinco comportamientos de celdas no deben ser negativos y su suma no puede ser mayor al producto de capas, filas y columnas."<<endl<<"    Tanto las vecinas necesarias para nacer, las vecinas minimas para seguir viva y las vecinas maximas para seguir viva deben tener un valor de maximo 26"<<endl<<"Vecinas minimas para no morir (x2) debe ser menor o igual a Vecinas maximas para no morir (x3)"<<endl;
         seleccionarUnaConfiguracion();
@@ -152,6 +158,8 @@ Configuracion Configuraciones::cargarManualConfig(Configuracion confElegida) {
     cin>>confElegida.cantidadCeldasPortales;
     cout<<"Cantidad de celdas radioactivas: ";
     cin>>confElegida.cantidadCeldasRadioactivas;
+    cout<<"Cantidad de celulas vivas (0 si quiere quiere ingresar manualmente): ";
+    cin>>confElegida.cantidadCelulasVivas;
     confElegida.dificultad = "Custom";
     validarConfiguracion(confElegida);
     escribirUltimaConf(confElegida);
@@ -176,7 +184,7 @@ void Configuraciones::escribirUltimaConf(Configuracion conf) {
 
     archivo.close();
 
-    archivoTemp << "UltimaCustomIngresada " << conf.capas << " " << conf.filas << " " << conf.columnas << " " << conf.x1 << " " << conf.x2 << " " << conf.x3 << " " << conf.cantidadCeldasContaminadas << " " << conf.cantidadCeldasEnvenenadas << " " << conf.cantidadCeldasProcreadoras << " " << conf.cantidadCeldasPortales << " " << conf.cantidadCeldasRadioactivas;
+    archivoTemp << "UltimaCustomIngresada " << conf.capas << " " << conf.filas << " " << conf.columnas << " " << conf.x1 << " " << conf.x2 << " " << conf.x3 << " " << conf.cantidadCeldasContaminadas << " " << conf.cantidadCeldasEnvenenadas << " " << conf.cantidadCeldasProcreadoras << " " << conf.cantidadCeldasPortales << " " << conf.cantidadCeldasRadioactivas << " " << conf.cantidadCelulasVivas;
 
     archivoTemp.close();
     remove("Configuracion.txt");

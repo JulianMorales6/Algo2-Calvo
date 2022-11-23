@@ -14,6 +14,7 @@ JuegoDeLaVida::JuegoDeLaVida() {
     this->estadisticas.turnos = 0;
     this->estadisticas.controlMuertes = 0;
     this->estadisticas.controlNacimientos = 0;
+    this->estadisticas.flagCongelado = false;
 }
 
 JuegoDeLaVida::~JuegoDeLaVida() {
@@ -30,6 +31,18 @@ void JuegoDeLaVida::inicializarJuegoDeLaVida() {
 }
 
 void JuegoDeLaVida::cargarCelulasVivas() {
+    int opcion;
+    this->estadisticas.turnos++;
+    do {
+        cout<<"Si desea realizar una carga manual de celulas vivas ingrese 1, si prefiere aleatorio ingrese 0: "<<endl;
+        cin.clear();
+        cin.ignore(100, '\n');
+        cin>>opcion;
+    } while(opcion != 1 && opcion != 0);
+    if(opcion == 0) { 
+        this->inicializarCelulasConfiguracion();
+        return;
+    }
     int capa, fila, columna;
     cout<<"Si desea ingresar una Celula viva introduzca";
     cout<<" un valor para x - Enter, un valor para y - Enter y un valor para z - Enter. De lo contrario presione cualquier letra"<<endl;
@@ -40,10 +53,9 @@ void JuegoDeLaVida::cargarCelulasVivas() {
         }
         this->tablero->getCelda(capa-1, fila-1, columna-1)->getCelula()->revivirCelula();
         ejecutarComportamiento(capa-1, fila-1, columna-1);
-        ++this->estadisticas.celulasVivas;
+        this->estadisticas.celulasVivas++;
         cout<<"Si no quiere agregar otra presione cualquier letra y Enter"<<endl;
     }
-    this->estadisticas.turnos++;
 }
 
 void JuegoDeLaVida::cargarComportamientos() {
@@ -99,6 +111,7 @@ void JuegoDeLaVida::cargarConfiguracion() {
     this->configuracion.cantidadCeldasProcreadoras = confElegida.cantidadCeldasProcreadoras;
     this->configuracion.cantidadCeldasPortales = confElegida.cantidadCeldasPortales;
     this->configuracion.cantidadCeldasRadioactivas = confElegida.cantidadCeldasRadioactivas;
+    this->configuracion.cantidadCelulasVivas = confElegida.cantidadCelulasVivas;
     delete listaDeConfigs;
 }
 
@@ -113,12 +126,7 @@ void JuegoDeLaVida::interaccionesUsuario() {
     while(cin>>numeroIngresado) {
         if(numeroIngresado == 1) {
             this->pasarTurno();
-            this->tablero->mostrarTablero();
-            this->imprimirEstadisticas();
-            this->dibujarJuegoDeLaVida();
-            ++this->estadisticas.turnos;
-            this->estadisticas.muertesDelTurno = 0;
-            this->estadisticas.nacimientosDelTurno = 0;
+            this->estadisticas.turnos++;
         }
         if(numeroIngresado == 2) {
             this->inicializarJuegoDeLaVida();
@@ -126,6 +134,11 @@ void JuegoDeLaVida::interaccionesUsuario() {
         if(numeroIngresado == 3) {
             break;
         }
+        this->tablero->mostrarTablero();
+        this->imprimirEstadisticas();
+        this->dibujarJuegoDeLaVida();
+        this->estadisticas.muertesDelTurno = 0;
+        this->estadisticas.nacimientosDelTurno = 0;
         cout<<"Presione 1 para avanzar un turno, 2 para reiniciar el juego, 3 o cualquier otro digito para cerrarlo"<<endl;
         cin.clear();
         cin.ignore(100, '\n');
@@ -224,7 +237,7 @@ void JuegoDeLaVida::actualizarControlMuertes() {
 
 void JuegoDeLaVida::controlMuertes() {
     if(this->estadisticas.muertesDelTurno == 0 && this->estadisticas.nacimientosDelTurno == 0) {
-            cout<<"El juego esta congelado, presione 2 para reiniciar o 3 para cerrar"<<endl;
+        this->estadisticas.flagCongelado = true;
        }
 }
 
@@ -246,22 +259,23 @@ void JuegoDeLaVida::ejecutarComportamiento(int capa, int fila, int columna) {
         }
         if(comportamiento == Contaminada) {
             celula->matarCelula();
+            this->estadisticas.celulasVivas--;
+            this->estadisticas.muertesDelTurno++;
+            this->estadisticas.muertesTotales++;
         }
         if(comportamiento == Envenenada) {
             celula->setGen(generarNumeroRandom(3), 0);
         }
         if(comportamiento == Procreadora) {
-            /*
-            if(this->configuracion.x1 > 2) {
-                --this->configuracion.x1;
+            if(this->configuracion.x1 > 3) {
+                this->configuracion.x1--;
             }
-            if(this->configuracion.x2 > 3) {
-                --this->configuracion.x2;
+            if(this->configuracion.x2 > 2) {
+                this->configuracion.x2--;
             }
             if(this->configuracion.x3 > 4) {
-                --this->configuracion.x3; 
+                this->configuracion.x3--; 
             }
-            */
         } 
     }
 }
@@ -291,6 +305,9 @@ void JuegoDeLaVida::imprimirEstadisticas() {
     cout<<"%N: "<<promedioDeNacimientos<<" %M: "<<promedioDeMuertes<<endl;
     cout<<"Muertes Totales: "<< this->estadisticas.muertesTotales<<endl;
     cout<<"Nacimiento Totales "<< this->estadisticas.nacimientosTotales<<endl;
+    if(this->estadisticas.flagCongelado) {
+    cout<<"El juego esta congelado"<<endl;
+    }
 }
 
 void JuegoDeLaVida::dibujarJuegoDeLaVida() {
@@ -412,4 +429,18 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
         imagenCapa.WriteToFile(ruta);
 
     }
+}
+
+
+void JuegoDeLaVida::inicializarCelulasConfiguracion() {
+    this->estadisticas.celulasVivas = this->configuracion.cantidadCelulasVivas;
+    for(int i=0; i<this->configuracion.cantidadCelulasVivas; i++) {
+        Celula * celulaAux = NULL;
+        do {
+        celulaAux = this->tablero->getCelda(    generarNumeroRandom(this->configuracion.capas),
+                                                generarNumeroRandom(this->configuracion.filas),
+                                                generarNumeroRandom(this->configuracion.columnas))->getCelula();
+        } while(celulaAux->getEstado() == Viva);
+        celulaAux->revivirCelula();
+    }  
 }
