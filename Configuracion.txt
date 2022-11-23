@@ -1,3 +1,4 @@
-Dificultad Largo Ancho Prof VecParaNacer VecMinSeguirViva VecMaxSeguirViva Contaminadas Envenenadas Procreadoras Portales Radioactivas Vivas
-Facil 3 20 20 3 2 3 2 2 2 2 2 600
-Dificil 10 50 50 9 8 15 30 30 5 25 30 2500
+Dificultad capas filas columnas VecParaNacer VecMinSeguirViva VecMaxSeguirViva Contaminadas Envenenadas Procreadoras Portales Radioactivas Vivas
+Facil 5 20 20 6 5 8 10 20 20 20 20 200
+Normal 10 30 30 8 7 10 30 30 20 30 30 900
+Dificil 15 40 40 10 9 12 40 40 20 40 40 2400

@@ -88,9 +88,6 @@ class JuegoDeLaVida {
     /* PRE:
        POST: Determina si el juego esta congelado imprimiendolo por pantalla*/    
     void controlMuertes();
-    /* PRE:
-       POST: Carga una configuracion default para hacer pruebas del tablero*/    
-    void setConfiguracion();
    /* PRE:
       POST: Imprime las estadisticas del JuegoDeLaVida*/
    void imprimirEstadisticas();
@@ -101,7 +98,6 @@ class JuegoDeLaVida {
       POST: Inicializa como vivas de forma aleatoria la cantidad de celulas especificadas en la configuracion*/
    void inicializarCelulasConfiguracion();
 };
-
 
 
 #endif /* JUEGODELAVIDA_H_ */

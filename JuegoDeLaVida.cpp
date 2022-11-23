@@ -280,23 +280,6 @@ void JuegoDeLaVida::ejecutarComportamiento(int capa, int fila, int columna) {
     }
 }
 
-//carga una configuracion default. lo cree para hacer pruebas de la logica del juego
-void JuegoDeLaVida::setConfiguracion() {
-    this->configuracion.capas = 4;
-    this->configuracion.filas = 6;
-    this->configuracion.columnas = 10;
-    
-    this->configuracion.cantidadCeldasContaminadas = 2;
-    this->configuracion.cantidadCeldasEnvenenadas = 2;
-    this->configuracion.cantidadCeldasProcreadoras = 2;
-    this->configuracion.cantidadCeldasPortales = 2;
-    this->configuracion.cantidadCeldasRadioactivas = 2;
-    this->configuracion.dificultad = "Default";
-    this->configuracion.x1 = 3;
-    this->configuracion.x2 = 2;
-    this->configuracion.x3 = 4; 
-}
-
 void JuegoDeLaVida::imprimirEstadisticas() {
     cout<<"ESTADISTICAS"<<endl;
     cout<<"CV: "<<this->estadisticas.celulasVivas<<" CQN: "<<this->estadisticas.nacimientosDelTurno<<" CQM: "<<this->estadisticas.muertesDelTurno<<endl;
@@ -314,8 +297,6 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
     int capas = this->tablero->getTablero()->getLargo();
     int filas = this->tablero->getTablero()->getCursor()->getLargo();
     int columnas = this->tablero->getTablero()->getCursor()->getCursor()->getLargo();
-
-
     //colores para el tablero
     RGBApixel grisClaro;
     grisClaro.Red = 40;
@@ -339,66 +320,69 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
             *imagenPortada(i,j) = grisClaro;
         }
     }
-    char encabezado[1024] = "ESTADISTICAS     ", cadena0[1024] = "  Turnos: ", nTurnos[22];
+    char encabezado[200] = "ESTADISTICAS     ", turnos[40] = "  Turnos: ", nTurnos[40];
     sprintf(nTurnos, "%i", this->estadisticas.turnos);
-    strcat(encabezado, cadena0);
+    strcat(encabezado, turnos);
     strcat(encabezado, nTurnos);
     PrintString(imagenPortada, encabezado, 30, 30, 14, blanco);
 
-    char cadena1[1024] = "Celulas Vivas: ", vivas[22], cadena2[1024] = "  Nacimientos del turno: ", nacimientos[22], cadena3[1024] =  "  Muertes del turno: ", muertes[22];
-    sprintf(vivas, "%i", this->estadisticas.celulasVivas);
-    sprintf(nacimientos, "%i", this->estadisticas.nacimientosDelTurno);
-    sprintf(muertes, "%i", this->estadisticas.muertesDelTurno);
-    strcat(cadena1, vivas);
-    strcat(cadena1, cadena2);
-    strcat(cadena1, nacimientos);
-    strcat(cadena1, cadena3);
-    strcat(cadena1, muertes);
-    PrintString(imagenPortada, cadena1, 30, 60, 12, blanco);
+    char linea1[200] = "Celulas Vivas: ", nVivas[40], nacimientos[40] = "  Nacimientos del turno: ", nNacimientos[40], muertes[40] =  "  Muertes del turno: ", nMuertes[40];
+    sprintf(nVivas, "%i", this->estadisticas.celulasVivas);
+    sprintf(nNacimientos, "%i", this->estadisticas.nacimientosDelTurno);
+    sprintf(nMuertes, "%i", this->estadisticas.muertesDelTurno);
+    strcat(linea1, nVivas);
+    strcat(linea1, nacimientos);
+    strcat(linea1, nNacimientos);
+    strcat(linea1, muertes);
+    strcat(linea1, nMuertes);
+    PrintString(imagenPortada, linea1, 30, 60, 11, blanco);
 
-    char cadena4[1024] = "Nacimientos totales: ", nacimientosTotales[22], cadena5[1024] = "  Muertes totales: ", MuertesTotales[22];
-    sprintf(nacimientosTotales, "%i", this->estadisticas.nacimientosTotales);
-    sprintf(MuertesTotales, "%i", this->estadisticas.muertesTotales);
-    strcat(cadena4, nacimientosTotales);
-    strcat(cadena4, cadena5);
-    strcat(cadena4, MuertesTotales);
-    PrintString(imagenPortada, cadena4, 30, 80, 12, blanco);
+    char linea2[200] = "Nacimientos totales: ", nNacimientosTotales[40], muertesTotales[40] = "  Muertes totales: ", nMuertesTotales[40];
+    sprintf(nNacimientosTotales, "%i", this->estadisticas.nacimientosTotales);
+    sprintf(nMuertesTotales, "%i", this->estadisticas.muertesTotales);
+    strcat(linea2, nNacimientosTotales);
+    strcat(linea2, muertesTotales);
+    strcat(linea2, nMuertesTotales);
+    PrintString(imagenPortada, linea2, 30, 80, 11, blanco);
 
-    char cadena6[1024] = "Porcentaje de nacimientos: ", porcNaciemientos[22], cadena7[1024] = "  Porcentaje de muertes ", porcMuertes[22];
-    sprintf(porcNaciemientos, "%f", (float)this->estadisticas.nacimientosTotales / (float)this->estadisticas.turnos);
-    sprintf(porcMuertes, "%f", (float)this->estadisticas.muertesTotales /  (float)this->estadisticas.turnos);
-    strcat(cadena6, porcNaciemientos);
-    strcat(cadena6, cadena7);
-    strcat(cadena6, porcMuertes);
-    PrintString(imagenPortada, cadena6, 30, 100, 12, blanco);
+    char linea3[200] = "Porcentaje de nacimientos: ", nPorcNaciemientos[40], porcMuertes[40] = "  Porcentaje de muertes ", nPorcMuertes[40];
+    sprintf(nPorcNaciemientos, "%f", (float)this->estadisticas.nacimientosTotales / (float)this->estadisticas.turnos);
+    sprintf(nPorcMuertes, "%f", (float)this->estadisticas.muertesTotales /  (float)this->estadisticas.turnos);
+    strcat(linea3, nPorcNaciemientos);
+    strcat(linea3, porcMuertes);
+    strcat(linea3, nPorcMuertes);
+    PrintString(imagenPortada, linea3, 30, 100, 11, blanco);
+
+    if(this->estadisticas.flagCongelado) {
+        char linea5[40] = "JUEGO CONGELADO";
+        PrintString(imagenPortada, linea5, 200, 125, 12, blanco);
+    }
 
     imagenPortada.WriteToFile("imagenes/estadisticas.bmp");
 
     for(int capa = 1; capa <= capas; capa++) {
-        BMP imagenCapa; //crear nueva imagen para cada capa
+        BMP imagenCapa;
 
         imagenCapa.SetSize(columnas*TAMANIO_CELDA, (filas*TAMANIO_CELDA)+MARGEN_INFERIOR);
 
-        for(int i=0; i<imagenCapa.TellWidth(); i++) {//color del fondo
+        for(int i=0; i<imagenCapa.TellWidth(); i++) {
             for(int j=0; j<imagenCapa.TellHeight(); j++) {
                 *imagenCapa(i,j) = grisOscuro;
             }
         }
-
         for(int y=0; y<=imagenCapa.TellHeight()-MARGEN_INFERIOR; y=y+TAMANIO_CELDA) {
             DrawLine(imagenCapa, 0, y, imagenCapa.TellWidth(), y, grisClaro);
         }
         for(int x=0; x<=imagenCapa.TellWidth(); x=x+TAMANIO_CELDA) {
             DrawLine(imagenCapa, x, 0, x, imagenCapa.TellHeight()-MARGEN_INFERIOR, grisClaro);
         }
-
         char cadena[1024] = "Capa ";
         char numeroCapa[22];
         sprintf(numeroCapa, "%d", capa);
         strcat(cadena, numeroCapa);
         PrintString(imagenCapa, cadena, imagenCapa.TellWidth()-80, imagenCapa.TellHeight()-15, 10, blanco);
 
-        for(int fila = 1; fila <= filas; fila++) {//dibujo las celdas y las celulas
+        for(int fila = 1; fila <= filas; fila++) {
             for(int columna = 1; columna <= columnas; columna++) {
                 Celda *celda = this->tablero->getCelda(capa-1, fila-1, columna-1);
                 if(celda->getComportamiento() != Normal) {
@@ -422,7 +406,7 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
                 }
             }
         }
-        char ruta[1024] = "imagenes/capa", formato[5] = ".bmp", numeroImagen[22];
+        char ruta[200] = "imagenes/capa", formato[5] = ".bmp", numeroImagen[40];
         sprintf(numeroImagen, "%i", capa);
         strcat(ruta, numeroImagen);
         strcat(ruta, formato);
@@ -431,15 +415,14 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
     }
 }
 
-
 void JuegoDeLaVida::inicializarCelulasConfiguracion() {
     this->estadisticas.celulasVivas = this->configuracion.cantidadCelulasVivas;
     for(int i=0; i<this->configuracion.cantidadCelulasVivas; i++) {
         Celula * celulaAux = NULL;
         do {
-        celulaAux = this->tablero->getCelda(    generarNumeroRandom(this->configuracion.capas),
-                                                generarNumeroRandom(this->configuracion.filas),
-                                                generarNumeroRandom(this->configuracion.columnas))->getCelula();
+        celulaAux = this->tablero->getCelda(generarNumeroRandom(this->configuracion.capas),
+                                            generarNumeroRandom(this->configuracion.filas),
+                                            generarNumeroRandom(this->configuracion.columnas))->getCelula();
         } while(celulaAux->getEstado() == Viva);
         celulaAux->revivirCelula();
     }  

@@ -5,8 +5,6 @@
 #include "Nodo.h"
 using namespace std;
 
-
-
 template <class T> class Lista {
     private:
     Nodo<T> *primero;
@@ -46,9 +44,6 @@ template <class T> class Lista {
         (si se pasa uno mas o uno menos se devuelve el primero o el ultimo respectivamente) 
       POST: Devuelve una referencia al elemento de la posicion pasada*/
     T operator[](int posicion);
-
-    //T operator[] (int j);
- 
 };
 
 
@@ -155,7 +150,6 @@ template <class T> T Lista<T>::getCursor() {
 }
 
 
-
 template <class T> void Lista<T>::emitir() {  
  
     this->inicializarCursor();
@@ -174,8 +168,6 @@ template <class T> void Lista<T>::emitir() {
 }
 
 
-
-
 template <class T> bool Lista <T>::estaVacia() {
     return(this->primero == NULL);
 }
@@ -184,7 +176,6 @@ template <class T> bool Lista <T>::estaVacia() {
 template <class T> int Lista<T>::getLargo() {
     return this->largo;
 }
-
 
 
 template <class T> T Lista<T>::operator[](int posicion){
