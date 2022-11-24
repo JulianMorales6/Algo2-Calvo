@@ -6,7 +6,7 @@
 
 typedef Lista<Lista<Lista<Celda *> *> *> *cubo;
 
-class Tablero{
+class Tablero {
     private:
     cubo tablero;
 

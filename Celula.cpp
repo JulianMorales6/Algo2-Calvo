@@ -15,21 +15,21 @@ void Celula::matarCelula() {
     }
 }
 
-void Celula::revivirCelula(){
+void Celula::revivirCelula() {
     this->Estado = Viva;
     for(int i = 0; i<CANTIDAD_GENES; i++) {
         this->genes[i] = rand()%(255 + 1);
     }
 }
 
-void Celula::revivirCelula(int genesHeredados[]){
+void Celula::revivirCelula(int genesHeredados[]) {
     this->Estado = Viva;
     for(int i = 0; i<CANTIDAD_GENES; i++) {
         this->genes[i] = genesHeredados[i];
     }
 }
 
-EstadoDeCelula Celula::getEstado(){
+EstadoDeCelula Celula::getEstado() {
     return this->Estado;
 }
 
@@ -40,7 +40,7 @@ void Celula::setGen(int numeroDeGen, int cambio) {
     this->genes[numeroDeGen] = cambio;
 }
 
-int Celula::getGen(int numeroDeGen){
+int Celula::getGen(int numeroDeGen) {
     return this->genes[numeroDeGen];
 }
 

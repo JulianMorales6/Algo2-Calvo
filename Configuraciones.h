@@ -8,7 +8,7 @@
 #include <sstream>
 
 struct Configuracion{
-    string dificultad;
+    std::string dificultad;
     int id;
     int capas,filas,columnas;//valores para el tamanio del tablero
     int x1,x2,x3; //valores para nacimiento y muerte

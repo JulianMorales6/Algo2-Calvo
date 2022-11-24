@@ -7,11 +7,6 @@
 #include "bmp/EasyBMP_Geometry.cpp"
 #include "bmp/EasyBMP_Font.cpp"
 
-const int MARGEN_INFERIOR = 20;
-const int TAMANIO_CELDA = 20;
-const int RADIO_CELULA = 8;
-const int CERO_ASCII = 48;
-
 
 typedef struct {
     int nacimientosTotales;

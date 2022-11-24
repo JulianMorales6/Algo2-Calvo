@@ -3,6 +3,11 @@
 
 #define ARCHIVO_CONFIGURACION "data.csv"
 
+const int MARGEN_INFERIOR = 20;
+const int TAMANIO_CELDA = 20;
+const int RADIO_CELULA = 8;
+const int CERO_ASCII = 48;
+
 JuegoDeLaVida::JuegoDeLaVida() {
     this->tablero = NULL;
     this->tableroAux = NULL;
@@ -59,27 +64,27 @@ void JuegoDeLaVida::cargarCelulasVivas() {
 }
 
 void JuegoDeLaVida::cargarComportamientos() {
-    for(int i=0; i<this->configuracion.cantidadCeldasContaminadas; i++){
+    for(int i=0; i<this->configuracion.cantidadCeldasContaminadas; i++) {
         this->cambiarComportamiento(generarNumeroRandom(this->configuracion.capas),
                                     generarNumeroRandom(this->configuracion.filas),
                                     generarNumeroRandom(this->configuracion.columnas), Contaminada);
     }
-    for(int i=0; i<this->configuracion.cantidadCeldasEnvenenadas; i++){
+    for(int i=0; i<this->configuracion.cantidadCeldasEnvenenadas; i++) {
         this->cambiarComportamiento(generarNumeroRandom(this->configuracion.capas),
                                     generarNumeroRandom(this->configuracion.filas),
                                     generarNumeroRandom(this->configuracion.columnas), Envenenada);
     }    
-    for(int i=0; i<this->configuracion.cantidadCeldasProcreadoras; i++){
+    for(int i=0; i<this->configuracion.cantidadCeldasProcreadoras; i++) {
         this->cambiarComportamiento(generarNumeroRandom(this->configuracion.capas),
                                     generarNumeroRandom(this->configuracion.filas),
                                     generarNumeroRandom(this->configuracion.columnas), Procreadora);
     }    
-    for(int i=0; i<this->configuracion.cantidadCeldasPortales; i++){
+    for(int i=0; i<this->configuracion.cantidadCeldasPortales; i++) {
         this->cambiarComportamiento(generarNumeroRandom(this->configuracion.capas),
                                     generarNumeroRandom(this->configuracion.filas),
                                     generarNumeroRandom(this->configuracion.columnas), Portal);
     }    
-    for(int i=0; i<this->configuracion.cantidadCeldasRadioactivas; i++){
+    for(int i=0; i<this->configuracion.cantidadCeldasRadioactivas; i++) {
         this->cambiarComportamiento(generarNumeroRandom(this->configuracion.capas),
                                     generarNumeroRandom(this->configuracion.filas),
                                     generarNumeroRandom(this->configuracion.columnas), Radioactiva);
@@ -134,8 +139,7 @@ void JuegoDeLaVida::interaccionesUsuario() {
                 cout<<"Ingreso incorrecto, indique un numero entero (minimo 1, maximo 5): ";
                 cin>>cantidadDeTurnos;
             }
-            for (int turnosEjecutados = 0; turnosEjecutados < cantidadDeTurnos; turnosEjecutados++)
-            {
+            for (int turnosEjecutados = 0; turnosEjecutados < cantidadDeTurnos; turnosEjecutados++) {
                 this->pasarTurno();
                 this->estadisticas.turnos++;
             }
@@ -151,7 +155,7 @@ void JuegoDeLaVida::interaccionesUsuario() {
         this->dibujarJuegoDeLaVida();
         this->estadisticas.muertesDelTurno = 0;
         this->estadisticas.nacimientosDelTurno = 0;
-        cout<<"Presione 1 para avanzar un turno, 2 para reiniciar el juego, 3 o cualquier otro digito para cerrarlo"<<endl;
+        cout<<"Presione 1 para avanzar turnos, 2 para reiniciar el juego, 3 o cualquier otro digito para cerrarlo"<<endl;
         cin.clear();
         cin.ignore(100, '\n');
     }

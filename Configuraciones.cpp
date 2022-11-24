@@ -36,8 +36,7 @@ void Configuraciones::obtenerConfiguraciones() {
         this->configAux->id = i;
         //Configuracion *punteroAuxiliar = configAux;
         this->lista->add(this->configAux);
-        if (this->primeraConf->dificultad == "")
-        {
+        if (this->primeraConf->dificultad == "") {
             this->primeraConf = this->configAux;
         }
         i++;
@@ -50,8 +49,7 @@ void Configuraciones::obtenerConfiguraciones() {
 void Configuraciones::mostrarConfiguraciones() {
     this->lista->inicializarCursor();
     if(!this->lista->estaVacia()) {
-        do
-        {
+        do {
             cout<<this->lista->getCursor()->id<<" - "<<this->lista->getCursor()->dificultad<<endl<<
             "    Capas: "<<
             this->lista->getCursor()->capas<<endl<<
@@ -78,7 +76,7 @@ void Configuraciones::mostrarConfiguraciones() {
             "    Cantidad de celulas vivas: "<<
             this->lista->getCursor()->cantidadCelulasVivas<<endl<<endl;
             this->lista->avanzarCursor();
-        } while (this->lista->getCursor()->id != this->primeraConf->id);
+        } while(this->lista->getCursor()->id != this->primeraConf->id);
     }
     cout<<this->cantidadDeConfiguraciones + 1<<" - Carga manual"<<endl;
     
@@ -89,8 +87,7 @@ Configuracion Configuraciones::seleccionarUnaConfiguracion() {
     Configuracion confElegida;
     cout<<"Elija una dificultad o seleccione 'Carga manual' con uno de los numeros: "<<endl;
     cin>>idElegido;
-    while (idElegido < 1 || idElegido > this->cantidadDeConfiguraciones + 1)
-    {
+    while(idElegido < 1 || idElegido > this->cantidadDeConfiguraciones + 1) {
         cin.clear();
         cin.ignore(100, '\n');
         cout<<"Ingreso invalido, ingrese una de las opciones: ";
@@ -101,11 +98,10 @@ Configuracion Configuraciones::seleccionarUnaConfiguracion() {
     if (idElegido == (this->cantidadDeConfiguraciones + 1)) {
         confElegida = cargarManualConfig(confElegida);
     } else {
-    do
-    {
+    do {
         this->lista->avanzarCursor();
         confElegida = *this->lista->getCursor();
-    } while (idElegido != this->lista->getCursor()->id);
+    } while(idElegido != this->lista->getCursor()->id);
     }
     validarConfiguracion(confElegida);
     return confElegida;
@@ -198,10 +194,9 @@ void Configuraciones::escribirUltimaConf(Configuracion conf) {
 
 Configuraciones::~Configuraciones() {
     this->lista->inicializarCursor();
-    do
-    {
+    do {
         delete this->lista->getCursor();
-    } while (this->lista->avanzarCursor());
+    } while(this->lista->avanzarCursor());
     
     delete this->lista;
 }
