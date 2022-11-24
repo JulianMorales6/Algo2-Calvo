@@ -122,11 +122,23 @@ void JuegoDeLaVida::interaccionesUsuario() {
     this->tablero->mostrarTablero();
     this->imprimirEstadisticas();
     this->dibujarJuegoDeLaVida();
-    cout<<"Presione 1 para avanzar un turno, 2 para reiniciar el juego, 3 o cualquier otro digito para cerrarlo"<<endl;
+    cout<<"Presione 1 para avanzar turnos, 2 para reiniciar el juego, 3 o cualquier otro digito para cerrarlo"<<endl;
     while(cin>>numeroIngresado) {
         if(numeroIngresado == 1) {
-            this->pasarTurno();
-            this->estadisticas.turnos++;
+            int cantidadDeTurnos = 1;
+            cout<<"¿Cuantos turnos desea ejecutar? (minimo 1, maximo 5): ";
+            cin>>cantidadDeTurnos;
+            while(cantidadDeTurnos > 5 || cantidadDeTurnos < 1) {
+                cin.clear();
+                cin.ignore(100, '\n');
+                cout<<"Ingreso incorrecto, indique un numero entero (minimo 1, maximo 5): ";
+                cin>>cantidadDeTurnos;
+            }
+            for (int turnosEjecutados = 0; turnosEjecutados < cantidadDeTurnos; turnosEjecutados++)
+            {
+                this->pasarTurno();
+                this->estadisticas.turnos++;
+            }
         }
         if(numeroIngresado == 2) {
             this->inicializarJuegoDeLaVida();
