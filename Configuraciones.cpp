@@ -89,10 +89,15 @@ Configuracion Configuraciones::seleccionarUnaConfiguracion() {
     Configuracion confElegida;
     cout<<"Elija una dificultad o seleccione 'Carga manual' con uno de los numeros: "<<endl;
     cin>>idElegido;
-    this->lista->inicializarCursor();
-    if (idElegido < 1 || idElegido > (this->cantidadDeConfiguraciones + 1)) {
-        throw "Esa opcion no existe.";
+    while (idElegido < 1 || idElegido > this->cantidadDeConfiguraciones + 1)
+    {
+        cin.clear();
+        cin.ignore(100, '\n');
+        cout<<"Ingreso invalido, ingrese una de las opciones: ";
+        cin>>idElegido;
     }
+    
+    this->lista->inicializarCursor();
     if (idElegido == (this->cantidadDeConfiguraciones + 1)) {
         confElegida = cargarManualConfig(confElegida);
     } else {

@@ -30,27 +30,33 @@ private:
     int cantidadDeConfiguraciones;
 public:
 
-    // pre: El archivo "Configuracion.txt" no debe estar vacío.
-    // post: crea una instancia "Configuraciones".
+    //Post: crea una instancia "Configuraciones".
     Configuraciones();
 
-    //Post: Elimina la configuracion
+    //Post: Elimina la configuracion.
     ~Configuraciones();
 
-    //Pre: El archivo "config.csv" debe existir y no debe estar vacío.
-    //Post: Lee el archivo y almacena las configuraciones en una lista
+    //Pre: El archivo "Configuracion.txt" debe existir y no debe estar vacío.
+    //Post: Almacena las configuraciones del archivo en una lista.
     void obtenerConfiguraciones();
 
-    //Post: Lista las dificultades en consola.
+    //Pre: La lista de configuraciones debe existir y no se null.
+    //Post: Lista las configuraciones y sus detalles en consola.
     void mostrarConfiguraciones();
 
-    //Post: Mediante ingreso de usuario, se establece la configuracion del juego.
+    //Pre: La lista de configuraciones debe existir y no estar vacia.
+    //Post: Post: Mediante ingreso de usuario, se establece la configuracion del juego.
     Configuracion seleccionarUnaConfiguracion();
 
+    //Post: Si el jugador decidie cargar manualmente la configuracion, se le pide que ingrese cada valor por terminal.
     Configuracion cargarManualConfig(Configuracion confElegida);
 
+    //Pre: Debe haberse ingresado la configuracion manualmente.
+    //Post: Guarda la configuracion manual que ingreso el usuario, en caso de haber elegido ingreso manual, en el archivo Configuracion.txt.
     void escribirUltimaConf(Configuracion conf);
 
+    //Pre: Se debe haber elegido una configuracion.
+    //Post: Se asegura que los valores de la configuracion elegida o ingresada manualmente tengan sentido logico.
     void validarConfiguracion(Configuracion conf);
 };
 
