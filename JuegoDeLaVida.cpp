@@ -165,6 +165,15 @@ void JuegoDeLaVida::interaccionesUsuario() {
         if(numeroIngresado == 2) {
             char ruta_carpeta[32] = "imagenes/";
             vaciarCarpetaImagenes(ruta_carpeta);
+            this->estadisticas.nacimientosTotales = 0;
+            this->estadisticas.muertesTotales = 0;
+            this->estadisticas.celulasVivas = 0;
+            this->estadisticas.nacimientosDelTurno = 0;
+            this->estadisticas.muertesDelTurno = 0;
+            this->estadisticas.turnos = 0;
+            this->estadisticas.controlMuertes = 0;
+            this->estadisticas.controlNacimientos = 0;
+            this->estadisticas.flagCongelado = false;
             this->inicializarJuegoDeLaVida();
         }
         if(numeroIngresado == 3) {
@@ -282,9 +291,15 @@ void JuegoDeLaVida::ejecutarComportamiento(int capa, int fila, int columna) {
     ComportamientoDeCelda comportamiento = this->tablero->getCelda(capa,fila,columna)->getComportamiento();
     if(celula->getEstado() == Viva) {
         if(comportamiento == Portal) {
-            this->tablero->getCelda(generarNumeroRandom(this->configuracion.capas),
-                                    generarNumeroRandom(this->configuracion.filas),
-                                    generarNumeroRandom(this->configuracion.columnas))->getCelula()->revivirCelula();
+            int capaAux = generarNumeroRandom(this->configuracion.capas);
+            int filaAux = generarNumeroRandom(this->configuracion.filas);
+            int columnaAux = generarNumeroRandom(this->configuracion.columnas);
+            
+            if(this->tablero->getCelda(capaAux, filaAux, columnaAux)->getCelula()->getEstado() == Muerta) {
+                estadisticas.celulasVivas++;
+                estadisticas.nacimientosDelTurno++;
+                this->tablero->getCelda(capaAux, filaAux, columnaAux)->getCelula()->revivirCelula();
+            }
         }
         if( comportamiento == Radioactiva) {
             for(int i = 0; i<3; i++) {
