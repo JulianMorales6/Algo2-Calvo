@@ -1,7 +1,25 @@
 
 #include "JuegoDeLaVida.h"
+#include <dirent.h>
 
 #define ARCHIVO_CONFIGURACION "data.csv"
+
+//Pre: Debe existir una carpeta en la ruta pasada por parámetro.
+//Post: Elimina todos los archivos de la carpeta.
+void vaciarCarpetaImagenes(char ruta_carpeta[32]) {
+
+    DIR *directorio = opendir(ruta_carpeta);
+    struct dirent *archivo;
+
+    if(directorio != NULL) {
+        while((archivo = readdir(directorio)) != NULL) {
+            char ruta[64] = "";
+            strcat(ruta, ruta_carpeta);
+            strcat(ruta, archivo->d_name);
+            remove(ruta);
+        }
+    }
+}
 
 const int MARGEN_INFERIOR = 20;
 const int TAMANIO_CELDA = 20;
@@ -145,6 +163,8 @@ void JuegoDeLaVida::interaccionesUsuario() {
             }
         }
         if(numeroIngresado == 2) {
+            char ruta_carpeta[32] = "imagenes/";
+            vaciarCarpetaImagenes(ruta_carpeta);
             this->inicializarJuegoDeLaVida();
         }
         if(numeroIngresado == 3) {
@@ -301,7 +321,7 @@ void JuegoDeLaVida::imprimirEstadisticas() {
     cout<<"CV: "<<this->estadisticas.celulasVivas<<" CQN: "<<this->estadisticas.nacimientosDelTurno<<" CQM: "<<this->estadisticas.muertesDelTurno<<endl;
     float promedioDeNacimientos = (float)this->estadisticas.nacimientosTotales / (float)this->estadisticas.turnos;
     float promedioDeMuertes = (float)this->estadisticas.muertesTotales /  (float)this->estadisticas.turnos;
-    cout<<"%N: "<<promedioDeNacimientos<<" %M: "<<promedioDeMuertes<<endl;
+    cout<<"Prom.N: "<<promedioDeNacimientos<<" Prom.M: "<<promedioDeMuertes<<endl;
     cout<<"Muertes Totales: "<< this->estadisticas.muertesTotales<<endl;
     cout<<"Nacimiento Totales "<< this->estadisticas.nacimientosTotales<<endl;
     if(this->estadisticas.flagCongelado) {
@@ -342,7 +362,7 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
     strcat(encabezado, nTurnos);
     PrintString(imagenPortada, encabezado, 30, 30, 14, blanco);
 
-    char linea1[200] = "Celulas Vivas: ", nVivas[40], nacimientos[40] = "  Nacimientos del turno: ", nNacimientos[40], muertes[40] =  "  Muertes del turno: ", nMuertes[40];
+    char linea1[200] = "Celulas Vivas: ", nVivas[40], nacimientos[40] = "  Nacimientos desde ultimo turno: ", nNacimientos[40], muertes[40] =  "  Muertes desde ultimo turno: ", nMuertes[40];
     sprintf(nVivas, "%i", this->estadisticas.celulasVivas);
     sprintf(nNacimientos, "%i", this->estadisticas.nacimientosDelTurno);
     sprintf(nMuertes, "%i", this->estadisticas.muertesDelTurno);
@@ -361,7 +381,7 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
     strcat(linea2, nMuertesTotales);
     PrintString(imagenPortada, linea2, 30, 80, 11, blanco);
 
-    char linea3[200] = "Porcentaje de nacimientos: ", nPorcNaciemientos[40], porcMuertes[40] = "  Porcentaje de muertes ", nPorcMuertes[40];
+    char linea3[200] = "Promedio de nacimientos: ", nPorcNaciemientos[40], porcMuertes[40] = "  Promedio de muertes ", nPorcMuertes[40];
     sprintf(nPorcNaciemientos, "%f", (float)this->estadisticas.nacimientosTotales / (float)this->estadisticas.turnos);
     sprintf(nPorcMuertes, "%f", (float)this->estadisticas.muertesTotales /  (float)this->estadisticas.turnos);
     strcat(linea3, nPorcNaciemientos);
