@@ -2,7 +2,6 @@
 #define CONFIGURACIONES_H_
 
 #include "ListaDobleCircular.h"
-#include <iostream>
 #include <string>
 #include <fstream>
 #include <sstream>
@@ -40,7 +39,7 @@ public:
     //Post: Almacena las configuraciones del archivo en una lista.
     void obtenerConfiguraciones();
 
-    //Pre: La lista de configuraciones debe existir y no se null.
+    //Pre: La lista de configuraciones debe existir y no ser null.
     //Post: Lista las configuraciones y sus detalles en consola.
     void mostrarConfiguraciones();
 

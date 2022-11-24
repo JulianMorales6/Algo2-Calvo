@@ -2,11 +2,16 @@
 #define JUEGODELAVIDA_H_
 #include "Tablero.cpp"
 #include "Configuraciones.cpp"
+#include <dirent.h>
 
 #include "bmp/EasyBMP.cpp"
 #include "bmp/EasyBMP_Geometry.cpp"
 #include "bmp/EasyBMP_Font.cpp"
 
+const int MARGEN_INFERIOR = 20;
+const int TAMANIO_CELDA = 20;
+const int RADIO_CELULA = 8;
+const int CERO_ASCII = 48;
 
 typedef struct {
     int nacimientosTotales;
@@ -94,5 +99,8 @@ class JuegoDeLaVida {
    void inicializarCelulasConfiguracion();
 };
 
+/*PRE: Debe existir una carpeta en la ruta pasada por parámetro.
+  POST: Elimina todos los archivos de la carpeta.*/
+void vaciarCarpetaImagenes(char ruta_carpeta[32]);
 
 #endif /* JUEGODELAVIDA_H_ */

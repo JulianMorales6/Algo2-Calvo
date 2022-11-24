@@ -1,11 +1,9 @@
 
 #include "JuegoDeLaVida.h"
-#include <dirent.h>
-
+using namespace std;
 #define ARCHIVO_CONFIGURACION "data.csv"
 
-//Pre: Debe existir una carpeta en la ruta pasada por parámetro.
-//Post: Elimina todos los archivos de la carpeta.
+
 void vaciarCarpetaImagenes(char ruta_carpeta[32]) {
 
     DIR *directorio = opendir(ruta_carpeta);
@@ -20,11 +18,6 @@ void vaciarCarpetaImagenes(char ruta_carpeta[32]) {
         }
     }
 }
-
-const int MARGEN_INFERIOR = 20;
-const int TAMANIO_CELDA = 20;
-const int RADIO_CELULA = 8;
-const int CERO_ASCII = 48;
 
 JuegoDeLaVida::JuegoDeLaVida() {
     this->tablero = NULL;
@@ -341,7 +334,7 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
     int capas = this->tablero->getTablero()->getLargo();
     int filas = this->tablero->getTablero()->getCursor()->getLargo();
     int columnas = this->tablero->getTablero()->getCursor()->getCursor()->getLargo();
-    //colores para el tablero
+    
     RGBApixel grisClaro;
     grisClaro.Red = 40;
     grisClaro.Green = 40;

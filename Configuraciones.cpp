@@ -2,8 +2,6 @@
 #include "Configuraciones.h"
 using namespace std;
 
-
-
 Configuraciones::Configuraciones() {
     this->lista = new Lista<Configuracion *>;
     this->primeraConf = new Configuracion;

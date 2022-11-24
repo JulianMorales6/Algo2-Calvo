@@ -1,10 +1,7 @@
 #ifndef NODO_H_
 #define NODO_H_
 
-
-
 template <class T> class Lista;
-
 
 template <class T> class Nodo {
     friend class Lista<T>;

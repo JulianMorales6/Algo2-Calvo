@@ -1,6 +1,5 @@
 
 #include "JuegoDeLaVida.cpp"
-#include <iostream>
 
 int main() {
     char ruta_carpeta[32] = "imagenes/";
