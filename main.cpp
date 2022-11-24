@@ -3,6 +3,8 @@
 #include <dirent.h>
 #include <iostream>
 
+//Pre: Debe existir una carpeta en la ruta pasada por parámetro.
+//Post: Elimina todos los archivos de la carpeta.
 void vaciarCarpetaImagenes(char ruta_carpeta[32]) {
 
     DIR *directorio = opendir(ruta_carpeta);
