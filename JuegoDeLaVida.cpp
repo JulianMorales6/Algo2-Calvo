@@ -29,6 +29,14 @@ const int CERO_ASCII = 48;
 JuegoDeLaVida::JuegoDeLaVida() {
     this->tablero = NULL;
     this->tableroAux = NULL;
+}
+
+JuegoDeLaVida::~JuegoDeLaVida() {
+    delete this->tablero;
+    delete this->tableroAux;
+}
+
+void JuegoDeLaVida::inicializarJuegoDeLaVida() {
     this->estadisticas.nacimientosTotales = 0;
     this->estadisticas.muertesTotales = 0;
     this->estadisticas.celulasVivas = 0;
@@ -38,14 +46,6 @@ JuegoDeLaVida::JuegoDeLaVida() {
     this->estadisticas.controlMuertes = 0;
     this->estadisticas.controlNacimientos = 0;
     this->estadisticas.flagCongelado = false;
-}
-
-JuegoDeLaVida::~JuegoDeLaVida() {
-    delete this->tablero;
-    delete this->tableroAux;
-}
-
-void JuegoDeLaVida::inicializarJuegoDeLaVida() {
     this->cargarConfiguracion();
     this->tablero = new Tablero(this->configuracion.capas, this->configuracion.filas, this->configuracion.columnas);
     this->tableroAux = new Tablero(this->configuracion.capas, this->configuracion.filas, this->configuracion.columnas);
@@ -163,17 +163,10 @@ void JuegoDeLaVida::interaccionesUsuario() {
             }
         }
         if(numeroIngresado == 2) {
+            delete this->tablero;
+            delete this->tableroAux;
             char ruta_carpeta[32] = "imagenes/";
             vaciarCarpetaImagenes(ruta_carpeta);
-            this->estadisticas.nacimientosTotales = 0;
-            this->estadisticas.muertesTotales = 0;
-            this->estadisticas.celulasVivas = 0;
-            this->estadisticas.nacimientosDelTurno = 0;
-            this->estadisticas.muertesDelTurno = 0;
-            this->estadisticas.turnos = 0;
-            this->estadisticas.controlMuertes = 0;
-            this->estadisticas.controlNacimientos = 0;
-            this->estadisticas.flagCongelado = false;
             this->inicializarJuegoDeLaVida();
         }
         if(numeroIngresado == 3) {
