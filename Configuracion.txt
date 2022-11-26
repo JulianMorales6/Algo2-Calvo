@@ -1,4 +1,4 @@
 Dificultad capas filas columnas VecParaNacer VecMinSeguirViva VecMaxSeguirViva Contaminadas Envenenadas Procreadoras Portales Radioactivas Vivas
 Facil 5 20 20 6 5 8 10 20 20 20 20 400
 Normal 10 30 30 8 7 10 40 40 40 40 40 1800
-Dificil 15 40 40 10 9 12 80 80 60 80 80 5200
+Dificil 15 40 40 10 9 12 80 80 80 80 80 4800

@@ -9,7 +9,7 @@ Configuraciones::Configuraciones() {
 }
 
 void Configuraciones::obtenerConfiguraciones() {
-    string rutaArchivo = "Configuracion.txt";
+    string rutaArchivo = "src/Configuracion.txt";
     ifstream archivo;
     archivo.open(rutaArchivo.c_str());
     string linea;

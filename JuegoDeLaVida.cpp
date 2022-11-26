@@ -158,7 +158,7 @@ void JuegoDeLaVida::interaccionesUsuario() {
         if(numeroIngresado == 2) {
             delete this->tablero;
             delete this->tableroAux;
-            char ruta_carpeta[32] = "imagenes/";
+            char ruta_carpeta[32] = "src/imagenes/";
             vaciarCarpetaImagenes(ruta_carpeta);
             this->inicializarJuegoDeLaVida();
         }
@@ -282,8 +282,8 @@ void JuegoDeLaVida::ejecutarComportamiento(int capa, int fila, int columna) {
             int columnaAux = generarNumeroRandom(this->configuracion.columnas);
             
             if(this->tablero->getCelda(capaAux, filaAux, columnaAux)->getCelula()->getEstado() == Muerta) {
-                estadisticas.celulasVivas++;
-                estadisticas.nacimientosDelTurno++;
+                this->estadisticas.celulasVivas++;
+                this->estadisticas.nacimientosDelTurno++;
                 this->tablero->getCelda(capaAux, filaAux, columnaAux)->getCelula()->revivirCelula();
             }
         }
@@ -351,8 +351,8 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
     blanco.Blue = 255;
 
     BMP imagenPortada;
-    imagenPortada.SetSize(650, 150);
-    for(int i=0; i<imagenPortada.TellWidth(); i++) {//color del fondo
+    imagenPortada.SetSize(700, 150);
+    for(int i=0; i<imagenPortada.TellWidth(); i++) {
         for(int j=0; j<imagenPortada.TellHeight(); j++) {
             *imagenPortada(i,j) = grisClaro;
         }
@@ -361,7 +361,7 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
     sprintf(nTurnos, "%i", this->estadisticas.turnos);
     strcat(encabezado, turnos);
     strcat(encabezado, nTurnos);
-    PrintString(imagenPortada, encabezado, 30, 30, 14, blanco);
+    PrintString(imagenPortada, encabezado, 20, 30, 14, blanco);
 
     char linea1[200] = "Celulas Vivas: ", nVivas[40], nacimientos[40] = "  Nacimientos desde ultimo turno: ", nNacimientos[40], muertes[40] =  "  Muertes desde ultimo turno: ", nMuertes[40];
     sprintf(nVivas, "%i", this->estadisticas.celulasVivas);
@@ -372,7 +372,7 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
     strcat(linea1, nNacimientos);
     strcat(linea1, muertes);
     strcat(linea1, nMuertes);
-    PrintString(imagenPortada, linea1, 30, 60, 11, blanco);
+    PrintString(imagenPortada, linea1, 20, 60, 10, blanco);
 
     char linea2[200] = "Nacimientos totales: ", nNacimientosTotales[40], muertesTotales[40] = "  Muertes totales: ", nMuertesTotales[40];
     sprintf(nNacimientosTotales, "%i", this->estadisticas.nacimientosTotales);
@@ -380,7 +380,7 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
     strcat(linea2, nNacimientosTotales);
     strcat(linea2, muertesTotales);
     strcat(linea2, nMuertesTotales);
-    PrintString(imagenPortada, linea2, 30, 80, 11, blanco);
+    PrintString(imagenPortada, linea2, 20, 80, 10, blanco);
 
     char linea3[200] = "Promedio de nacimientos: ", nPorcNaciemientos[40], porcMuertes[40] = "  Promedio de muertes ", nPorcMuertes[40];
     sprintf(nPorcNaciemientos, "%f", (float)this->estadisticas.nacimientosTotales / (float)this->estadisticas.turnos);
@@ -388,14 +388,14 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
     strcat(linea3, nPorcNaciemientos);
     strcat(linea3, porcMuertes);
     strcat(linea3, nPorcMuertes);
-    PrintString(imagenPortada, linea3, 30, 100, 11, blanco);
+    PrintString(imagenPortada, linea3, 20, 100, 10, blanco);
 
     if(this->estadisticas.flagCongelado) {
         char linea5[40] = "JUEGO CONGELADO";
         PrintString(imagenPortada, linea5, 200, 125, 12, blanco);
     }
 
-    imagenPortada.WriteToFile("imagenes/estadisticas.bmp");
+    imagenPortada.WriteToFile("src/imagenes/estadisticas.bmp");
 
     for(int capa = 1; capa <= capas; capa++) {
         BMP imagenCapa;
@@ -443,7 +443,7 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
                 }
             }
         }
-        char ruta[200] = "imagenes/capa", formato[5] = ".bmp", numeroImagen[40];
+        char ruta[200] = "src/imagenes/capa", formato[5] = ".bmp", numeroImagen[40];
         sprintf(numeroImagen, "%i", capa);
         strcat(ruta, numeroImagen);
         strcat(ruta, formato);
@@ -455,12 +455,17 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
 void JuegoDeLaVida::inicializarCelulasConfiguracion() {
     this->estadisticas.celulasVivas = this->configuracion.cantidadCelulasVivas;
     for(int i=0; i<this->configuracion.cantidadCelulasVivas; i++) {
+    	int capaAux;
+		int filaAux;
+		int columnaAux;
         Celula * celulaAux = NULL;
         do {
-        celulaAux = this->tablero->getCelda(generarNumeroRandom(this->configuracion.capas),
-                                            generarNumeroRandom(this->configuracion.filas),
-                                            generarNumeroRandom(this->configuracion.columnas))->getCelula();
+			capaAux = generarNumeroRandom(this->configuracion.capas);
+			filaAux = generarNumeroRandom(this->configuracion.filas);
+			columnaAux = generarNumeroRandom(this->configuracion.columnas);
+			celulaAux = this->tablero->getCelda(capaAux, filaAux, columnaAux)->getCelula();
         } while(celulaAux->getEstado() == Viva);
         celulaAux->revivirCelula();
+        this->ejecutarComportamiento(capaAux, filaAux, columnaAux);
     }  
 }

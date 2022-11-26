@@ -1,12 +1,12 @@
 #ifndef JUEGODELAVIDA_H_
 #define JUEGODELAVIDA_H_
-#include "Tablero.cpp"
-#include "Configuraciones.cpp"
+#include "Tablero.h"
+#include "Configuraciones.h"
 #include <dirent.h>
 
-#include "bmp/EasyBMP.cpp"
-#include "bmp/EasyBMP_Geometry.cpp"
-#include "bmp/EasyBMP_Font.cpp"
+#include "bmp/EasyBMP.h"
+#include "bmp/EasyBMP_Geometry.h"
+#include "bmp/EasyBMP_Font.h"
 
 const int MARGEN_INFERIOR = 20;
 const int TAMANIO_CELDA = 20;
