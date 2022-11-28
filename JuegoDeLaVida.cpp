@@ -138,8 +138,13 @@ void JuegoDeLaVida::interaccionesUsuario() {
     this->tablero->mostrarTablero();
     this->imprimirEstadisticas();
     this->dibujarJuegoDeLaVida();
-    cout<<"Presione 1 para avanzar turnos, 2 para reiniciar el juego, 3 o cualquier otro digito para cerrarlo"<<endl;
+    cout<<"Presione 1 para avanzar turnos, 2 para reiniciar el juego, 3 o cualquier letra para cerrarlo"<<endl;
     while(cin>>numeroIngresado) {
+    	if(numeroIngresado < 1 || numeroIngresado > 3) {
+            cin.clear();
+            cin.ignore(100, '\n');
+    		continue;
+    	}
         if(numeroIngresado == 1) {
             int cantidadDeTurnos = 1;
             cout<<"¿Cuantos turnos desea ejecutar? (minimo 1, maximo 5): ";
@@ -170,7 +175,7 @@ void JuegoDeLaVida::interaccionesUsuario() {
         this->dibujarJuegoDeLaVida();
         this->estadisticas.muertesDelTurno = 0;
         this->estadisticas.nacimientosDelTurno = 0;
-        cout<<"Presione 1 para avanzar turnos, 2 para reiniciar el juego, 3 o cualquier otro digito para cerrarlo"<<endl;
+        cout<<"Presione 1 para avanzar turnos, 2 para reiniciar el juego, 3 o cualquier letra para cerrarlo"<<endl;
         cin.clear();
         cin.ignore(100, '\n');
     }
@@ -232,12 +237,12 @@ void JuegoDeLaVida::actualizarEstadoCelula(int capa, int fila, int columna) {
                     if(celdaVecina->getCelula()->getGen(2) > genesHeredados[1]) {
                         genesHeredados[1] = celdaVecina->getCelula()->getGen(1);
                     }
-                    if(celdaAux->getCelula()->getEstado() == Viva) {
-                        celulasVivasAlrededor--;
-                    }
                 }
-            }
-        }
+			}
+		}
+	}
+    if(celdaAux->getCelula()->getEstado() == Viva) {
+        celulasVivasAlrededor--;
     }
     if(celda->getCelula()->getEstado() == Muerta) {
         if(celulasVivasAlrededor == this->configuracion.x1) {
@@ -351,7 +356,7 @@ void JuegoDeLaVida::dibujarJuegoDeLaVida() {
     blanco.Blue = 255;
 
     BMP imagenPortada;
-    imagenPortada.SetSize(700, 150);
+    imagenPortada.SetSize(800, 150);
     for(int i=0; i<imagenPortada.TellWidth(); i++) {
         for(int j=0; j<imagenPortada.TellHeight(); j++) {
             *imagenPortada(i,j) = grisClaro;

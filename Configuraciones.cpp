@@ -32,7 +32,6 @@ void Configuraciones::obtenerConfiguraciones() {
         archivo >> this->configAux->cantidadCeldasRadioactivas;
         archivo >> this->configAux->cantidadCelulasVivas;
         this->configAux->id = i;
-        //Configuracion *punteroAuxiliar = configAux;
         this->lista->add(this->configAux);
         if (this->primeraConf->dificultad == "") {
             this->primeraConf = this->configAux;
@@ -166,7 +165,7 @@ Configuracion Configuraciones::cargarManualConfig(Configuracion confElegida) {
 }
 
 void Configuraciones::escribirUltimaConf(Configuracion conf) {
-    string rutaArchivo = "Configuracion.txt", rutaTemp = "Configuracion.tmp", dato;
+    string rutaArchivo = "src/Configuracion.txt", rutaTemp = "src/Configuracion.tmp", dato;
     ifstream archivo;
     ofstream archivoTemp;
     archivo.open(rutaArchivo.c_str());
@@ -186,8 +185,8 @@ void Configuraciones::escribirUltimaConf(Configuracion conf) {
     archivoTemp << "UltimaCustomIngresada " << conf.capas << " " << conf.filas << " " << conf.columnas << " " << conf.x1 << " " << conf.x2 << " " << conf.x3 << " " << conf.cantidadCeldasContaminadas << " " << conf.cantidadCeldasEnvenenadas << " " << conf.cantidadCeldasProcreadoras << " " << conf.cantidadCeldasPortales << " " << conf.cantidadCeldasRadioactivas << " " << conf.cantidadCelulasVivas;
 
     archivoTemp.close();
-    remove("Configuracion.txt");
-    rename("Configuracion.tmp", "Configuracion.txt");
+    remove("src/Configuracion.txt");
+    rename("src/Configuracion.tmp", "src/Configuracion.txt");
 }
 
 Configuraciones::~Configuraciones() {
